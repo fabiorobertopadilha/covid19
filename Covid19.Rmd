@@ -1,0 +1,1930 @@
+---
+title: "TCC-PUC / Covid19"
+header-includes:
+  - \usepackage[brazil]{babel}
+  - \usepackage{graphicx}
+  - \usepackage[utf8]{inputenc}
+  - \usepackage{color}
+  - \usepackage{pdfpages} 
+  - \usepackage[titletoc,toc,page]{appendix}
+author: "Fábio Roberto Barros Padilha"
+date: "Janeiro de 2021"
+institute: "PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS"
+output: pdf_document
+fontsize: 12pt
+geometry: margin=0.9in
+latex_engine: latex2
+--- 
+
+
+\let\oldShaded\Shaded
+\let\endoldShaded\endShaded
+\renewenvironment{Shaded}{\footnotesize\oldShaded}{\endoldShaded}
+
+\let\oldverbatim\verbatim
+\let\endoldverbatim\endverbatim
+\renewenvironment{verbatim}{\scriptsize\oldverbatim}{\endoldverbatim}
+
+\newpage
+
+\tableofcontents
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newpage
+
+\section{1. Introdução}
+
+
+\qquad Nos últimos anos, o aumento de dados disponíveis digitalmente e o aparecimento de novas tecnologias têm favorecido a produção de conhecimento útil para sociedade.
+
+\qquad De acordo com Gilson Medeiros de Oliveira Junior (2010):
+
+\
+\begin{flushright}
+\begin{minipage}{0.7\linewidth}
+\begin{footnotesize} 
+O uso de técnicas de inteligência artificial, mais especificamente algoritmos de aprendizagem para classificação de padrões, tem crescido bastante nos últimos anos pelo fato de auxiliarem na resolução de problemas complexos do mundo real que podem envolver um elevado número de variáveis [...]. (JUNIOR, 2010, p.1)\cite{JUNIOR:2010}
+\end{footnotesize}
+\end{minipage}
+\end{flushright}
+\
+
+\qquad Esses algoritmos de aprendizagem estão relacionados ao aprendizado de máquina (machine learning), que é uma parte de Inteligência Artificial (IA) onde um algoritmo computacional cria, a partir dos dados disponíveis, modelos de aprendizado para a resolução de problemas (MEHTA, 2017).\cite{MEHTA:2017}
+
+\qquad Dentre as técnicas de aprendizagem de máquina, pode-se citar o algoritmo de Naive Bayes, importante classificador probabilístico, que é, frequentemente, utilizado em processamento de diagnósticos médicos (cálculo de probabilidades em cima de diagnóstico de doenças), segundo: Pedro César Tebaldi Gomes (2019) \cite{GOMES:2019}.
+
+\qquad Outros importantes algoritmos de aprendizagem são as máquinas de vetores suporte - SVMs (Support Vector Machines), que “[...] têm a capacidade de resolver problemas de classificação e regressão, adquirindo com o aprendizado na etapa de treinamento a capacidade de generalização” (JUNIOR, 2010, p.5). 
+
+\qquad Por fim, pode-se destacar a técnica de mineração de dados de árvore de decisão na aprendizagem de máquina. De acordo com Hosokawa (2011) \cite{Hosokawa:2011}, a árvore de decisão é um modelo preditivo, representado por um gráfico em forma de árvore, contendo as decisões a serem tomadas e seus possíveis riscos, custo e prejuízos. 
+
+\qquad Neste sentido, este trabalho utilizou as técnicas citadas acima, dentre outras, para análise de dados do Sistema Único de Saúde (SUS) relacionados às Síndromes Respiratórias Agudas Graves (SARS), de forma a subsidiar a implementação de políticas de saúde pública e melhorar o planejamento na área da saúde quanto à necessidade de ventilação invasiva para atender aos casos de SARS. 
+
+
+\subsection{1.1 Contextualização}
+
+\qquad O ano de 2020 foi marcado por isolamento, medo e insegurança, causados pela pandemia do Coronavírus SARS-CoV-2 (Covid-19) e, com ela, pelo aumento considerável dos casos de Síndrome Respiratória Aguda Grave (SARS). 
+
+\qquad Durante todo o curso da pandemia, um dos principais problemas que as autoridades e os profissionais de saúde enfrentaram foi a falta de informação, de recursos médicos, como respiradores, e de um plano adequado para sua distribuição. 
+
+\qquad Como o novo coronavírus é a principal causa para o aumento nos casos de Síndrome Respiratória Aguda Grave, ser capaz de prever que tipo de recurso um indivíduo pode precisar no momento de ser testado positivo, será de grande ajuda para as autoridades, pois elas seriam capazes de obter e providenciar os recursos necessários para salvar a vida daquele paciente, principalmente no que se refere a respiradores, recurso essencial para tratamento de casos de SARS.
+
+\qquad Dado o atual volume de informações relacionados ao SARS-CoV-2 (Covid-19) e às Síndromes Respiratórias Agudas Graves disponíveis, é possível se utilizar da tecnologia, como a inteligência artificial, para realizar predições que auxiliem as autoridades da área de saúde e os médicos no tratamento dos pacientes. 
+
+\qquad Sobre o uso das informações geradas com base nestas análises preditivas, Roberto Moreira Santos (2017) afirma que:
+
+\
+\begin{flushright}
+\begin{minipage}{0.7\linewidth}
+\begin{footnotesize} 
+A aplicação desses resultados provenientes das análises é de suma importância para vários setores: como o setor da saúde, que consegue mapear os riscos de certas doenças que ocorrem em determinados grupos de pacientes, ou a resposta aos melhores medicamentos [...] (SANTOS, 2017, p.10)\cite{SANTOS:2017}
+\end{footnotesize}
+\end{minipage}
+\end{flushright}
+\
+
+\qquad Neste contexto, “A analítica preditiva pode ser apoiada por técnicas da computação como aprendizagem de máquina (machine learning) e a mineração de dados para aumentar seu potencial de precisão” (WAYNE, 2007 apud SANTOS, 2017, p.11).
+
+\qquad Dada a situação de calamidade pública provocada pelo Coronavírus SARS-CoV-2 (Covid-19) e o elevado aumento nos casos de Síndrome Respiratória Aguda Grave (SARS), que levou o Brasil a ultrapassar a marca de 206 mil mortes por Covid-19, no início de 2021, buscou-se utilizar, neste trabalho, técnicas de mineração de dados e machine learning, com apoio do rstudio para o desenvolvimento de um Rmarkdown com scripts em R diversas bibliotecas, conforme Tabela 1 apresentada abaixo: 
+
+\begin{table}[hbp]
+\center
+\begin{tabular}{|l|l|} \hline
+ggplot2 & Facilita a visualização dos dados a partir criação de gráficos sofisticados.  \\ \hline
+gridExtra & Permite a visualização dos gráficos em grades.  \\ \hline
+geobr & Acesso fácil aos dados espaciais do Brasil facilitando a criação dos mapas. \\ \hline
+dplyr & O Facilita a manipulação de dados e a criação de JOINs no dataframe. \\ \hline 
+latexpdf & Cria o pdf a partir do RMarkdown. \\ \hline
+stringr & Pacote com funções para manipular strings. \\ \hline
+openxlsx & Importar dados de arquivo xlsx \\ \hline
+rpart & Algorítimo de marchine learning baseado em árvore de decisão. \\ \hline
+e1071 & Algorítimo de marchine learning baseado em naive bayes. \\ \hline
+randomForest & Algorítimo de marchine learning baseado em seleção de atributos. \\ \hline
+scales & Permite a inclusão de legendas e melhora a estética dos gráficos.\\ \hline
+\end{tabular}
+\caption{Pacotes R}
+\label{tab:pacotesR}
+\end{table}
+
+```{r pacotes, include=FALSE}
+#Instalar 
+#install.packages("ggplot2")
+#install.packages("rpart")
+#install.packages("randomForest")
+#install.packages("e1071")
+
+#Carregar
+library(ggplot2)
+library(gridExtra)
+library(geobr)
+library(sf)
+library(scales)
+library(dplyr)
+library(openxlsx)
+library(latexpdf)
+library(stringr)
+library(zoo)
+library(rpart)
+library(e1071)
+library(randomForest)
+library(xtable)
+
+#Configuração dos gráficos
+options(scipen = 999)
+cores = c("#eabeac", "#b6dfe0", "#e2cfb4", "#d7d9bd", "#d6b9dd", "#b3b4e3", "#abcaeb", "#ebabab", "#e6b0c7", "#eabeac", "#c1d8be", "#d7d9bd", "#d6b9dd", "#eabeac")
+coresIntensas = c("#ff4b03", "#2ae4e8", "#baa07b", "#d7e61e", "#bf36e0")
+#coresSudeste = c("#d7d9bd", "#d3d6a3", "#cacf7e", "#c6cf42")
+coresSudeste = c("#d7d9bd", "#d7d9bd", "#d7d9bd", "#d7d9bd")
+#coresNordeste = c("#b6dfe0", "#abddde", "#9eddde", "#94dfe0", "#84dadb", "#7ddadb", "#6bdadb", "#5edfe0", "#4ddadb", "#3fd8d9", "#2fd5d6", "#1cd3d4")
+coresNordeste =  c("#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0")
+coresEvolucao = c("#1FDA9A", "#DD5F32", "#FFAC00")
+coresFRisco = c("#1FDA9A", "#F38630")
+ptBr <- list(
+  ª = "."
+)
+
+```
+
+\qquad Assim, espera-se que as predições apresentadas com base no uso dessas tecnologias gerem conhecimentos úteis que auxiliem as autoridades públicas na implementação de políticas públicas na área da saúde, e capacitem melhor o país para atender aos casos de SARS. 
+
+\subsection{1.2 O problema proposto}
+
+\qquad Conforme mencionado, neste trabalho, iremos abordar a análise de dados do Sistema Único de Saúde (SUS) referentes aos quadros de Síndrome Respiratória Aguda Grave (SARS), durante a pandemia de Covid-19, em 2020.
+
+\qquad Esta análise tem o objetivo de entender a evolução dos casos de SARS com foco na COVID para capacitar as autoridades da área de saúde na construção de políticas públicas voltadas a atender a esses casos, bem como no planejamento dos recursos que serão utilizados por estes pacientes. Ajudando, assim, essas autoridades adotarem ações preventivas, de forma que tenham como fornecer o tratamento adequado especificamente no que tange os recurso de suporte a ventilação pulmonar a todos os pacientes com Síndrome Respiratória Aguda Grave. 
+
+\newpage
+
+\section{2. Coleta dos dados}
+
+\subsection{2.1 Dados do Sistema Único de Saúde}
+
+\qquad Dentre os dados utilizados neste trabalho, destacam-se os fornecidos pelo portal OpenDataSUS. Sobre os dados coletados informa-se no portal OpenDataSUS:
+
+\
+\begin{flushright}
+\begin{minipage}{0.7\linewidth}
+\begin{footnotesize} 
+O Ministério da Saúde (MS), por meio da Secretaria de Vigilância em Saúde (SVS), desenvolve a vigilância da Síndrome Respiratória Aguda Grave (SRAG) no Brasil, desde a pandemia de Influenza A(H1N1)pdm09 em 2009. A partir disso, esta vigilância foi implantada na rede de Influenza e outros vírus respiratórios, que anteriormente atuava apenas com a vigilância sentinela de Síndrome Gripal (SG). Recentemente (2020), a vigilância da COVID-19, a infecção humana causada pelo novo Coronavírus, foi incorporada na rede de vigilância da Influenza e outros vírus respiratórios.
+\end{footnotesize}
+\end{minipage}
+\end{flushright}
+\
+\begin{flushright}
+\begin{minipage}{0.7\linewidth}
+\begin{footnotesize} 
+Os dados de 2021 são disponibilizados semanalmente, às quartas-feiras, podendo, excepcionalmente, a atualização ocorrer em outro dia.
+\end{footnotesize}
+\end{minipage}
+\end{flushright}
+\
+
+\qquad O arquivo é disponibilizado para \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/42bd5e0e-d61a-4359-942e-ebc83391a137}{\underline{\color{blue} download em formato CSV}}. No momento do download o arquivo continha dados até 04/01/2021. Contendo 1.103.183 (um milhão cento e três mil e cento e oitenta e três) observações e 154 variáveis. Cada linha do arquivo corresponde ao registro de um paciente com a síndrome respiratória aguda grave. As 154 colunas são campos coletados a partir da  \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/bd725e4c-c869-400f-a479-9b544c2812b4}{\underline{\color{blue} ficha de notificação do paciente}}, além de informações geradas pelo sistema.
+
+```{r importarArquivoSuS}
+arquivo = read.csv("dados/INFLUD-04-01-2021.csv", header = T, sep = ";",
+na.strings = "",stringsAsFactors = T)
+```
+
+```{r selectColunasSUS, include=F}
+#Selecionando campos de interesse
+pacientes = arquivo[ , c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI", "SG_UF_NOT",
+                         "ID_MUNICIP", "CO_MUN_NOT", "ID_UNIDADE", "CO_UNI_NOT",
+"CS_SEXO", "NU_IDADE_N", "CS_GESTANT", "CS_RACA", "SURTO_SG", "NOSOCOMIAL", "FEBRE",
+"TOSSE", "GARGANTA", "DISPNEIA", "DESC_RESP", "SATURACAO", "DIARREIA", "VOMITO", "DOR_ABD",
+"FADIGA",  "PERD_OLFT", "PERD_PALA", "FATOR_RISC", "PUERPERA", "CARDIOPATI", "HEMATOLOGI",
+"SIND_DOWN", "HEPATICA", "ASMA", "DIABETES", "NEUROLOGIC", "PNEUMOPATI", "IMUNODEPRE",
+"RENAL", "OBESIDADE", "OBES_IMC", "VACINA", "ANTIVIRAL", "HOSPITAL", "DT_INTERNA", "UTI",
+"DT_ENTUTI", "DT_SAIDUTI", "SUPORT_VEN", "RAIOX_RES", "TOMO_RES", "AMOSTRA", "TP_TES_AN",
+"RES_AN", "POS_AN_FLU", "TP_FLU_AN", "POS_AN_OUT", "AN_SARS2", "AN_VSR", "AN_PARA1",
+"AN_PARA2", "AN_PARA3", "AN_ADENO", "PCR_RESUL", "POS_PCRFLU", "TP_FLU_PCR", "PCR_FLUASU",
+"PCR_FLUBLI", "POS_PCROUT", "PCR_SARS2", "PCR_VSR", "PCR_PARA1", "PCR_PARA2", "PCR_PARA3",
+"PCR_PARA4", "PCR_ADENO", "PCR_METAP", "PCR_BOCA", "PCR_RINO", "TP_AM_SOR", "TP_SOR",
+"RES_IGG", "RES_IGM", "RES_IGA", "CLASSI_FIN", "CRITERIO", "EVOLUCAO", "DT_EVOLUCA")]
+
+#Renomeando os campo pra facilitar a identificação dos dados
+colnames(pacientes) =  c("DT_NOTIFICACAO", "SEMANA_NOTIFICACAO", "DT_PRIMEIROS_SINTOMAS",
+                         "SEMANA_PRIMEIROS_SINTOMAS", "SG_UF", "MUNICIPIO",
+"COD_MUNICIPIO", "HOSPITAL", "COD_HOSPITAL","CS_SEXO", "NU_IDADE", "CS_GESTANTE",
+"CS_RACA", "IN_SURTO_SINDROME_GRIPAL", "IN_NOSOCOMIAL", "IN_FEBRE", "IN_TOSSE",
+"IN_GARGANTA", "IN_DISPNEIA", "IN_DESCONFORTO_RESP", "IN_SATURACAO", "IN_DIARREIA",
+"IN_VOMITO", "IN_DOR_ABDOMINAL", "IN_FADIGA", "IN_PERDA_OLFTATO",  "IN_PERDA_PALADAR",
+"IN_FATOR_RISC", "IN_PUERPERA", "IN_CARDIOPATI", "IN_HEMATOLOGI", "IN_SINDROME_DOWN",
+"IN_DOENCA_HEPATICA", "IN_ASMA", "IN_DIABETES", "IN_DOENCA_NEUROLOGICA",
+"IN_PNEUMOPATIA_CRONICA", "IN_IMUNODEPRESSAO", "IN_DOENCA_RENAL", "IN_OBESIDADE",
+"NU_OBESIDADE_IMC", "IN_RECEBEU_VACINA_GRIPE", "IN_USOU_ANTIVIRAL", "IN_HOSPITALIZADO",
+"DT_INTERNACAO", "IN_UTI", "DT_ENTRADA_UTI", "DT_SAIDA_UTI", "CS_SUPORTE_VENTILATORIO",
+"CS_RAIOX_RESULTADO", "CS_TOMOGRAFIA_RESULTADO", "IN_COLETOU_AMOSTRA", "CS_TESTE_ANTIGENO",
+"CS_RESULTADO_ANTIGENO", "IN_POSITIVO_INFLUENZA", "CS_TIPO_INFLUENZA",
+"IN_POSITIVO_OUT_VIRUS", "IN_POSITIVO_SARS2", "IN_POSITIVO_VSR",
+"IN_POSITIVO_PARAINFLUENZA1", "IN_POSITIVO_PARAINFLUENZA2", "IN_POSITIVO_PARAINFLUENA3",
+"IN_POSITIVO_ADENOVIRUS", "CS_PCR_RESULTADO", "IN_POSITIVO_PCR_INFLUENZA",
+"CS_TIPO_INFLUENZA_PCR", "CS_PCR_INFLUENZA_A_SUBTIPO", "CS_PCR_FLU_B_LINHAGEM",
+"IN_PCR_POSITIVO_OUT_VIRUS", "IN_PCR_POSITIVO_SARS2", "IN_PCR_POSITIVO_VSR",
+"IN_PCR_POSITIVO_PARAINFLUENZA1", "IN_PCR_POSITIVO_PARAINFLUENZA2",
+"IN_PCR_POSITIVO_PARAINFLUENZA3", "IN_PCR_POSITIVO_PARAINFLUENZA4",
+"IN_PCR_POSITIVO_ADENOVIRUS", "IN_PCR_POSITIVO_METAPNEUMOVIRUS",
+"IN_PCR_POSITIVO_BOCAVIRUS", "IN_PCR_POSITIVO_RINOVIRUS",
+"CS_TIPO_AMOSTRA_SOROLOGICA_SARS_COV2", "CS_TESTE_SOROLOGICO",
+"IN_SOROLOGICO_POSITIVO_IGG", "IN_SOROLOGICO_POSITIVO_IGM", "IN_RESULTADO_POSITIVO_IGA",
+"CS_CLASSICACAO_FINAL", "CS_CRITERIO_CONFIRMACAO", "CS_EVOLUCAO", "DT_EVOLUCAO")
+```
+
+\subsection{2.1 Dados do Instituto Brasileiro de Geografia e Estatística}
+
+\qquad Para enriquecer este trabalho, utilizou-se como fonte de informação, além do SUS, o Instituto Brasileiro de Geografia e Estatística - IBGE. Através dos dados fornecidos pelo IBGE, foi possível trabalhar dados populacionais para cálculo das taxas de mortalidade por região, bem como para produção de mapas. O Arquivo disponibilizado para download está em formato xls, após o dowload foi convertido para o formato xlsx para facilitar a importação no R Studio. O arquivo contém duas abas uma com a estimativa populacional por UF e região e outra aba com a estimativa populacional por municípios. Para este trabalho importamos apenas a aba de municípios, dado que a população por UF ou por Região pode ser obitida a partir do somatório populacional dos municípios. Iniciamos a impotação a partir da terceira linha do arquivo a fim de desconsiderar as linhas referentes a cabeçalho.
+
+```{r importarDadosIBGE, include=FALSE}
+arquivoIBGE=read.xlsx("dados/POP2020_20201030.xlsx", sheet = "Municípios",
+startRow = 3, colNames =FALSE, rowNames = FALSE)
+#Download de conjuntos de dados espaciais oficiais do Brasil.
+estados <- read_state(year=2019)
+municipios <- read_municipality(year=2019)
+regioes <- read_region(year=2019)
+```
+
+\newpage
+
+\section{3. Processamento}
+
+\subsection{3.1 Dados do Instituto Brasileiro de Geografia e Estatística}
+
+\qquad Os dados populacionais dos municipios estão presentes no arquivo do IBGE da linha 3 até a linha 5572. Veja figura \underline{\color{blue}\ref{fig:arquivoIbge}} e a figura \underline{\color{blue}\ref{fig:rodapeIbge}} na página \underline{\color{blue}\pageref{fig:arquivoIbge}}. Como a importação foi realizada a partir da linha três do arquivo, a seleção no dataframe resultante inicia da linha 1 até a linha 5570. Após a seleção dos dados populacionais foi criando um campo extra para o código do município sem o dígito validador. Este campo foi utilizdo em JOIN com os dados do SUS. 
+
+\begin{figure}[htp]
+\center
+\includegraphics[width=0.7\linewidth]{anexos/cabecalho-IBGE.png}
+\caption{Arquivo IBGE}
+\label{fig:arquivoIbge}
+\end{figure}
+
+\begin{figure}[htp]
+\center
+\includegraphics[width=0.7\linewidth]{anexos/rodape-IBGE.png}
+\caption{Rodapé arquivo IBGE}
+\label{fig:rodapeIbge}
+\end{figure}
+
+\newpage
+
+```{r transfIBGE, include=FALSE}
+#Seleção dos dados e criação do campo sem dígito validador
+municipiosIBGE = arquivoIBGE[1:5570,]
+colnames(municipiosIBGE) = c("SG_UF", "COD_UF", "COD_MUNICIPIO", "MUNICIPIO", "NU_POPULACAO")
+
+municipiosIBGE["COD_MUNICIPIO"]=paste(municipiosIBGE$COD_UF, municipiosIBGE$COD_MUNICIPIO, sep = "")
+municipiosIBGE["COD_MUNICIPIO"]=as.integer(municipiosIBGE$COD_MUNICIPIO)
+
+municipiosIBGE["COD_MUNICIPIO6"]=as.integer(municipiosIBGE$COD_MUNICIPIO/10)
+municipiosIBGE$COD_MUNICIPIO6=as(municipiosIBGE$COD_MUNICIPIO6, "integer")
+#Removendo a coluna de ID da UF
+municipiosIBGE = municipiosIBGE[, c("SG_UF", "COD_MUNICIPIO6", "COD_MUNICIPIO", "MUNICIPIO", "NU_POPULACAO")] 
+#Removendo marcadores de citação
+municipiosIBGE$NU_POPULACAO = str_replace_all(municipiosIBGE$NU_POPULACAO, c("\\(.+\\)"), "")
+##Convertendo população para integer
+municipiosIBGE$NU_POPULACAO = as(municipiosIBGE$NU_POPULACAO, "integer")
+```
+
+\qquad Foi criada uma matriz com os estados e suas repectivas regiões. Esta matriz permitiu enriquecer o dataframe de pacientes com as regiões do Brasil, para possibilitar a elaboração de gráficos sumarizados pelas regiões.
+
+```{r matrizRegiao}
+#Essas regiões são utilizadas nos gráficos.
+regiao = matrix(data = NA, nrow = 27, ncol = 2, byrow = TRUE)
+regiao[1,] = c("AC", "Norte")
+regiao[2,] = c("AP", "Norte")
+regiao[3,] = c("AM", "Norte")
+regiao[4,] = c("PA", "Norte")
+regiao[5,] = c("RO", "Norte")
+regiao[6,] = c("RR", "Norte")
+regiao[7,] = c("TO", "Norte")
+regiao[8,] = c("AL", "Nordeste")
+regiao[9,] = c("BA", "Nordeste")
+#Continua para todos os 27 estados...
+```
+
+```{r  matrizRegiao2, include=FALSE}
+regiao[10,] = c("CE", "Nordeste")
+regiao[11,] = c("MA", "Nordeste")
+regiao[12,] = c("PB", "Nordeste")
+regiao[13,] = c("PE", "Nordeste")
+regiao[14,] = c("PI", "Nordeste")
+regiao[15,] = c("RN", "Nordeste")
+regiao[16,] = c("SE", "Nordeste")
+regiao[17,] = c("ES", "Sudeste")
+regiao[18,] = c("MG", "Sudeste")
+regiao[19,] = c("RJ", "Sudeste")
+regiao[20,] = c("SP", "Sudeste")
+regiao[21,] = c("PR", "Sul")
+regiao[22,] = c("RS", "Sul")
+regiao[23,] = c("SC", "Sul")
+regiao[24,] = c("DF", "Centro-Oeste")
+regiao[25,] = c("GO", "Centro-Oeste")
+regiao[26,] = c("MT", "Centro-Oeste")
+regiao[27,] = c("MS", "Centro-Oeste")
+regiao=data.frame(regiao)
+colnames(regiao)=c("SG_UF", "REGIAO")
+```
+
+```{r enriquecendoDfPaciente}
+pacientes = pacientes %>% left_join(regiao, c("SG_UF" = "SG_UF"))
+```
+
+```{r tratamentoIBGE2, include=FALSE}
+estadoIBGE=municipiosIBGE %>% 
+  group_by(SG_UF) %>%
+  summarise(.groups = "drop_last",
+    QTD_MUNICIPIO=n(),
+    NU_POPULACAO=sum(NU_POPULACAO)
+  ) %>%
+arrange(desc(QTD_MUNICIPIO))
+estadoIBGE = estadoIBGE %>% inner_join(regiao, c("SG_UF" = "SG_UF"))
+regiaoIBGE=estadoIBGE %>% 
+  group_by(REGIAO) %>%
+  summarise(.groups = "drop_last",
+    QTD_ESTADO=n(),
+    NU_POPULACAO=sum(NU_POPULACAO)
+  ) %>%
+arrange(desc(QTD_ESTADO))
+```
+
+\newpage
+
+\subsection{3.2 Dados do Sistema Único de Saúde}
+
+\qquad A transformação dos dados do Sistema Único do Saúde - SUS foi realizada em duas etapas. Na primeira etapa o processamento teve como finalidade favorecer a elaboração de gráficos no ggplot2 a fim de apresentar a distribuição dos dados. Na segunda etapa as transformações tiveram como propósito favorecer as execuções dos algorítimos de machine learning.
+
+\qquad Os campos foram selecionado a partir das áreas de interesse: dados da notificação, localização, dados do paciente, sintomas, fatores de riscos, exames, diagnósticos e evolução do quadro. Para facilitar a identificação dos dados as colunas selecionadas foram renomeadas. 
+
+\qquad 
+
+```{r percentualValoresOmissos, include=FALSE}
+#Percentuais de Valores Omissos nas colunas selecionadas
+NAS <- round(colSums(is.na(pacientes))*100/nrow(pacientes),2) 
+NAS
+```
+
+\subsection{3.3 Transformação primeira etapa}
+
+\qquad Nesta etapa de processamento as transformações visaram beneficiar a apresentação dos gráficos elaborados no ggplot2. Sempre que possível valores númericos foram convertidos em campos categóricos mais significativa do ponto de vista informativo e estético.
+
+\begin{flushleft}
+\large\underline{\textbf{Data da Notificação}}
+\end{flushleft}
+
+\qquad Os campos de datas que foram reconhecidos como string na importação foram convertidos para tipo data. Neste trabalho só serão conciderados os dados sobre covid-19 até 31 de dezembro de 2020.
+
+```{r dtNotificacao}
+#Redefinir tipo de dados da coluna 
+pacientes$DT_NOTIFICACAO = as.Date(pacientes$DT_NOTIFICACAO, format="%d/%m/%Y")
+pacientes["MES_NOTIFICACAO"]=format(pacientes$DT_NOTIFICACAO, "%Y/%m");
+#Removendo ocorrencia com datas de notificação superior a 31/12/2020 
+pacientes=pacientes[pacientes$DT_NOTIFICACAO<as.Date("01/01/2021", format="%d/%m/%Y"),]
+```
+
+```{r qtdNotificacoesMes, include=FALSE}
+#Preparando dadaframe para o gráfico de quantidade de notificações.
+qtdNotificacoesMes = pacientes %>% 
+  group_by(MES_NOTIFICACAO) %>%
+  summarise(
+    .groups = "drop_last",
+    OCORRENCIAS=n()
+  ) %>%
+arrange(MES_NOTIFICACAO)
+```
+
+
+```{r grfDtNotificacao, include=FALSE}
+#Exibir gráfico com o número de notificações por mês.
+grfDtNotificacao=ggplot(qtdNotificacoesMes) + 
+  aes(x=MES_NOTIFICACAO, y=OCORRENCIAS, fill=MES_NOTIFICACAO)  +
+  geom_bar(stat = "identity", na.rm = F) +
+  labs(x=NULL, y="Quantidade", fill = "Mês",
+       title = NULL,
+       subtitle = NULL) +
+  scale_fill_manual(values = cores[14:1]) +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen")) 
+```
+
+```{r gridDtNotificacao, echo=FALSE}
+grid.arrange(grfDtNotificacao, bottom="Gráfico 1: Notificações por Mês")
+```
+
+
+\newpage
+
+\begin{flushleft}
+\large\underline{\textbf{Idade}}
+\end{flushleft}
+
+\qquad Para minimizar os outliner e os prováveis erros de digitação foi atribuido a média da idade dos pacientes para os registros com idades superior a 110 anos. 
+
+```{r idade}
+#Idades acima de 110 anos atribui a idade média. 
+pacientes[pacientes$NU_IDADE >110, ]$NU_IDADE =
+mean(pacientes$NU_IDADE, na.rm = T)
+pacientes$NU_IDADE=as(pacientes$NU_IDADE, "integer");
+```
+
+```{r grfIdade, include=FALSE}
+grfIdade=ggplot(pacientes) + 
+  aes(y=NU_IDADE, x=REGIAO, fill=REGIAO)  +
+  geom_boxplot(na.rm = F) +
+  labs(y="Idade", x=NULL, fill = "Estados",
+       title = NULL,
+       subtitle = NULL) +
+  scale_fill_manual(values = cores) +
+  theme_bw() +
+  theme(axis.text.x = element_text(size = 10),
+        axis.title.x = element_text(size = 16),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+```{r gridIdade, echo=FALSE}
+grid.arrange(grfIdade, bottom="Gráfico 2: Idades por Região")
+```
+
+
+
+\newpage
+
+\begin{flushleft}
+\large\underline{\textbf{Raça}}
+\end{flushleft}
+
+\qquad Para os valores numéricos presentes na coluna CS_RACA foram atribuídos strings mais significativas.
+
+```{r raca}
+#Transformando domínios da coluna raça em valores mais significativos para o gráfico
+pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==9,]$CS_RACA = NA
+pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==1,]$CS_RACA = "Branca"
+pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==2,]$CS_RACA = "Preta"
+pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==3,]$CS_RACA = "Amarela"
+pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==4,]$CS_RACA = "Parda"
+pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==5,]$CS_RACA = "Indígina"
+pacientes$CS_RACA = factor(pacientes$CS_RACA)
+```
+
+```{r grfRaca , include=FALSE}
+grfRaca=ggplot(pacientes[complete.cases(pacientes$CS_RACA),]) + 
+  aes(x=CS_RACA, fill=CS_RACA)  +
+  geom_bar(na.rm = F) +
+ labs(y="Ocorrência", x=NULL,  title = NULL, subtitle =
+         NULL) +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))+
+  scale_fill_manual(values = c("#F2EEB3", "#ECDFBD", "#8C6954", "#59323C", "#3B3A35")) +
+  labs(color = NULL) 
+```
+
+```{r gridRaca, echo=FALSE}
+grid.arrange(grfRaca, bottom="Gráfico 3: Raça")
+```
+
+
+\newpage
+
+\begin{flushleft}
+\large\underline{\textbf{Sexo, Surto gripal, Nosocomial e Vacinado para gripe}}
+\end{flushleft}
+
+\qquad Para o campo sexo o tratamento para valores omissões foi atribuir sexo feminino quando o campo gestacional informa presença de gestação e quando não abribui-se sexo masculino, dado que ocorrência do sexo masculino é maior e a incidência de valores omissões é pequena. Os demais campos da seção os valores omissões foram removidos.
+```{r sexo}
+pacientes[pacientes$CS_SEXO=="I" & pacientes$CS_GESTANTE>4, ]$CS_SEXO="M"
+pacientes[pacientes$CS_SEXO=="I" & pacientes$CS_GESTANTE<=4, ]$CS_SEXO="F"
+pacientes$CS_SEXO = factor(pacientes$CS_SEXO)
+```
+
+```{r surtoInfeccaoGripe, include=FALSE}
+#SURTO GRIPAL
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_SURTO_SINDROME_GRIPAL) &
+  pacientes$IN_SURTO_SINDROME_GRIPAL==9, ]$IN_SURTO_SINDROME_GRIPAL=NA
+pacientes[complete.cases(pacientes$IN_SURTO_SINDROME_GRIPAL) &
+  pacientes$IN_SURTO_SINDROME_GRIPAL==1, ]$IN_SURTO_SINDROME_GRIPAL="Sim"
+pacientes[complete.cases(pacientes$IN_SURTO_SINDROME_GRIPAL) &
+  pacientes$IN_SURTO_SINDROME_GRIPAL==2, ]$IN_SURTO_SINDROME_GRIPAL="Não"
+pacientes$IN_SURTO_SINDROME_GRIPAL=factor(pacientes$IN_SURTO_SINDROME_GRIPAL)
+
+#INFECTADO NO HOSPITAL
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_NOSOCOMIAL) &
+  pacientes$IN_NOSOCOMIAL==9,]$IN_NOSOCOMIAL=NA
+pacientes[complete.cases(pacientes$IN_NOSOCOMIAL) &
+  pacientes$IN_NOSOCOMIAL==1,]$IN_NOSOCOMIAL="Sim"
+pacientes[complete.cases(pacientes$IN_NOSOCOMIAL) &
+  pacientes$IN_NOSOCOMIAL==2,]$IN_NOSOCOMIAL="Não"
+pacientes$IN_NOSOCOMIAL=factor(pacientes$IN_NOSOCOMIAL)
+
+#VACINADOS PARA GRIPE
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_RECEBEU_VACINA_GRIPE) &
+  pacientes$IN_RECEBEU_VACINA_GRIPE==9,]$IN_RECEBEU_VACINA_GRIPE=NA
+pacientes[complete.cases(pacientes$IN_RECEBEU_VACINA_GRIPE) &
+  pacientes$IN_RECEBEU_VACINA_GRIPE==1, ]$IN_RECEBEU_VACINA_GRIPE="Sim"
+pacientes[complete.cases(pacientes$IN_RECEBEU_VACINA_GRIPE) &
+  pacientes$IN_RECEBEU_VACINA_GRIPE==2, ]$IN_RECEBEU_VACINA_GRIPE="Não"
+pacientes$IN_RECEBEU_VACINA_GRIPE=factor(pacientes$IN_RECEBEU_VACINA_GRIPE)
+```
+
+```{r gsexo, include=FALSE}
+sexo=pacientes %>% 
+group_by(CS_SEXO) %>%
+summarise(.groups = "drop_last",
+QTD=n()
+) %>%
+arrange(desc(QTD))
+sexo[sexo$CS_SEXO=='M',"PERCENTUAL"]=round(sexo[sexo$CS_SEXO=='M', ]$QTD / sum(sexo$QTD), digits = 4) 
+sexo[sexo$CS_SEXO=='F',"PERCENTUAL"]=round(sexo[sexo$CS_SEXO=='F', ]$QTD / sum(sexo$QTD), digits = 4) 
+
+grSexo<- ggplot(sexo, aes(x="", y=PERCENTUAL, fill=CS_SEXO))+
+geom_bar(width = 1, stat = "identity") + coord_polar("y", start=0) +
+scale_fill_manual(values=c( "#FF85CB", "#53BBF4" )) +
+theme_bw()  +
+theme(axis.title.x = element_blank(),
+axis.title.y = element_blank(),
+axis.text.x=element_blank(),
+panel.border = element_blank(),
+panel.grid=element_blank(),
+axis.ticks = element_blank(), plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))+
+geom_text(aes(label = percent(PERCENTUAL)),  position = position_stack(vjust = 0.5) ) +
+labs(x=NULL, y="Occorrência", fill = NULL, title = "Sexo") 
+```
+
+```{r surtoGripal, include=FALSE}
+surtoGripal=pacientes[complete.cases(pacientes$IN_SURTO_SINDROME_GRIPAL),] %>% 
+group_by(IN_SURTO_SINDROME_GRIPAL) %>%
+summarise(.groups = "drop_last",
+QTD=n()
+) %>%
+arrange(desc(QTD))
+
+surtoGripal[surtoGripal$IN_SURTO_SINDROME_GRIPAL=='Sim',"PERCENTUAL"]=
+round(surtoGripal[surtoGripal$IN_SURTO_SINDROME_GRIPAL=='Sim', ]$QTD / sum(surtoGripal$QTD), digits = 4) 
+surtoGripal[surtoGripal$IN_SURTO_SINDROME_GRIPAL=='Não',"PERCENTUAL"]=
+round(surtoGripal[surtoGripal$IN_SURTO_SINDROME_GRIPAL=='Não', ]$QTD / sum(surtoGripal$QTD), digits = 4) 
+
+grSurtoGripal<- ggplot(surtoGripal, aes(x="", y=PERCENTUAL, fill=IN_SURTO_SINDROME_GRIPAL))+
+geom_bar(width = 1, stat = "identity") + coord_polar("y", start=0) +
+scale_fill_manual(values=c("#ECDFBD", "#FB6648")) +
+theme_bw()  +
+theme(axis.title.x = element_blank(),
+axis.title.y = element_blank(),
+axis.text.x=element_blank(),
+panel.border = element_blank(),
+panel.grid=element_blank(),
+axis.ticks = element_blank(), plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))+
+geom_text(aes(label = percent(PERCENTUAL)),  position = position_stack(vjust = 0.5) ) +
+labs(x=NULL, y="Occorrência", fill = NULL, title = "Surto") 
+```
+
+```{r infeccao, include=FALSE}
+infeccaoHospitalar=pacientes[complete.cases(pacientes$IN_NOSOCOMIAL),] %>% 
+group_by(IN_NOSOCOMIAL) %>%
+summarise(.groups = "drop_last",
+QTD=n()
+) %>%
+arrange(desc(QTD))
+
+infeccaoHospitalar[infeccaoHospitalar$IN_NOSOCOMIAL=='Sim',"PERCENTUAL"]=
+round(infeccaoHospitalar[infeccaoHospitalar$IN_NOSOCOMIAL=='Sim', ]$QTD / sum(infeccaoHospitalar$QTD), digits = 4) 
+infeccaoHospitalar[infeccaoHospitalar$IN_NOSOCOMIAL=='Não',"PERCENTUAL"]=
+round(infeccaoHospitalar[infeccaoHospitalar$IN_NOSOCOMIAL=='Não', ]$QTD / sum(infeccaoHospitalar$QTD), digits = 4) 
+grInfeccaoHospitalar<- ggplot(infeccaoHospitalar, aes(x="", y=PERCENTUAL, fill=IN_NOSOCOMIAL))+
+geom_bar(width = 1, stat = "identity") + coord_polar("y", start=0) +
+scale_fill_manual(values=c( "#ECDFBD", "#FB6648")) +
+theme_bw()  +
+theme(axis.title.x = element_blank(),
+axis.title.y = element_blank(),
+axis.text.x=element_blank(),
+panel.border = element_blank(),
+panel.grid=element_blank(),
+axis.ticks = element_blank(), plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))+
+geom_text(aes(label = percent(PERCENTUAL)),  position = position_stack(vjust = 0.5) ) +
+labs(x=NULL, y="Occorrência", fill = NULL, title = "Nosocomial") 
+```
+
+```{r vacinado, include=FALSE}
+vacinado=pacientes[complete.cases(pacientes$IN_RECEBEU_VACINA_GRIPE),] %>% 
+group_by(IN_RECEBEU_VACINA_GRIPE) %>%
+summarise(.groups = "drop_last",
+QTD=n()
+) %>%
+arrange(desc(QTD))
+
+vacinado[vacinado$IN_RECEBEU_VACINA_GRIPE=='Sim',"PERCENTUAL"]=
+round(vacinado[vacinado$IN_RECEBEU_VACINA_GRIPE=='Sim', ]$QTD / sum(vacinado$QTD), digits = 4) 
+vacinado[vacinado$IN_RECEBEU_VACINA_GRIPE=='Não',"PERCENTUAL"]=
+round(vacinado[vacinado$IN_RECEBEU_VACINA_GRIPE=='Não', ]$QTD / sum(vacinado$QTD), digits = 4) 
+grVacinado<- ggplot(vacinado, aes(x="", y=PERCENTUAL, fill=IN_RECEBEU_VACINA_GRIPE))+
+geom_bar(width = 1, stat = "identity") + coord_polar("y", start=0) +
+scale_fill_manual(values=c( "#ECDFBD", "#FB6648")) +
+theme_bw()  +
+theme(axis.title.x = element_blank(),
+axis.title.y = element_blank(),
+axis.text.x=element_blank(),
+panel.border = element_blank(),
+panel.grid=element_blank(),
+axis.ticks = element_blank(), plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))+
+geom_text(aes(label = percent(PERCENTUAL)),  position = position_stack(vjust = 0.5) ) +
+labs(x=NULL, y="Occorrência", fill = NULL, title = "Vacina") 
+```
+
+```{r grfSecao, echo=FALSE}
+grid.arrange(grSexo, grSurtoGripal, grInfeccaoHospitalar, grVacinado, nrow = 2, bottom="Gráfico 4: Sexo/Surto/Nosocomial/Vacina")
+```
+
+\newpage
+
+\begin{flushleft}
+\large\underline{\textbf{Comorbidades}}
+\end{flushleft}
+
+\qquad Para os campos referente as comorbidades do paciente, a transformação foi converter 1 para Sim, 2 para Não e 9 para NA. Valores omissos foram excluídos do gráfico.
+
+```{r comorbidade1}
+#Puerpera
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_PUERPERA) & pacientes$IN_PUERPERA==9, ]$IN_PUERPERA=NA 
+pacientes[complete.cases(pacientes$IN_PUERPERA) & pacientes$IN_PUERPERA==1, ]$IN_PUERPERA="Sim"
+pacientes[complete.cases(pacientes$IN_PUERPERA) & pacientes$IN_PUERPERA==2, ]$IN_PUERPERA="Não"
+pacientes$IN_PUERPERA=factor(pacientes$IN_PUERPERA)
+
+#Cardiopatia
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_CARDIOPATI) &
+pacientes$IN_CARDIOPATI==9, ]$IN_CARDIOPATI=NA    
+pacientes[complete.cases(pacientes$IN_CARDIOPATI) &
+pacientes$IN_CARDIOPATI==1, ]$IN_CARDIOPATI="Sim"
+pacientes[complete.cases(pacientes$IN_CARDIOPATI) &
+pacientes$IN_CARDIOPATI==2, ]$IN_CARDIOPATI="Não"
+pacientes$IN_CARDIOPATI=factor(pacientes$IN_CARDIOPATI)
+#Continua para todos os campos do grupo comorbidades...
+```
+
+```{r comorbidade2, include=FALSE}
+#Hematologia
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_HEMATOLOGI) &
+pacientes$IN_HEMATOLOGI==9, ]$IN_HEMATOLOGI=NA
+pacientes[complete.cases(pacientes$IN_HEMATOLOGI) &
+pacientes$IN_HEMATOLOGI==1, ]$IN_HEMATOLOGI="Sim"
+pacientes[complete.cases(pacientes$IN_HEMATOLOGI) &
+pacientes$IN_HEMATOLOGI==2, ]$IN_HEMATOLOGI="Não"
+pacientes$IN_HEMATOLOGI=factor(pacientes$IN_HEMATOLOGI)
+
+#Sindrome Down
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_SINDROME_DOWN) &
+pacientes$IN_SINDROME_DOWN==9, ]$IN_SINDROME_DOWN=NA    
+pacientes[complete.cases(pacientes$IN_SINDROME_DOWN) &
+pacientes$IN_SINDROME_DOWN==1, ]$IN_SINDROME_DOWN="Sim"
+pacientes[complete.cases(pacientes$IN_SINDROME_DOWN) &
+pacientes$IN_SINDROME_DOWN==2, ]$IN_SINDROME_DOWN="Não"
+pacientes$IN_SINDROME_DOWN=factor(pacientes$IN_SINDROME_DOWN)
+
+#Doênça Hepatica
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_DOENCA_HEPATICA) &
+pacientes$IN_DOENCA_HEPATICA==9, ]$IN_DOENCA_HEPATICA=NA  
+pacientes[complete.cases(pacientes$IN_DOENCA_HEPATICA) &
+complete.cases(pacientes$IN_DOENCA_HEPATICA) &
+pacientes$IN_DOENCA_HEPATICA==1, ]$IN_DOENCA_HEPATICA="Sim"
+pacientes[complete.cases(pacientes$IN_DOENCA_HEPATICA) &
+complete.cases(pacientes$IN_DOENCA_HEPATICA) &
+pacientes$IN_DOENCA_HEPATICA==2, ]$IN_DOENCA_HEPATICA="Não"
+pacientes$IN_DOENCA_HEPATICA=factor(pacientes$IN_DOENCA_HEPATICA)
+
+#Asma
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_ASMA) & pacientes$IN_ASMA==9, ]$IN_ASMA=NA   
+pacientes[complete.cases(pacientes$IN_ASMA) & pacientes$IN_ASMA==1, ]$IN_ASMA="Sim"
+pacientes[complete.cases(pacientes$IN_ASMA) & pacientes$IN_ASMA==2, ]$IN_ASMA="Não"
+pacientes$IN_ASMA=factor(pacientes$IN_ASMA)
+
+#Diabetes
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_DIABETES) & pacientes$IN_DIABETES==9, ]$IN_DIABETES=NA  
+pacientes[complete.cases(pacientes$IN_DIABETES) & pacientes$IN_DIABETES==1, ]$IN_DIABETES="Sim"
+pacientes[complete.cases(pacientes$IN_DIABETES) & pacientes$IN_DIABETES==2, ]$IN_DIABETES="Não"
+pacientes$IN_DIABETES=factor(pacientes$IN_DIABETES)
+
+#Doença Neurológica
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_DOENCA_NEUROLOGICA) &
+pacientes$IN_DOENCA_NEUROLOGICA==9, ]$IN_DOENCA_NEUROLOGICA=NA     
+pacientes[complete.cases(pacientes$IN_DOENCA_NEUROLOGICA) &
+pacientes$IN_DOENCA_NEUROLOGICA==1, ]$IN_DOENCA_NEUROLOGICA="Sim"
+pacientes[complete.cases(pacientes$IN_DOENCA_NEUROLOGICA) &
+pacientes$IN_DOENCA_NEUROLOGICA==2, ]$IN_DOENCA_NEUROLOGICA="Não"
+pacientes$IN_DOENCA_NEUROLOGICA=factor(pacientes$IN_DOENCA_NEUROLOGICA)
+
+#Pneumopatia Crônica
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_PNEUMOPATIA_CRONICA) &
+pacientes$IN_PNEUMOPATIA_CRONICA==9, ]$IN_PNEUMOPATIA_CRONICA=NA   
+pacientes[complete.cases(pacientes$IN_PNEUMOPATIA_CRONICA) &
+pacientes$IN_PNEUMOPATIA_CRONICA==1, ]$IN_PNEUMOPATIA_CRONICA="Sim"
+pacientes[complete.cases(pacientes$IN_PNEUMOPATIA_CRONICA) &
+pacientes$IN_PNEUMOPATIA_CRONICA==2, ]$IN_PNEUMOPATIA_CRONICA="Não"
+pacientes$IN_PNEUMOPATIA_CRONICA=factor(pacientes$IN_PNEUMOPATIA_CRONICA)
+
+#Imunodepressão
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_IMUNODEPRESSAO) &
+pacientes$IN_IMUNODEPRESSAO==9, ]$IN_IMUNODEPRESSAO=NA 
+pacientes[complete.cases(pacientes$IN_IMUNODEPRESSAO) &
+pacientes$IN_IMUNODEPRESSAO==1, ]$IN_IMUNODEPRESSAO="Sim"
+pacientes[complete.cases(pacientes$IN_IMUNODEPRESSAO) &
+pacientes$IN_IMUNODEPRESSAO==2, ]$IN_IMUNODEPRESSAO="Não"
+pacientes$IN_IMUNODEPRESSAO=factor(pacientes$IN_IMUNODEPRESSAO)
+
+#Doênça Renal
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_DOENCA_RENAL) &
+pacientes$IN_DOENCA_RENAL==9, ]$IN_DOENCA_RENAL=NA 
+pacientes[complete.cases(pacientes$IN_DOENCA_RENAL) &
+pacientes$IN_DOENCA_RENAL==1, ]$IN_DOENCA_RENAL="Sim"
+pacientes[complete.cases(pacientes$IN_DOENCA_RENAL) &
+pacientes$IN_DOENCA_RENAL==2, ]$IN_DOENCA_RENAL="Não"
+pacientes$IN_DOENCA_RENAL=factor(pacientes$IN_DOENCA_RENAL)
+
+#Obesidade
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_OBESIDADE) & pacientes$IN_OBESIDADE==9, ]$IN_OBESIDADE=NA
+pacientes[complete.cases(pacientes$IN_OBESIDADE) & pacientes$IN_OBESIDADE==1, ]$IN_OBESIDADE="Sim"
+pacientes[complete.cases(pacientes$IN_OBESIDADE) & pacientes$IN_OBESIDADE==2, ]$IN_OBESIDADE="Não"
+pacientes$IN_OBESIDADE=factor(pacientes$IN_OBESIDADE)
+
+#Preparando dataframe das comorbidades para o gráfico
+comorbidades = setNames(data.frame(matrix(ncol = 1, nrow = 0)),c("CS_COMORBIDADE"))
+comorbidade = setNames(data.frame(rep("Cardiopatia",
+length(pacientes[complete.cases(pacientes$IN_CARDIOPATI) &
+pacientes$IN_CARDIOPATI=="Sim", ]$IN_CARDIOPATI))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Diabetes",
+length(pacientes[complete.cases(pacientes$IN_DIABETES) &
+pacientes$IN_DIABETES=="Sim", ]$IN_DIABETES))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Pneupatia Crônica",
+length(pacientes[complete.cases(pacientes$IN_PNEUMOPATIA_CRONICA) &                              
+pacientes$IN_PNEUMOPATIA_CRONICA=="Sim", ]$IN_PNEUMOPATIA_CRONICA))),
+c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Doença Neurológica",
+length(pacientes[complete.cases(pacientes$IN_DOENCA_NEUROLOGICA) &
+pacientes$IN_DOENCA_NEUROLOGICA=="Sim", ]$IN_DOENCA_NEUROLOGICA))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Obesidade",
+length(pacientes[complete.cases(pacientes$IN_OBESIDADE) &
+pacientes$IN_OBESIDADE=="Sim", ]$IN_OBESIDADE))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Doença Renal",
+length(pacientes[complete.cases(pacientes$IN_DOENCA_RENAL) &
+pacientes$IN_DOENCA_RENAL=="Sim", ]$IN_DOENCA_RENAL))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Asma",
+length(pacientes[complete.cases(pacientes$IN_ASMA) &
+pacientes$IN_ASMA=="Sim", ]$IN_ASMA))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Imunodepressão",
+length(pacientes[complete.cases(pacientes$IN_IMUNODEPRESSAO) &
+pacientes$IN_IMUNODEPRESSAO=="Sim", ]$IN_IMUNODEPRESSAO))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Hepatologia",
+length(pacientes[complete.cases(pacientes$IN_DOENCA_HEPATICA) &
+pacientes$IN_DOENCA_HEPATICA=="Sim", ]$IN_DOENCA_HEPATICA))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Hematologia",
+length(pacientes[complete.cases(pacientes$IN_HEMATOLOGI) &
+pacientes$IN_HEMATOLOGI=="Sim", ]$IN_HEMATOLOGI))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Puerpera",
+length(pacientes[complete.cases(pacientes$IN_PUERPERA) &
+pacientes$IN_PUERPERA=="Sim", ]$IN_PUERPERA))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidade = setNames(data.frame(rep("Síndorme de Down",
+length(pacientes[complete.cases(pacientes$IN_SINDROME_DOWN) &
+pacientes$IN_SINDROME_DOWN=="Sim", ]$IN_SINDROME_DOWN))),c("CS_COMORBIDADE"))
+comorbidades = rbind(comorbidades, comorbidade)
+comorbidades$CS_COMORBIDADE = factor(comorbidades$CS_COMORBIDADE)
+```
+
+```{r tblComorbidades, include=FALSE}
+comorbidades %>% 
+  group_by(CS_COMORBIDADE) %>%
+  summarise(
+    .groups = "drop_last",
+    OCORRENCIAS=n()
+  ) %>%
+arrange(desc(OCORRENCIAS))
+```
+
+```{r grfComorbidades, include=FALSE}
+grfComorbidades = ggplot(comorbidades) + 
+  aes(x=CS_COMORBIDADE, fill=CS_COMORBIDADE)  +
+  geom_bar(na.rm = F) +
+  labs(x=NULL, y="Occorrência", fill = "Comorbidade", title = NULL,
+       subtitle = NULL) +
+  scale_fill_manual(values = cores[12:1]) +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+```{r gridComorbidades, echo=FALSE}
+grid.arrange(grfComorbidades, bottom="Gráfico 5: Comorbidades")
+```
+
+
+\newpage
+
+\begin{flushleft}
+\large\underline{\textbf{Sintomas}}
+\end{flushleft}
+
+\qquad Para os campos referente as sintomas do paciente, a transformação foi converter 1 para Sim, 2 para Não e 9 para NA. Valores omissos foram excluídos do gráfico. A data dos primeiros sintomas também foi convertida para o tipo date.
+
+```{r sintomas1}
+#Data Primeiros Sintomas
+pacientes$DT_PRIMEIROS_SINTOMAS = as.Date(pacientes$DT_PRIMEIROS_SINTOMAS, format="%d/%m/%Y")
+#Febre
+pacientes[complete.cases(pacientes$IN_FEBRE) & pacientes$IN_FEBRE==9, ]$IN_FEBRE=NA    
+pacientes[complete.cases(pacientes$IN_FEBRE) & pacientes$IN_FEBRE==1, ]$IN_FEBRE="Sim"
+pacientes[complete.cases(pacientes$IN_FEBRE) & pacientes$IN_FEBRE==2, ]$IN_FEBRE="Não"
+pacientes$IN_FEBRE=factor(pacientes$IN_FEBRE)
+```
+
+```{r sintomas2, include=FALSE}
+#Tosse
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_TOSSE) & pacientes$IN_TOSSE==9, ]$IN_TOSSE=NA
+pacientes[complete.cases(pacientes$IN_TOSSE) & pacientes$IN_TOSSE==1, ]$IN_TOSSE="Sim"
+pacientes[complete.cases(pacientes$IN_TOSSE) & pacientes$IN_TOSSE==2, ]$IN_TOSSE="Não"
+pacientes$IN_TOSSE=factor(pacientes$IN_TOSSE)
+
+#Dor de Garganta
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_GARGANTA) & pacientes$IN_GARGANTA==9,]$IN_GARGANTA=NA
+pacientes[complete.cases(pacientes$IN_GARGANTA) & pacientes$IN_GARGANTA==1,]$IN_GARGANTA="Sim"
+pacientes[complete.cases(pacientes$IN_GARGANTA) & pacientes$IN_GARGANTA==2,]$IN_GARGANTA="Não"
+pacientes$IN_GARGANTA=factor(pacientes$IN_GARGANTA)
+
+#Falta de Ar (Dispneia)
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_DISPNEIA) & pacientes$IN_DISPNEIA==9,]$IN_DISPNEIA=NA
+pacientes[complete.cases(pacientes$IN_DISPNEIA) & pacientes$IN_DISPNEIA==1,]$IN_DISPNEIA="Sim"
+pacientes[complete.cases(pacientes$IN_DISPNEIA) & pacientes$IN_DISPNEIA==2,]$IN_DISPNEIA="Não"
+pacientes$IN_DISPNEIA=factor(pacientes$IN_DISPNEIA)
+
+#Desconforto Respiratório
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_DESCONFORTO_RESP) &
+  pacientes$IN_DESCONFORTO_RESP==9,]$IN_DESCONFORTO_RESP=NA
+pacientes[complete.cases(pacientes$IN_DESCONFORTO_RESP) &
+  pacientes$IN_DESCONFORTO_RESP==1,]$IN_DESCONFORTO_RESP="Sim"
+pacientes[complete.cases(pacientes$IN_DESCONFORTO_RESP) &
+  pacientes$IN_DESCONFORTO_RESP==2,]$IN_DESCONFORTO_RESP="Não"
+pacientes$IN_DESCONFORTO_RESP=factor(pacientes$IN_DESCONFORTO_RESP)
+
+#Saturação abaixo de 95%
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_SATURACAO) & pacientes$IN_SATURACAO==9, ]$IN_SATURACAO=NA
+pacientes[complete.cases(pacientes$IN_SATURACAO) & pacientes$IN_SATURACAO==1, ]$IN_SATURACAO="Sim"
+pacientes[complete.cases(pacientes$IN_SATURACAO) & pacientes$IN_SATURACAO==2, ]$IN_SATURACAO="Não"
+pacientes$IN_SATURACAO=factor(pacientes$IN_SATURACAO)
+
+#Diarreia
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_DIARREIA) & pacientes$IN_DIARREIA==9, ]$IN_DIARREIA=NA
+pacientes[complete.cases(pacientes$IN_DIARREIA) & pacientes$IN_DIARREIA==1, ]$IN_DIARREIA="Sim"
+pacientes[complete.cases(pacientes$IN_DIARREIA) & pacientes$IN_DIARREIA==2, ]$IN_DIARREIA="Não"
+pacientes$IN_DIARREIA=factor(pacientes$IN_DIARREIA)
+
+#Vomito
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_VOMITO) & pacientes$IN_VOMITO==9, ]$IN_VOMITO=NA     
+pacientes[complete.cases(pacientes$IN_VOMITO) & pacientes$IN_VOMITO==1, ]$IN_VOMITO="Sim"
+pacientes[complete.cases(pacientes$IN_VOMITO) & pacientes$IN_VOMITO==2, ]$IN_VOMITO="Não"
+pacientes$IN_VOMITO=factor(pacientes$IN_VOMITO)
+
+#Dor Abdominal
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_DOR_ABDOMINAL) &
+  pacientes$IN_DOR_ABDOMINAL==9,]$IN_DOR_ABDOMINAL=NA    
+pacientes[complete.cases(pacientes$IN_DOR_ABDOMINAL) &
+  pacientes$IN_DOR_ABDOMINAL==1,]$IN_DOR_ABDOMINAL="Sim"
+pacientes[complete.cases(pacientes$IN_DOR_ABDOMINAL) &
+  pacientes$IN_DOR_ABDOMINAL==2,]$IN_DOR_ABDOMINAL="Não"
+pacientes$IN_DOR_ABDOMINAL=factor(pacientes$IN_DOR_ABDOMINAL)
+
+#Fadiga
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_FADIGA) & pacientes$IN_FADIGA==9, ]$IN_FADIGA=NA    
+pacientes[complete.cases(pacientes$IN_FADIGA) & pacientes$IN_FADIGA==1, ]$IN_FADIGA="Sim"
+pacientes[complete.cases(pacientes$IN_FADIGA) & pacientes$IN_FADIGA==2, ]$IN_FADIGA="Não"
+pacientes$IN_FADIGA=factor(pacientes$IN_FADIGA)
+
+#Olfato
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_PERDA_OLFTATO) &
+  pacientes$IN_PERDA_OLFTATO==9, ]$IN_PERDA_OLFTATO=NA     
+pacientes[complete.cases(pacientes$IN_PERDA_OLFTATO) &
+  pacientes$IN_PERDA_OLFTATO==1, ]$IN_PERDA_OLFTATO="Sim"
+pacientes[complete.cases(pacientes$IN_PERDA_OLFTATO) &
+  pacientes$IN_PERDA_OLFTATO==2, ]$IN_PERDA_OLFTATO="Não"
+pacientes$IN_PERDA_OLFTATO=factor(pacientes$IN_PERDA_OLFTATO)
+
+#Paladar
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_PERDA_PALADAR) &
+  pacientes$IN_PERDA_PALADAR==9, ]$IN_PERDA_PALADAR=NA    
+pacientes[complete.cases(pacientes$IN_PERDA_PALADAR) &
+  pacientes$IN_PERDA_PALADAR==1, ]$IN_PERDA_PALADAR="Sim"
+pacientes[complete.cases(pacientes$IN_PERDA_PALADAR) &
+  pacientes$IN_PERDA_PALADAR==2, ]$IN_PERDA_PALADAR="Não"
+pacientes$IN_PERDA_PALADAR=factor(pacientes$IN_PERDA_PALADAR)
+
+#Preparando dataframe de sistomas para o gráfico
+sintomas = setNames(data.frame(matrix(ncol = 1, nrow = 0)),c("CS_SINTOMAS"))
+  sintoma = setNames(data.frame(rep("Dispneia",
+  length(pacientes[complete.cases(pacientes$IN_DISPNEIA) &
+  pacientes$IN_DISPNEIA=="Sim",]$IN_DISPNEIA))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Tosse",
+  length(pacientes[complete.cases(pacientes$IN_TOSSE) &
+  pacientes$IN_TOSSE=="Sim", ]$IN_TOSSE))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Febre",
+  length(pacientes[complete.cases(pacientes$IN_FEBRE) &
+  pacientes$IN_FEBRE=="Sim", ]$IN_FEBRE))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Desconforto Resp.",
+  length(pacientes[complete.cases(pacientes$IN_DESCONFORTO_RESP) &
+  pacientes$IN_DESCONFORTO_RESP=="Sim", ]$IN_DESCONFORTO_RESP))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Saturação<95%",
+  length(pacientes[complete.cases(pacientes$IN_SATURACAO) &
+  pacientes$IN_SATURACAO=="Sim", ]$IN_SATURACAO))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Dor de Garganta",
+  length(pacientes[complete.cases(pacientes$IN_GARGANTA) &
+  pacientes$IN_GARGANTA=="Sim", ]$IN_GARGANTA))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Diarréia",
+  length(pacientes[complete.cases(pacientes$IN_DIARREIA) &
+  pacientes$IN_DIARREIA=="Sim", ]$IN_DIARREIA))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Fadiga",
+  length(pacientes[complete.cases(pacientes$IN_FADIGA) &
+  pacientes$IN_FADIGA=="Sim", ]$IN_FADIGA))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Vômito",
+  length(pacientes[complete.cases(pacientes$IN_VOMITO) &
+  pacientes$IN_VOMITO=="Sim", ]$IN_VOMITO))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Perda Paladar",
+  length(pacientes[complete.cases(pacientes$IN_PERDA_PALADAR) &
+  pacientes$IN_PERDA_PALADAR=="Sim", ]$IN_PERDA_PALADAR))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Perda Olfato",
+  length(pacientes[complete.cases(pacientes$IN_PERDA_OLFTATO) &
+  pacientes$IN_PERDA_OLFTATO=="Sim", ]$IN_PERDA_OLFTATO))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintoma = setNames(data.frame(rep("Dor Abdominal",
+  length(pacientes[complete.cases(pacientes$IN_DOR_ABDOMINAL) &
+  pacientes$IN_DOR_ABDOMINAL=="Sim", ]$IN_DOR_ABDOMINAL))),c("CS_SINTOMAS"))
+sintomas = rbind(sintomas, sintoma)
+sintomas$CS_SINTOMAS = factor(sintomas$CS_SINTOMAS)
+```
+
+```{r tblSintomas, include=FALSE}
+sintomas %>% 
+  group_by(CS_SINTOMAS) %>%
+  summarise(
+    .groups = "drop_last",
+    OCORRENCIAS=n()
+  ) %>%
+arrange(desc(OCORRENCIAS))
+```
+
+```{r grfSintomas, include=FALSE}
+grfSintomas=ggplot(sintomas) + 
+  aes(x=CS_SINTOMAS, fill=CS_SINTOMAS)  +
+  geom_bar(na.rm = F) +
+  labs(x=NULL, y="Occorrência", fill = "Sintoma", title = NULL,
+       subtitle = NULL) +
+  scale_fill_manual(values = cores[12:1]) +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+```{r gridfSintomas, echo=FALSE}
+grid.arrange(grfSintomas, bottom="Gráfico 6: Sintomas")
+```
+
+
+\newpage
+
+\begin{flushleft}
+\large\underline{\textbf{Recursos/Tratamento}}
+\end{flushleft}
+
+\qquad Para os campos referente aos recursos utilizados no tratamento do paciente, a transformação foi converter 1 para Sim, 2 para Não e 9 para NA, com excessão do campo CS_SUPORTE_VENTILATORIO que foi 1 para "Sim, Invasivo", 2 para "Sim, não Invasivo", 3 para Não e 9 para NA. Valores omissos foram excluídos do gráfico.
+
+```{r recursos1}
+#Usou Suporte Ventilatório Invasivo / Não Invasivo
+#Alterando domínios
+pacientes[complete.cases(pacientes$CS_SUPORTE_VENTILATORIO) &
+  pacientes$CS_SUPORTE_VENTILATORIO==9,]$CS_SUPORTE_VENTILATORIO=NA
+pacientes[complete.cases(pacientes$CS_SUPORTE_VENTILATORIO) &
+  pacientes$CS_SUPORTE_VENTILATORIO==1, ]$CS_SUPORTE_VENTILATORIO="Sim, (INVASIVO)"
+pacientes[complete.cases(pacientes$CS_SUPORTE_VENTILATORIO) &
+  pacientes$CS_SUPORTE_VENTILATORIO==2, ]$CS_SUPORTE_VENTILATORIO="Sim, (NÃO INVASIVO)"
+pacientes[complete.cases(pacientes$CS_SUPORTE_VENTILATORIO) &
+  pacientes$CS_SUPORTE_VENTILATORIO==3, ]$CS_SUPORTE_VENTILATORIO="Não"
+pacientes$CS_SUPORTE_VENTILATORIO=factor(pacientes$CS_SUPORTE_VENTILATORIO)
+```
+
+```{r recursos2, include=F}
+#Usou Antiviral
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_USOU_ANTIVIRAL) &     
+  pacientes$IN_USOU_ANTIVIRAL==9,]$IN_USOU_ANTIVIRAL=NA
+pacientes[complete.cases(pacientes$IN_USOU_ANTIVIRAL) &
+  pacientes$IN_USOU_ANTIVIRAL==1, ]$IN_USOU_ANTIVIRAL="Sim"
+pacientes[complete.cases(pacientes$IN_USOU_ANTIVIRAL) &
+  pacientes$IN_USOU_ANTIVIRAL==2, ]$IN_USOU_ANTIVIRAL="Não"
+pacientes$IN_USOU_ANTIVIRAL=factor(pacientes$IN_USOU_ANTIVIRAL)
+
+#Foi Hospitalizado
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_HOSPITALIZADO) &
+  pacientes$IN_HOSPITALIZADO==9,]$IN_HOSPITALIZADO=NA
+pacientes[complete.cases(pacientes$IN_HOSPITALIZADO) &
+  pacientes$IN_HOSPITALIZADO==1, ]$IN_HOSPITALIZADO="Sim"
+pacientes[complete.cases(pacientes$IN_HOSPITALIZADO) &
+  pacientes$IN_HOSPITALIZADO==2, ]$IN_HOSPITALIZADO="Não"
+pacientes$IN_HOSPITALIZADO=factor(pacientes$IN_HOSPITALIZADO)
+
+#Foi para UTI
+#Alterando domínios
+pacientes[complete.cases(pacientes$IN_UTI) & pacientes$IN_UTI==9,]$IN_UTI=NA
+pacientes[complete.cases(pacientes$IN_UTI) & pacientes$IN_UTI==1, ]$IN_UTI="Sim"
+pacientes[complete.cases(pacientes$IN_UTI) & pacientes$IN_UTI==2, ]$IN_UTI="Não"
+pacientes$IN_UTI=factor(pacientes$IN_UTI)
+
+#Preparando dataframe dos recursos para o gráfico
+recursos = setNames(data.frame(matrix(ncol = 1, nrow = 0)),c("CS_RECURSO"))
+recurso = setNames(data.frame(rep("Hospitalizado",
+  length(pacientes[complete.cases(pacientes$IN_HOSPITALIZADO) &
+  pacientes$IN_HOSPITALIZADO=="Sim", ]$IN_HOSPITALIZADO))),c("CS_RECURSO"))
+recursos = rbind(recursos, recurso)
+recurso = setNames(data.frame(rep("Oxigênio não Invasivo",
+  length(pacientes[complete.cases(pacientes$CS_SUPORTE_VENTILATORIO) &
+  pacientes$CS_SUPORTE_VENTILATORIO=="Sim, (NÃO INVASIVO)", ]$CS_SUPORTE_VENTILATORIO))),
+  c("CS_RECURSO"))
+recursos = rbind(recursos, recurso)
+recurso = setNames(data.frame(rep("UTI",length(pacientes[complete.cases(pacientes$IN_UTI) &
+  pacientes$IN_UTI=="Sim", ]$IN_UTI))),c("CS_RECURSO"))
+recursos = rbind(recursos, recurso)
+recurso = setNames(data.frame(rep("Antiviral",
+  length(pacientes[complete.cases(pacientes$IN_USOU_ANTIVIRAL) &
+  pacientes$IN_USOU_ANTIVIRAL=="Sim", ]$IN_USOU_ANTIVIRAL))),c("CS_RECURSO"))
+recursos = rbind(recursos, recurso)
+recurso = setNames(data.frame(rep("Ventilação Invasiva",
+  length(pacientes[complete.cases(pacientes$CS_SUPORTE_VENTILATORIO) &
+  pacientes$CS_SUPORTE_VENTILATORIO=="Sim, (INVASIVO)", ]$CS_SUPORTE_VENTILATORIO))),
+c("CS_RECURSO"))
+recursos = rbind(recursos, recurso)
+recursos$CS_RECURSO = factor(recursos$CS_RECURSO)
+```
+
+```{r tblRecursos, include=FALSE}
+recursos %>% 
+  group_by(CS_RECURSO) %>%
+  summarise(.groups = "drop_last",
+    OCORRENCIAS=n()
+  ) %>%
+arrange(desc(OCORRENCIAS))
+```
+
+```{r grfRecursos, include=FALSE}
+grfRecursos=ggplot(recursos) + 
+  aes(x=CS_RECURSO, fill=CS_RECURSO)  +
+  geom_bar(na.rm = F) +
+  labs(x=NULL, y="Occorrência", fill = "Recursos", title = NULL,
+       subtitle = NULL) +
+  scale_fill_manual(values = cores[12:1]) +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+```{r gridRecursos, echo=FALSE}
+grid.arrange(grfRecursos, bottom="Gráfico 7: Recursos")
+```
+
+\newpage
+
+\begin{flushleft}
+\large\underline{\textbf{Datas: Internação, UTI(Entrada/Saída) e Dias na UTI}}
+\end{flushleft}
+
+\qquad Os outlier dos campos Data Internação, Data de Entrada e Saída da UTI foram removidos e calculado a quantidade de dias do paciente na UTI.
+
+```{r dtInternacao1, include=FALSE}
+#Atribuindo a média
+pacientes$DT_INTERNACAO = as.Date(pacientes$DT_INTERNACAO, format="%d/%m/%Y")
+outlierDt=boxplot(pacientes$DT_INTERNACAO, main="Data de Internação")$out
+pacientes[pacientes$DT_INTERNACAO %in% outlierDt, ]$DT_INTERNACAO=NA
+#Continua para as outras datas...
+```
+
+```{r dtInternacao2, include=FALSE}
+#Atribuindo a média
+pacientes$DT_ENTRADA_UTI = as.Date(pacientes$DT_ENTRADA_UTI, format="%d/%m/%Y")
+outlierDt=boxplot(pacientes$DT_ENTRADA_UTI, main="Data de Entrada UTI")$out
+pacientes[pacientes$DT_ENTRADA_UTI %in% outlierDt, ]$DT_ENTRADA_UTI=NA
+#Atribuindo a média
+pacientes$DT_SAIDA_UTI = as.Date(pacientes$DT_SAIDA_UTI, format="%d/%m/%Y")
+outLierDt = boxplot(pacientes$DT_SAIDA_UTI, main="Data de Saída da UTI")$out
+pacientes[pacientes$DT_SAIDA_UTI %in% outLierDt, ]$DT_SAIDA_UTI=NA
+```
+
+```{r qtdDiasUti, include=FALSE}
+#Canculando a quantidade de dias na UTI
+pacientes[complete.cases(pacientes[, c("DT_ENTRADA_UTI", "DT_SAIDA_UTI")]), c("NU_DIAS_UTI")] =
+pacientes[complete.cases(pacientes[, c("DT_ENTRADA_UTI", "DT_SAIDA_UTI")]),]$DT_SAIDA_UTI -
+pacientes[complete.cases(pacientes[, c("DT_ENTRADA_UTI", "DT_SAIDA_UTI")]),]$DT_ENTRADA_UTI
+#Ajustando o tipo do campo NU_DIAS_UTI
+pacientes$NU_DIAS_UTI = as(pacientes$NU_DIAS_UTI, "integer")
+#Removendo outliner extremos
+qtdDiasUTISemOutliner = pacientes[!pacientes$NU_DIAS_UTI %in% boxplot(pacientes$NU_DIAS_UTI,
+main="Quantidade de dias sem outliner")$out, ]
+```
+
+```{r grfDiasUti, echo=FALSE}
+grfDiasUti=ggplot(qtdDiasUTISemOutliner) + 
+  aes(y=NU_DIAS_UTI, fill="red")  +
+  geom_boxplot(na.rm = T) +
+  labs(y="Dias UTI", x=NULL,  title = NULL,
+       subtitle = NULL, fill="Qtd Dias") +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+```{r gridDiasUTI, echo=FALSE}
+grid.arrange(grfDiasUti, bottom="Gráfico 8: Dias UTI")
+```
+
+\newpage
+
+\begin{flushleft}
+\large\underline{\textbf{Diagnostico}}
+\end{flushleft}
+
+\qquad Para os valores numéricos presentes na coluna CS_CLASSICACAO_FINAL foram atribuídos strings mais significativas para elaboração do gráfico. Os valores omissos foram removidos.
+
+```{r diagnostico1}
+#Classificação Final
+pacientes[complete.cases(pacientes$CS_CLASSICACAO_FINAL) &
+  pacientes$CS_CLASSICACAO_FINAL==1, ]$CS_CLASSICACAO_FINAL="SRAG por influenza"
+pacientes[complete.cases(pacientes$CS_CLASSICACAO_FINAL) &
+  pacientes$CS_CLASSICACAO_FINAL==2, ]$CS_CLASSICACAO_FINAL="SRAG por outro vírus respiratório"
+pacientes[complete.cases(pacientes$CS_CLASSICACAO_FINAL) &
+  pacientes$CS_CLASSICACAO_FINAL==3, ]$CS_CLASSICACAO_FINAL="SRAG por outro agente etiológico"
+pacientes[complete.cases(pacientes$CS_CLASSICACAO_FINAL) &
+  pacientes$CS_CLASSICACAO_FINAL==4, ]$CS_CLASSICACAO_FINAL="SRAG não especificado"
+pacientes[complete.cases(pacientes$CS_CLASSICACAO_FINAL) &
+  pacientes$CS_CLASSICACAO_FINAL==5, ]$CS_CLASSICACAO_FINAL="SRAG por COVID-19"
+pacientes$CS_CLASSICACAO_FINAL=factor(pacientes$CS_CLASSICACAO_FINAL)
+#Crítério usado na Classificação Final
+pacientes[complete.cases(pacientes$CS_CRITERIO_CONFIRMACAO) &
+  pacientes$CS_CRITERIO_CONFIRMACAO==1, ]$CS_CRITERIO_CONFIRMACAO="Laboratorial"
+pacientes[complete.cases(pacientes$CS_CRITERIO_CONFIRMACAO) &
+  pacientes$CS_CRITERIO_CONFIRMACAO==2, ]$CS_CRITERIO_CONFIRMACAO="Clínico Epidemiológico"
+pacientes[complete.cases(pacientes$CS_CRITERIO_CONFIRMACAO) &
+  pacientes$CS_CRITERIO_CONFIRMACAO==3, ]$CS_CRITERIO_CONFIRMACAO="Clínico"
+pacientes[complete.cases(pacientes$CS_CRITERIO_CONFIRMACAO) &
+  pacientes$CS_CRITERIO_CONFIRMACAO==4, ]$CS_CRITERIO_CONFIRMACAO="Clínico Imagem"
+pacientes$CS_CRITERIO_CONFIRMACAO=factor(pacientes$CS_CRITERIO_CONFIRMACAO)
+```
+
+```{r diagnostico2, include=FALSE}
+#Preparando dataframe de critério de classificação para o gráfico
+diagnosticos = setNames(data.frame(matrix(ncol = 1, nrow = 0)),c("CS_RESULTADO"))
+resultado = setNames(data.frame(rep("Laboratorial",
+  length(pacientes[complete.cases(pacientes$CS_CRITERIO_CONFIRMACAO) &
+  pacientes$CS_CRITERIO_CONFIRMACAO=="Laboratorial", ]$CS_CRITERIO_CONFIRMACAO))),c("CS_RESULTADO"))
+diagnosticos = rbind(diagnosticos, resultado)
+resultado = setNames(data.frame(rep("Clínico",
+  length(pacientes[complete.cases(pacientes$CS_CRITERIO_CONFIRMACAO) &
+  pacientes$CS_CRITERIO_CONFIRMACAO=="Clínico", ]$CS_CRITERIO_CONFIRMACAO))),c("CS_RESULTADO"))
+diagnosticos = rbind(diagnosticos, resultado)
+resultado = setNames(data.frame(rep("Clínico Imagem",
+  length(pacientes[complete.cases(pacientes$CS_CRITERIO_CONFIRMACAO) &
+  pacientes$CS_CRITERIO_CONFIRMACAO=="Clínico Imagem", ]$CS_CRITERIO_CONFIRMACAO))),c("CS_RESULTADO"))
+diagnosticos = rbind(diagnosticos, resultado)
+resultado = setNames(data.frame(rep("Clínico Epidemiológico",
+  length(pacientes[complete.cases(pacientes$CS_CRITERIO_CONFIRMACAO) &
+  pacientes$CS_CRITERIO_CONFIRMACAO=="Clínico Epidemiológico", ]$CS_CRITERIO_CONFIRMACAO))),
+  c("CS_RESULTADO"))
+diagnosticos = rbind(diagnosticos, resultado)
+diagnosticos$CS_RESULTADO = factor(diagnosticos$CS_RESULTADO)
+```
+
+```{r tblDiagnostico, include=FALSE}
+diagnosticos %>% 
+  group_by(CS_RESULTADO) %>%
+  summarise(.groups = "drop_last",
+    OCORRENCIAS=n()
+  ) %>%
+arrange(desc(OCORRENCIAS))
+```
+
+```{r grfDiagnostico, echo=F}
+grfDiagnostico=ggplot(diagnosticos) + 
+  aes(x=CS_RESULTADO, fill=CS_RESULTADO)  +
+  geom_bar(na.rm = F) +
+  labs(x=NULL, y="Ocorrência", fill = "Resultado", title = NULL,
+  subtitle = NULL) +
+  scale_fill_manual(values = cores[12:1]) +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+```{r gridDiagnostico, echo=FALSE}
+grid.arrange(grfDiagnostico, bottom="Gráfico 9: Critério de Confirmação")
+```
+
+\newpage
+
+\begin{flushleft}
+\large\underline{\textbf{Evolução}}
+\end{flushleft}
+
+\qquad Para os valores numéricos presentes na coluna CS_CLASSICACAO_FINAL foram atribuídos strings mais significativas para elaboração do gráfico. Os valores omissos foram removidos.
+
+```{r evolucao1}
+#Data Evolução / Desfecho
+pacientes$DT_EVOLUCAO = as.Date(pacientes$DT_EVOLUCAO, format="%d/%m/%Y")
+#Resultado Evolução / Desfecho
+pacientes[complete.cases(pacientes$CS_EVOLUCAO) & pacientes$CS_EVOLUCAO==9, ]$CS_EVOLUCAO=NA
+pacientes[complete.cases(pacientes$CS_EVOLUCAO) & pacientes$CS_EVOLUCAO==1, ]$CS_EVOLUCAO="Cura"
+pacientes[complete.cases(pacientes$CS_EVOLUCAO) & pacientes$CS_EVOLUCAO==2, ]$CS_EVOLUCAO="Óbito"
+pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
+  pacientes$CS_EVOLUCAO==3, ]$CS_EVOLUCAO="Óbito por outras causas"
+pacientes$CS_EVOLUCAO=factor(pacientes$CS_EVOLUCAO)
+```
+
+```{r evolucao2, include=FALSE}
+#Preparando dataframe de evolução para o gráfico
+evolucao = setNames(data.frame(matrix(ncol = 1, nrow = 0)),c("CS_RESULTADO"))
+resultado = setNames(data.frame(rep("Cura",length(pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
+pacientes$CS_EVOLUCAO=="Cura", ]$CS_EVOLUCAO))),c("CS_RESULTADO"))
+evolucao = rbind(evolucao, resultado)
+resultado = setNames(data.frame(rep("Óbito",length(pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
+pacientes$CS_EVOLUCAO=="Óbito", ]$CS_EVOLUCAO))),c("CS_RESULTADO"))
+evolucao = rbind(evolucao, resultado)
+resultado = setNames(data.frame(rep("Óbito por outras causas",
+  length(pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
+  pacientes$CS_EVOLUCAO=="Óbito por outras causas", ]$CS_EVOLUCAO))),c("CS_RESULTADO"))
+evolucao = rbind(evolucao, resultado)
+evolucao$CS_RESULTADO = factor(evolucao$CS_RESULTADO)
+```
+
+```{r tblEvolucao, include=FALSE}
+evolucao %>% 
+  group_by(CS_RESULTADO) %>%
+  summarise(.groups = "drop_last",
+    OCORRENCIAS=n()
+  ) %>%
+arrange(desc(OCORRENCIAS))
+```
+
+```{r grfEvolucao, include=FALSE}
+grfEvolucao = ggplot(evolucao) + 
+  aes(x=CS_RESULTADO, fill=CS_RESULTADO)  +
+  geom_bar(na.rm = F) +
+  labs(x=NULL, y="Ocorrência", fill = "Resultado", title = NULL,
+  subtitle = NULL) +
+  scale_fill_manual(values = coresEvolucao) +
+  theme_bw() +
+  theme(axis.text.x = element_text(size = 10), axis.title.x = element_text(size = 16),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+
+```{r gridEvolucao, echo=FALSE}
+grid.arrange(grfEvolucao, bottom="Gráfico 10: Evolução / Desfecho")
+```
+
+\newpage
+
+\subsection{3.4 Transformação para machine learning }
+
+\newpage
+
+\section{4. Análise Exploratória}
+
+\subsection{4.1 Número absoluto de mortes de covid-19 no Brasil}
+
+
+\qquad No ano de 2020, o Brasil teve 187.727 (cento e oitenta e sete mil e setecentos e vinte e sete) mortes por covid-19. Neste sentido, o Sudeste apresentou quase a metade dos casos de mortes por covid-19 do país, com 88.362 (oitenta e oito mil e trezentos e sessenta e duas) mortes. As demais regiões registraram juntas um número de mortes um pouco superior, totalizando 99.365 (noventa e nove mil e trezentos e sessenta e cinco) mortes, o que representa 52,93% (cinquenta e dois vírgula noventa e três por cento) do total de óbitos registrados no país.
+
+\qquad A este respeito, o gráfico 1 apresenta a distribuição das mortes por covid-19 por região, conforme pode ser visto abaixo:
+
+```{r mortesPorRegiao, include=FALSE}
+mortesPorRegiao=pacientes[complete.cases(pacientes[,c("CS_EVOLUCAO",
+"CS_CLASSICACAO_FINAL")]) & pacientes$CS_EVOLUCAO=="Óbito" &
+pacientes$CS_CLASSICACAO_FINAL=="SRAG por COVID-19",] %>% 
+group_by(REGIAO) %>%
+summarise(.groups = "drop_last", QTD_MORTES=n()) %>%
+arrange(desc(QTD_MORTES))
+```
+
+```{r grfMortePorRegiao, include=FALSE}
+#Exibir gráfico com quantidade de mortes por região
+grdMortesPorRegiao = ggplot(mortesPorRegiao) + 
+aes(x=REGIAO, y=QTD_MORTES, fill=REGIAO)  +
+geom_bar(stat = "identity", na.rm = F) +
+labs(x=NULL, y=NULL, fill = "Região", title = NULL, subtitle = NULL) +
+scale_fill_manual(values = cores) + theme_bw() +
+theme(axis.text.x = element_text(size = 10), axis.title.x = element_text(size = 16),
+axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+```{r grdMortesPorRegiao, echo=FALSE}
+grid.arrange(grdMortesPorRegiao, bottom="Gráfico 1: Mortes por Região")
+```
+
+\qquad Após a região sudeste, o Nordeste aparece como a segunda região com maior número de mortes do Brasil, totalizando 44.965 (quarenta e quatro mil e novecentos e sessenta e cinco) mortes, ou seja, 23,95% (vinte e três vírgula noventa e cinco por cento) do total de mortes por covid-19 do país.
+
+```{r mortesPorRegiaoSudeste, include=FALSE}
+mortesPorRegiaoSudeste=pacientes[complete.cases(pacientes[,c("CS_EVOLUCAO",
+"CS_CLASSICACAO_FINAL")]) & pacientes$CS_EVOLUCAO=="Óbito" &
+pacientes$CS_CLASSICACAO_FINAL=="SRAG por COVID-19" &
+pacientes$REGIAO=="Sudeste",] %>% 
+group_by(SG_UF) %>%
+summarise(.groups = "drop_last", QTD_MORTES=n()) %>%
+arrange(desc(QTD_MORTES))
+```
+
+```{r percentualMortesSP, include=FALSE}
+mortesPorRegiaoSudeste[mortesPorRegiaoSudeste$SG_UF=="SP",]$QTD_MORTES / sum(mortesPorRegiaoSudeste$QTD_MORTES)
+```
+
+```{r grfMortePorRegiaoSudeste, include=FALSE}
+#Exibir gráfico com quantidade de mortes por região
+grdMortesPorRegiaoSudeste = ggplot(mortesPorRegiaoSudeste) + 
+aes(x=SG_UF, y=QTD_MORTES, fill=SG_UF)  + geom_bar(stat = "identity", na.rm = F) +
+labs(x=NULL, y=NULL, fill = "UF/Sudeste", title = NULL, subtitle = NULL) +
+scale_fill_manual(values = coresSudeste) +theme_bw() +
+theme(axis.text.x = element_text(size = 10), axis.title.x = element_text(size = 16),
+axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+\qquad No Sudeste, o Estado de São Paulo foi responsável por 53,45% (cinquenta e três virgula quarenta e cinco por cento) das mortes, registrando 47.226 (quarenta e sete mil duzentos e vinte e seis) óbitos, ou seja, mais da metade das mortes na região, como pode ser visto no gráfico 2 apresentado abaixo:
+
+```{r grdMortesPorRegiaoSudeste, echo=FALSE, fig.height=3, fig.width=7}
+grid.arrange(grdMortesPorRegiaoSudeste, bottom="Gráfico 2: Mortes na Região Sudeste")
+```
+
+```{r mortesPorRegiaoNordeste, include=FALSE}
+mortesPorRegiaoNordeste=pacientes[complete.cases(pacientes[,c("CS_EVOLUCAO",
+"CS_CLASSICACAO_FINAL")]) & pacientes$CS_EVOLUCAO=="Óbito" &
+pacientes$CS_CLASSICACAO_FINAL=="SRAG por COVID-19" &
+pacientes$REGIAO=="Nordeste",] %>% 
+group_by(SG_UF) %>%
+summarise(.groups = "drop_last", QTD_MORTES=n()) %>%
+arrange(desc(QTD_MORTES))
+mortesPorRegiaoNordeste
+```
+
+```{r grfMortePorRegiaoNordeste, include=FALSE}
+#Exibir gráfico com quantidade de mortes por região
+grdMortesPorRegiaoNordeste = ggplot(mortesPorRegiaoNordeste) + 
+aes(x=SG_UF, y=QTD_MORTES, fill=SG_UF)  + geom_bar(stat = "identity", na.rm = F) +
+labs(x=NULL, y=NULL, fill = "UF/Nordeste", title = NULL, subtitle = NULL) +
+scale_fill_manual(values = coresNordeste) +theme_bw() +
+theme(axis.text.x = element_text(size = 10), axis.title.x = element_text(size = 16),
+axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+```
+
+\qquad É importante observarmos que o Estado de São Paulo apresenta mais mortes do que a região nordeste inteira, que é a segunda maior região com casos de morte por covid-19 no país.
+
+\qquad No que se refere ao Nordeste, o Estado do Ceará apresenta, aproximadamente, 1/4 do número de óbitos, no total de 10.281 (dez mil duzentos e oitenta e um) óbitos, seguido por Pernambuco e Bahia, com 9.597 (nove mil quinhentos e noventa e sete) e 8.321 (oito mil trezentos e vinte e um) óbitos, respectivamente. Sobre este assunto, o gráfico 3,  exibido abaixo, apresenta a distribuição de mortes por covid-19 na região.
+
+```{r grdMortesPorRegiaoNordeste, echo=FALSE, fig.height=3, fig.width=7}
+grid.arrange(grdMortesPorRegiaoNordeste, bottom="Gráfico 3: Mortes na Região Nordeste")
+```
+
+\newpage
+
+\subsection{4.2 Taxa de mortalidade da covid-19 no Brasil}
+
+\qquad Apesar do estado de São Paulo liderar o números de mortes absoluto por covid-19 no Brasil. Em relação ao tamanho da população, a situação é diferente, e cinco estados do país ultrapassam São Paulo em mortes por milhão de habitantes. O Rio de Janeiro é o estado com a mais alta taxa de mortalidade do país, seguido do Distrito Federal. Veja tabela \underline{\color{blue}\ref{tab:txMortalidade}}
+
+\begin{table}[hbp]
+\center
+\begin{tabular}{|c|c|c|c|c|c|} \hline
+RJ & DF & AM & CE & SE & SP \\ \hline
+1.470 & 1.439 & 1.254 & 1.119 & 1.110 & 1.020 \\ \hline
+\end{tabular}
+\caption{Estados com maiores taxas de mortalidade}
+\label{tab:txMortalidade}
+\end{table}
+
+```{r mortalidadePorUF, include=FALSE}
+mortalidadePorUF=pacientes[complete.cases(
+pacientes[,c("CS_EVOLUCAO","CS_CLASSICACAO_FINAL")]) &
+pacientes$CS_EVOLUCAO=="Óbito" &
+pacientes$CS_CLASSICACAO_FINAL=="SRAG por COVID-19",] %>% 
+group_by(SG_UF) %>%
+summarise(.groups = "drop_last",
+QTD_MORTES=n()
+) %>%
+arrange(desc(QTD_MORTES))
+taxaDeMortalidadePorRegiao = mortalidadePorUF %>% left_join(estadoIBGE, c("SG_UF" = "SG_UF"))
+#Taxa de Mortalidade por Milhão de habitantes
+taxaDeMortalidadePorRegiao$TX_MORTALIDADE=(taxaDeMortalidadePorRegiao$QTD_MORTES / taxaDeMortalidadePorRegiao$NU_POPULACAO) * 1000000
+taxaDeMortalidadePorRegiao$TX_MORTALIDADE = as(taxaDeMortalidadePorRegiao$TX_MORTALIDADE, "integer")
+taxaDeMortalidadePorRegiao = taxaDeMortalidadePorRegiao[order(taxaDeMortalidadePorRegiao$TX_MORTALIDADE,
+decreasing = T),]
+sfEstados <- inner_join(estados, taxaDeMortalidadePorRegiao, by = c("abbrev_state" = "SG_UF"))
+```
+
+```{r estadosTxMortalidade, include=FALSE}
+#Selecionar os 10 estados com a maior taxa de mortalidade
+labelEstados = sfEstados[c("3", "19", "27", "10", "15", "20"),]
+labelEstados_points <- st_point_on_surface(labelEstados)
+labelEstados_coords <- as.data.frame(st_coordinates(labelEstados_points))
+labelEstados_coords$SG_UF <- labelEstados$abbrev_state
+```
+
+```{r grfTxMortalidade, include=FALSE}
+#Plotar o gráfico nacional.
+grfTxMortalidade = ggplot() +
+  geom_sf(data=sfEstados, aes(fill=TX_MORTALIDADE), size=.15, color="red") +
+  geom_text(data = labelEstados_coords, aes(X, Y, label = SG_UF), colour = "darkgreen") +
+  labs(size=8, fill = "Mortalidade", title = NULL,
+  subtitle = NULL) +
+  theme_bw() +
+  theme(axis.text.x = element_text(size = 10), axis.title.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y =element_blank()  ,
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))+
+  scale_fill_gradient(low = "#FFB6C1", high = "#DC143C")
+```
+
+```{r gridTaxaMortalidade, echo=FALSE}
+grid.arrange(grfTxMortalidade, bottom="Gráfico 4: Taxa de Mortalidade por Estado")
+```
+\qquad Nas capitais do país, a taxa de mortalidade são ainda maiores que as estaduais. A média da taxa de mortalidade nas capitais é de 1.689 óbitos por milhão de habitantes, superior ao Estado do Rio de Janeiro, Estado com maior taxa de mortalidade do país (veja tabela \underline{\color{blue}\ref{tab:txMortalidade}}). Recife é a capital com maior número de mortes por milhão de habitantes, com 3.313 óbitos, 96% (noventa e seis por cento) superior a média nacional das capitais. As capitais das regiões norte e nordeste ocupam as primeiras posições no rank das capitais com maiores taxas de mortalidade. Já o município de São Paulo tem taxa de mortalidade inferior a média nacional e ocupa a 19ª (décima nona) posição do rank, com 1.436 mortes por milhão de habitantes.
+
+\begin{table}[hbp]
+\center
+\begin{tabular}{|c|c|c|c|c|c|c|} \hline
+Recife & Rio de Janeiro & Aracaju & Belém & Fortaleza & Teresina & João Pessoa \\ \hline
+3313 & 2556 & 2472 & 2175 & 2126 & 1999 & 1913\\ \hline
+\end{tabular}
+\caption{Capitais com maiores taxas de mortalidade}
+\label{tab:txMortalidadeCapitais}
+\end{table}
+
+```{r capitaisBrasil, include=FALSE}
+codCapitais= c(2800308, 1501402, 3106200, 1400100, 5300108, 5002704, 2408102, 5103403,
+               4106902, 4205407, 2304400, 5208707, 2507507, 1600303, 2704302,
+               1302603, 1721000, 4314902, 1100205, 2611606, 1200401, 3304557, 
+               2927408, 2111300, 3550308, 2211001, 3205309)
+capitais = matrix(data = NA, nrow = 27, ncol = 1, byrow = TRUE)
+capitais=data.frame(capitais);
+colnames(capitais)= c("COD_MUNICIPIO")
+capitais$COD_MUNICIPIO=codCapitais
+capitaisPopulacao <- inner_join(municipiosIBGE, capitais, by = c("COD_MUNICIPIO" = "COD_MUNICIPIO"))
+```
+
+```{r mortesPorCapitais, include=FALSE}
+mortesPorCapitais=pacientes[complete.cases(pacientes[,c("CS_EVOLUCAO",
+"CS_CLASSICACAO_FINAL")]) & pacientes$CS_EVOLUCAO=="Óbito" &
+pacientes$CS_CLASSICACAO_FINAL=="SRAG por COVID-19",] %>% 
+filter(COD_MUNICIPIO %in% capitaisPopulacao$COD_MUNICIPIO6) %>%
+group_by(COD_MUNICIPIO) %>%
+summarise(.groups = "drop_last", QTD_MORTES=n()) %>%
+arrange(desc(QTD_MORTES))
+taxaDeMortalidadePorCapitais = mortesPorCapitais %>% inner_join(municipiosIBGE, c("COD_MUNICIPIO" = "COD_MUNICIPIO6"))
+#Taxa de Mortalidade por Milhão de habitantes
+taxaDeMortalidadePorCapitais$TX_MORTALIDADE=(taxaDeMortalidadePorCapitais$QTD_MORTES / taxaDeMortalidadePorCapitais$NU_POPULACAO) * 1000000
+taxaDeMortalidadePorCapitais$TX_MORTALIDADE = as(taxaDeMortalidadePorCapitais$TX_MORTALIDADE, "integer")
+taxaDeMortalidadePorCapitais = taxaDeMortalidadePorCapitais[order(taxaDeMortalidadePorCapitais$TX_MORTALIDADE,
+decreasing = T),]
+sfCapitais <- inner_join(municipios, taxaDeMortalidadePorCapitais, by = c("code_muni" = "COD_MUNICIPIO.y"))
+taxaDeMortalidadePorCapitais
+```
+
+```{r meanCapitais, include=FALSE}
+mediaCapitais=mean(taxaDeMortalidadePorCapitais$TX_MORTALIDADE)
+mediaCapitais
+taxaMortalidadeRecife=taxaDeMortalidadePorCapitais[taxaDeMortalidadePorCapitais$MUNICIPIO=="Recife", ]$TX_MORTALIDADE
+proporcRecifeVsMediaNacional=taxaMortalidadeRecife/mediaCapitais
+```
+
+```{r grfTxMortalidadeCap, include=FALSE}
+#Plotar o gráfico nacional.
+  grfTxMortalidadeCap = ggplot() +
+  geom_sf(data=sfEstados,  size=.15, color="green") +
+  geom_sf(data=sfCapitais, aes(fill=TX_MORTALIDADE), size=.15, color="red") +
+  labs(size=8, fill = "Mortalidade", title = NULL,
+  subtitle = NULL) +
+  theme_bw() +
+  theme(axis.text.x = element_text(size = 10), axis.title.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y =element_blank()  ,
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))+
+  scale_fill_gradient(low = "#FFB6C1", high = "#DC143C")
+```
+
+```{r gridTxMortalidadeCap, echo=FALSE}
+grid.arrange(grfTxMortalidadeCap, bottom="Gráfico 5: Taxa de Mortalidade Capitais")
+```
+
+\subsection{4.3 Taxa de letalidade da covid-19 no Brasil}
+
+\qquad O teste de hipotese realizado a partir de uma amostra com 493.035 (quatrocentos e noventa e três mil e trinta e cinco) pacientes hospitalizados é de 35% (trinta e cinco por cento) com um nível de significância de 95%. A taxa equipara-se ao estudo realizado no Reio Unido, no qual compara-se a taxa de letalidade da covid-19 em pacientes hospitalizados ao vírus ebola.
+
+```{r preTestHipotese, include=FALSE}
+#Taxa de Letalidade Geral
+pacientesCovidTxLetalidade=pacientes[complete.cases(pacientes[,c("CS_CLASSICACAO_FINAL",
+"CS_EVOLUCAO","IN_HOSPITALIZADO")]) &
+pacientes$CS_CLASSICACAO_FINAL=="SRAG por COVID-19" &
+pacientes$IN_HOSPITALIZADO=="Sim" & pacientes$CS_EVOLUCAO!="Óbito por outras causas",]
+```
+
+```{r testHipotese}
+qtdObitos=dim(pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$CS_EVOLUCAO=="Óbito",])[1]
+totalPacientes=dim(pacientesCovidTxLetalidade[,])[1]
+prop.test(qtdObitos, totalPacientes, 0.35, conf.level = 0.95)
+```
+\newpage
+
+\qquad De acordo com James Gallagher, Repórter de ciência e saúde (2020)\cite{Gallagher:2020}:
+
+\begin{flushright}
+\begin{minipage}{0.7\linewidth}
+\begin{footnotesize} 
+Pessoas internadas em hospitais por conta do novo coronavírus têm a mesma probabilidade de morrer do que aquelas hospitalizadas pelo vírus do ebola, segundo nova pesquisa conduzida no Reino Unido.
+\end{footnotesize}
+\end{minipage}
+\end{flushright}
+
+\begin{figure}[htp]
+\center
+\includegraphics[width=0.7\linewidth]{anexos/Gallagher2020.png}
+\caption{Matéria BBC NEWS}
+\label{fig:Gallagher2020}
+\end{figure}
+
+\newpage
+```{r dfTxLetalidade, include=FALSE}
+sumariopacientesCovid = pacientesCovidTxLetalidade %>% 
+  group_by(SEMANA_NOTIFICACAO) %>%
+  summarise(.groups = "drop_last",
+    obito_N = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Norte"]),
+    total_N = length(SEMANA_NOTIFICACAO[REGIAO=="Norte"]),
+    obito_NE = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Nordeste"]),
+    total_NE = length(SEMANA_NOTIFICACAO[REGIAO=="Nordeste"]),
+    obito_CO = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Centro-Oeste"]),
+    total_CO = length(SEMANA_NOTIFICACAO[REGIAO=="Centro-Oeste"]),
+    obito_SE = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Sudeste"]),
+    total_SE = length(SEMANA_NOTIFICACAO[REGIAO=="Sudeste"]),
+    obito_S = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Sul"]),
+    total_S = length(SEMANA_NOTIFICACAO[REGIAO=="Sul"]),
+  ) %>%
+arrange(SEMANA_NOTIFICACAO)
+```
+
+```{r colTxLetalidade, include=FALSE}
+sumariopacientesCovid = sumariopacientesCovid[sumariopacientesCovid$SEMANA_NOTIFICACAO>=12,]
+sumariopacientesCovid["TAXA_N"]=sumariopacientesCovid$obito_N/sumariopacientesCovid$total_N
+sumariopacientesCovid["TAXA_NE"]=sumariopacientesCovid$obito_NE/sumariopacientesCovid$total_NE
+sumariopacientesCovid["TAXA_CO"]=sumariopacientesCovid$obito_CO/sumariopacientesCovid$total_CO
+sumariopacientesCovid["TAXA_SE"]=sumariopacientesCovid$obito_SE/sumariopacientesCovid$total_SE
+sumariopacientesCovid["TAXA_S"]=sumariopacientesCovid$obito_S/sumariopacientesCovid$total_S
+```
+
+```{r mediaMovelTxLetalidade, include=FALSE}
+mediaMovel_N <- rollmean(sumariopacientesCovid$TAXA_N, 7, align = "right")
+semanaMediaMovel_N <- cbind(sumariopacientesCovid$SEMANA_NOTIFICACAO, c(rep(NA, 6), mediaMovel_N))
+dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel_N), c("SEMANA", "TAXA_N"))
+mediaMovel_NE <- rollmean(sumariopacientesCovid$TAXA_NE, 7, align = "right")
+semanaMediaMovel_NE <- cbind(dfMediaMovelTxLetalidade, c(rep(NA, 6), mediaMovel_NE))
+dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel_NE), c("SEMANA", "TAXA_N", "TAXA_NE"))
+mediaMovel_CO <- rollmean(sumariopacientesCovid$TAXA_CO, 7, align = "right")
+semanaMediaMovel_CO <- cbind(dfMediaMovelTxLetalidade, c(rep(NA, 6), mediaMovel_CO))
+dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel_CO), c("SEMANA", "TAXA_N", "TAXA_NE", "TAXA_CO"))
+mediaMovel_SE <- rollmean(sumariopacientesCovid$TAXA_SE, 7, align = "right")
+semanaMediaMovel_SE <- cbind(dfMediaMovelTxLetalidade, c(rep(NA, 6), mediaMovel_SE))
+dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel_SE), c("SEMANA", "TAXA_N", "TAXA_NE", "TAXA_CO", "TAXA_SE"))
+mediaMovel_S <- rollmean(sumariopacientesCovid$TAXA_S, 7, align = "right")
+semanaMediaMovel_S <- cbind(dfMediaMovelTxLetalidade, c(rep(NA, 6), mediaMovel_S))
+dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel_S), c("SEMANA", "TAXA_N", "TAXA_NE", "TAXA_CO", "TAXA_SE", "TAXA_S"))
+```
+
+```{r mergeTaxaLetalidade, include=FALSE}
+taxa_N= dfMediaMovelTxLetalidade[, c("SEMANA","TAXA_N")]
+taxa_N["TIPO"] = "Norte" 
+merge = taxa_N
+colnames(merge) = c("SEMANA", "TAXA", "TIPO")
+taxa_NE = dfMediaMovelTxLetalidade[, c("SEMANA","TAXA_NE")]
+taxa_NE["TIPO"] = "Nordeste" 
+colnames(taxa_NE) = c("SEMANA", "TAXA", "TIPO")
+merge=rbind(merge, taxa_NE)
+taxa_CO = dfMediaMovelTxLetalidade[, c("SEMANA","TAXA_CO")]
+taxa_CO["TIPO"] = "Centro-Oeste" 
+colnames(taxa_CO) = c("SEMANA", "TAXA", "TIPO")
+merge=rbind(merge, taxa_CO)
+taxa_SE = dfMediaMovelTxLetalidade[, c("SEMANA","TAXA_SE")]
+taxa_SE["TIPO"] = "Sudeste" 
+colnames(taxa_SE) = c("SEMANA", "TAXA", "TIPO")
+merge=rbind(merge, taxa_SE)
+taxa_S = dfMediaMovelTxLetalidade[, c("SEMANA","TAXA_S")]
+taxa_S["TIPO"] = "Sul" 
+colnames(taxa_S) = c("SEMANA", "TAXA", "TIPO")
+merge=rbind(merge, taxa_S)
+```
+
+```{r grafTaxaLetalidade, include=FALSE}
+grfTxLetalidadeRegiao=ggplot(merge) +
+geom_line(aes(x = SEMANA, y = TAXA, color=TIPO), na.rm = T)+
+labs(x="Semana do ano", y="Taxa letalidade",
+title = NULL,
+subtitle = NULL, color="Regiões:") +
+scale_y_continuous(labels = scales::percent)+
+scale_x_continuous(labels = scales::ordinal_format(rules = ptBr))+
+scale_color_manual(values = coresIntensas) +
+theme_bw() +
+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),
+axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+
+```
+
+```{r tabelaTxLetalidade, include=FALSE}
+max(merge[merge$TIPO=="Norte" & merge$SEMANA>17,]$TAXA)
+max(merge[merge$TIPO=="Nordeste" & merge$SEMANA>17,]$TAXA)
+max(merge[merge$TIPO=="Centro-Oeste" & merge$SEMANA>17,]$TAXA)
+max(merge[merge$TIPO=="Sudeste" & merge$SEMANA>17,]$TAXA)
+max(merge[merge$TIPO=="Sul" & merge$SEMANA>17,]$TAXA)
+merge[merge$TIPO=="Norte",]
+merge[merge$TIPO=="Nordeste",]
+```   
+
+\qquad Na 18ª (decima oitava) semana do ano de 2020, as regiões norte e nordeste, tinham as taxas de letalidade mais altas do pais, com 45% e 36%, respectivamente. Na 21ª semana do ano a região norte chegará ao pior momento de 2020, momento em que  a covid-19 chegou a taxas de letalidade de 49%, essa foram a mais altas taxas de letalidade em 2020 em todas as regiões do país.
+
+\qquad Contudo as semanas seguintes foram de queda acentuada da taxa de letalidade na região norte e na 24ª semana do ano a regiõe nordeste, com 46% superou a taxa de letalidade da região norte, com 45%. Nas semanas seguintes as taxas de letalidade da região norte continuou a cair e o nordeste passou a liderar com as mais altas taxas de letalidade por quase todo ano de 2020.
+
+\qquad Nas últimas semanas do ano a taxa de letalidade da região norte voltou a subir e na 52ª semana do ano a região norte, com taxa de 38% superou a região nordeste, com 37% e ainda em queda. 
+
+
+\qquad A Região sul que havia permanecido com as menores taxas de letalidde de covid-19 do país em 2020 em dezembro deve uma subida acentuada levando-a a taxas de letalidade equiparaveis com o Nordeste. Região que praticamente liderou o rank das maiores taxas de letalidade por todo ano. 
+
+
+```{r gridTxLetalidadeRegiao, echo=FALSE}
+grid.arrange(grfTxLetalidadeRegiao, bottom="Gráfico 6: Taxa de Mortalidade Capitais")
+```
+
+
+\newpage
+
+\section{5. Inferência Estatística}
+
+\subsection{5.1 Perfil do brasileiro com maior e menor risco de morte}
+
+\qquad Para reduzir a variação dos valores as idades foram agrupadas em faixas. Neste momento foram adotados os mesmos interválos utilizados pelo \href{https://educa.ibge.gov.br/jovens/conheca-o-brasil/populacao/18318-piramide-etaria.html}{IBGE}. 
+
+\begin{table}[hbp]
+\center
+\begin{tabular}{|c|c|c|c|c|} \hline
+0 a 4 anos &  20 a 24 anos & 40 a 44 anos & 60 a 64 anos & 80 anos ou mais\\ \hline
+5 a 9 anos &  25 a 29 anos & 45 a 49 anos & 65 a 69 anos & \\ \hline
+10 a 14 anos & 30 a 34 anos & 50 a 54 anos & 70 a 74 anos & \\ \hline
+15 a 19 anos & 35 a 39 anos & 55 a 59 anos & 75 a 79 anos & \\ \hline
+\end{tabular}
+\caption{Capitais com maiores taxas de mortalidade}
+\label{tab:faixaEtaria}
+\end{table}
+
+```{r faixaEtaria, include=FALSE}
+pacientesCovidTxLetalidade["FAIXA_ETARIA"]=NA;
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=0  & pacientesCovidTxLetalidade$NU_IDADE<5,  ]$FAIXA_ETARIA="00 a 04 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=5  & pacientesCovidTxLetalidade$NU_IDADE<10, ]$FAIXA_ETARIA="05 a 09 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=10 & pacientesCovidTxLetalidade$NU_IDADE<15, ]$FAIXA_ETARIA="10 a 14 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=15 & pacientesCovidTxLetalidade$NU_IDADE<20, ]$FAIXA_ETARIA="15 a 19 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=20 & pacientesCovidTxLetalidade$NU_IDADE<25, ]$FAIXA_ETARIA="20 a 24 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=25 & pacientesCovidTxLetalidade$NU_IDADE<30, ]$FAIXA_ETARIA="25 a 29 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=30 & pacientesCovidTxLetalidade$NU_IDADE<35, ]$FAIXA_ETARIA="30 a 34 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=35 & pacientesCovidTxLetalidade$NU_IDADE<40, ]$FAIXA_ETARIA="35 a 39 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=40 & pacientesCovidTxLetalidade$NU_IDADE<45, ]$FAIXA_ETARIA="40 a 44 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=45 & pacientesCovidTxLetalidade$NU_IDADE<50, ]$FAIXA_ETARIA="45 a 49 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=50 & pacientesCovidTxLetalidade$NU_IDADE<55, ]$FAIXA_ETARIA="50 a 54 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=55 & pacientesCovidTxLetalidade$NU_IDADE<60, ]$FAIXA_ETARIA="55 a 59 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=60 & pacientesCovidTxLetalidade$NU_IDADE<65, ]$FAIXA_ETARIA="60 a 64 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=65 & pacientesCovidTxLetalidade$NU_IDADE<70, ]$FAIXA_ETARIA="65 a 69 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=70 & pacientesCovidTxLetalidade$NU_IDADE<75, ]$FAIXA_ETARIA="70 a 74 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=75 & pacientesCovidTxLetalidade$NU_IDADE<80, ]$FAIXA_ETARIA="75 a 79 anos"
+pacientesCovidTxLetalidade[pacientesCovidTxLetalidade$NU_IDADE>=80 , ]$FAIXA_ETARIA="80 anos ou mais"
+pacientesCovidTxLetalidade$FAIXA_ETARIA=as.factor(pacientesCovidTxLetalidade$FAIXA_ETARIA)
+```
+
+```{r removerValoresOmissos, include=FALSE }
+dadosRegressao = pacientesCovidTxLetalidade[,c("CS_SEXO", "NU_IDADE", "FAIXA_ETARIA", "CS_RACA", "IN_FATOR_RISC", "CS_EVOLUCAO", "REGIAO")]
+dadosRegressao=dadosRegressao[complete.cases(dadosRegressao),]
+```
+
+```{r transDadosRegr, include=FALSE}
+dadosRegressaoLogistica=dadosRegressao
+dadosRegressaoLogistica$IN_FATOR_RISC=if_else(dadosRegressaoLogistica$IN_FATOR_RISC=="S", 1,0)
+dadosRegressaoLogistica["IN_OBITO_COVID"]=if_else(dadosRegressaoLogistica$CS_EVOLUCAO=="Óbito", 1,0)
+```
+
+\begin{flushleft}
+\large\underline{\textbf{Primeira Execução}}
+\end{flushleft}
+
+```{r modeloRegressaoLogistica1, results='hide'}
+modeloRegressaoLogistica = glm(formula = IN_OBITO_COVID ~ CS_SEXO +
+FAIXA_ETARIA + CS_RACA + IN_FATOR_RISC + REGIAO,
+data = dadosRegressaoLogistica, family = binomial(link = "logit"))
+modeloRegressaoLogistica.table <- xtable(modeloRegressaoLogistica)
+print(modeloRegressaoLogistica.table, type = "LaTeX" )
+```
+
+\begin{table}[hbp]
+\center
+\begin{tabular}{|c|c|c|c|c|} \hline
+   & $\beta^1$ & Std. Error & z value & Pr($>$$|$z$|$) \\ \hline
+  $\beta^0$ & -3.1647 & 0.0743 & -42.61 & 0.0000 \\ \hline
+  Homem & 0.2465 & 0.0075 & 32.99 & 0.0000 \\ \hline
+  05 a 09 anos & -0.1450 & 0.1098 & -1.32 & 0.1865 \\ \hline
+  10 a 14 anos & 0.1796 & 0.1155 & 1.56 & 0.1199 \\ \hline
+  15 a 19 anos & 0.4714 & 0.0943 & 5.00 & 0.0000 \\ \hline
+  20 a 24 anos & 0.4353 & 0.0809 & 5.38 & 0.0000 \\ \hline
+  25 a 29 anos & 0.4097 & 0.0751 & 5.46 & 0.0000 \\ \hline
+  30 a 34 anos & 0.5109 & 0.0712 & 7.18 & 0.0000 \\ \hline
+  35 a 39 anos & 0.6436 & 0.0691 & 9.31 & 0.0000 \\ \hline
+  40 a 44 anos & 0.8465 & 0.0683 & 12.40 & 0.0000 \\ \hline
+  45 a 49 anos & 1.0456 & 0.0678 & 15.43 & 0.0000 \\ \hline
+  50 a 54 anos & 1.2462 & 0.0673 & 18.51 & 0.0000 \\ \hline
+  55 a 59 anos & 1.5130 & 0.0670 & 22.58 & 0.0000 \\ \hline
+  60 a 64 anos & 1.8458 & 0.0668 & 27.62 & 0.0000 \\ \hline
+  65 a 69 anos & 2.1292 & 0.0668 & 31.89 & 0.0000 \\ \hline
+  70 a 74 anos & 2.3683 & 0.0668 & 35.45 & 0.0000 \\ \hline
+  75 a 79 anos & 2.5917 & 0.0670 & 38.71 & 0.0000 \\ \hline
+  80 anos ou mais & 2.9861 & 0.0666 & 44.85 & 0.0000 \\ \hline
+  Branca & 0.0225 & 0.0316 & 0.71 & 0.4764 \\ \hline
+  Indígina & 0.3425 & 0.0667 & 5.13 & 0.0000 \\ \hline
+  Parda & 0.1790 & 0.0316 & 5.66 & 0.0000 \\ \hline
+  Preta & 0.3760 & 0.0343 & 10.95 & 0.0000 \\ \hline
+  Tem comorbidades & 0.5298 & 0.0085 & 62.17 & 0.0000 \\ \hline
+  Nordeste & 0.4173 & 0.0158 & 26.37 & 0.0000 \\ \hline
+  Norte & 0.3576 & 0.0181 & 19.79 & 0.0000 \\ \hline
+  Sudeste & 0.0532 & 0.0144 & 3.70 & 0.0002 \\ \hline
+  Sul & -0.1697 & 0.0169 & -10.04 & 0.0000 \\ \hline
+\end{tabular}
+\caption{Modelo com valores de baixa significância presentes}
+\label{tab:regTabLog1}
+\end{table}
+
+\qquad Na primeira execução o modelo apresentou valores de baixa significância.
+
+\qquad Para a faixa etária, na primeira execução o modelo apresentou baixa significância nos intervalos de (5 a 9 anos) e (10 a 14 anos). Como também não apresentou a faixa de (0 a 4 anos) esses intervalos foram reagrupadas em um novo intervalo de (0 a 14 anos).
+
+\qquad Já para raça do paciente, o modelo apresentou baixa significância para raça branca e não expôs a raça amarela, então a raça amarela foi redefinida com raça branca, valor com maior predominância na amostra. Conforme tabela \underline{\color{blue}\ref{tab:regTabLog1}}
+
+```{r ajusteModelo, include=FALSE}
+dadosRegressaoLogistica
+dadosRegressaoLogistica$FAIXA_ETARIA=as.character(dadosRegressaoLogistica$FAIXA_ETARIA)
+dadosRegressaoLogistica[dadosRegressaoLogistica$NU_IDADE<15, ]$FAIXA_ETARIA="0 a 14 anos"
+dadosRegressaoLogistica$FAIXA_ETARIA=as.factor(dadosRegressaoLogistica$FAIXA_ETARIA)
+dadosRegressaoLogistica[dadosRegressaoLogistica$CS_RACA=="Amarela", ]$CS_RACA
+dadosRegressaoLogistica[dadosRegressaoLogistica$CS_RACA=="Amarela", ]$CS_RACA = "Branca"
+dadosRegressaoLogistica$CS_RACA=as.factor(dadosRegressaoLogistica$CS_RACA)
+```
+
+\begin{flushleft}
+\large\underline{\textbf{Segunda Execução}}
+\end{flushleft}
+
+```{r modeloRegressaoLogistica2, results='hide'}
+modeloRegressaoLogistica = glm(formula = IN_OBITO_COVID ~ CS_SEXO +
+FAIXA_ETARIA + CS_RACA + IN_FATOR_RISC + REGIAO,
+data = dadosRegressaoLogistica, family = binomial(link = "logit"))
+modeloRegressaoLogistica.table <- xtable(modeloRegressaoLogistica)
+print(modeloRegressaoLogistica.table, type = "LaTeX" )
+```
+
+\begin{table}[hbp]
+\center
+\begin{tabular}{|c|c|c|c|c|} \hline
+   & $\beta^1$ & Std. Error & z value & Pr($>$$|$z$|$) \\ \hline
+  $\beta^0$ & -3.1459 & 0.0488 & -64.53 & 0.0000 \\ \hline
+  Homem & 0.2465 & 0.0075 & 32.98 & 0.0000 \\ \hline
+  15 a 19 anos & 0.4742 & 0.0817 & 5.80 & 0.0000 \\ \hline
+  20 a 24 anos & 0.4380 & 0.0659 & 6.65 & 0.0000 \\ \hline
+  25 a 29 anos & 0.4124 & 0.0585 & 7.05 & 0.0000 \\ \hline
+  30 a 34 anos & 0.5136 & 0.0534 & 9.62 & 0.0000 \\ \hline
+  35 a 39 anos & 0.6463 & 0.0507 & 12.76 & 0.0000 \\ \hline
+  40 a 44 anos & 0.8491 & 0.0494 & 17.17 & 0.0000 \\ \hline
+  45 a 49 anos & 1.0483 & 0.0487 & 21.51 & 0.0000 \\ \hline
+  50 a 54 anos & 1.2489 & 0.0481 & 25.95 & 0.0000 \\ \hline
+  55 a 59 anos & 1.5157 & 0.0477 & 31.79 & 0.0000 \\ \hline
+  60 a 64 anos & 1.8485 & 0.0474 & 38.96 & 0.0000 \\ \hline
+  65 a 69 anos & 2.1319 & 0.0473 & 45.03 & 0.0000 \\ \hline
+  70 a 74 anos & 2.3709 & 0.0474 & 50.03 & 0.0000 \\ \hline
+  75 a 79 anos & 2.5944 & 0.0476 & 54.48 & 0.0000 \\ \hline
+  80 anos ou mais & 2.9888 & 0.0471 & 63.48 & 0.0000 \\ \hline
+  Indígina & 0.3206 & 0.0595 & 5.39 & 0.0000 \\ \hline
+  Parda & 0.1574 & 0.0090 & 17.55 & 0.0000 \\ \hline
+  Preta & 0.3543 & 0.0156 & 22.64 & 0.0000 \\ \hline
+  Tem comorbidade & 0.5299 & 0.0085 & 62.18 & 0.0000 \\ \hline
+  Nordeste & 0.4171 & 0.0158 & 26.36 & 0.0000 \\ \hline
+  Norte & 0.3576 & 0.0181 & 19.79 & 0.0000 \\ \hline
+  Sudeste & 0.0535 & 0.0144 & 3.72 & 0.0002 \\ \hline
+  Sul & -0.1689 & 0.0169 & -10.01 & 0.0000 \\ \hline
+\end{tabular}
+\caption{Modelo de regressão logística otimizado}
+\label{tab:regTabLog2}
+\end{table}
+
+```{r logitRiscoDeVida, include=FALSE}
+#Maior risco de vida
+ maiorRisco = -3.1459 + 2.9888 + 0.5299 + 0.4171 + 0.3543 + 0.2465
+ maiorRisco =  (exp(maiorRisco) / (1+exp(maiorRisco)))
+ maiorRisco
+ #Maior risco de vida
+ menorRisco = -3.1459 - 0.1689
+ menorRisco =  (exp(menorRisco) / (1+exp(menorRisco)))
+ menorRisco
+```
+
+
+\qquad Após o ajuste do modelo e a reexecução em uma amostra com 383.266 (trezentos e oitenta e três mil e duzentos e sesenta e seis) pacientes. Conclui-se que o perfil com maior risco de morte tem: idade de 80 (oitenta) anos ou mais ($\beta^1$ : 2.9888), já apresenta doenças preexistentes ($\beta^1$ : 0.5299), reside na região nordeste ($\beta^1$ : 0.4171), é de cor preta 
+($\beta^1$ : 0.3543) e homem ($\beta^1$ : 0.2465), com probabilidade de óbito de 80%.
+
+\qquad Já o perfil com menor risco de morte no Brasil: reside na região sul ($\beta^1$ : -0.1689), tem idade de 0 (zero) a 14 (quatorze) anos, não tem doenças preexistentes, é de cor branca ou amarela e do sexo feminino, com probabilidade de óbito por covid-19 de 35%.
+
+\qquad Os valores de $\beta^0$ e $\beta^1$ do modelo otimizado podem ser verificados na tabela: \underline{\color{blue}\ref{tab:regTabLog2}}
+
+\newpage
+
+\section{6. Machine Learning}
+
+\newpage
+
+\section{Referência bibliográfica}
+
+\begin{thebibliography}{OPHS15}
+\bibitem[1]{Gallagher:2020}
+Gallagher, James. \emph{Coronavírus é 'tão mortal quanto ebola' em casos de internação, diz estudo britânico.\emph{DATA GEEKS, 29 abr. 2020.}}
+Disponível em: \url{https://www.bbc.com/portuguese/geral-52481818}
+- ( Acessado em: 14 jan. 2021 )
+\bibitem[2]{GOMES:2019}
+GOMES, Pedro César Tebaldi.
+\emph{Classificação com Naive Bayes. \emph{DATA GEEKS, 22 fev. 2019.}}
+Disponível em: \url{https://www.datageeks.com.br/naive-bayes/}
+- ( Acessado em: 14 jan. 2021 )
+\bibitem[3]{Hosokawa:2011}
+Hosokawa, Eric Ossamu. \emph{Técnica de Árvore de Decisão em Mineração de Dados. 2011. Trabalho de Conclusão de Curso (Tecnólogo em Processamento de Dados) - \emph{Faculdade de Tecnologia de São Paulo, São Paulo, 2011.}}
+\bibitem[4]{JUNIOR:2010}
+JUNIOR, Gilson Medeiros de Oliveira. \emph{Máquina de Vetores Suporte: estudo e análise de parâmetros para otimização de resultado. 2010. Trabalho de Conclusão de Curso (Bacharelado em Ciência da Computação) - \emph{Universidade Federal de Pernambuco, Recife, 2010.}}
+\bibitem[5]{MEHTA:2017}
+MEHTA, \emph{R. Big Data Analytics with Java. \emph{Birmingham: Packt Publishing Ltd, 2017.}}
+\bibitem[6]{SANTOS:2017}
+SANTOS, Roberto Moreira. \emph{A importância do uso de ferramentas de analítica preditiva gratuitas para as empresas. 2017. Trabalho de Conclusão de Curso (Bacharelado em Sistemas de Informação) - \emph{Universidade Federal de Pernambuco, Recife, 2017.}}
+\end{thebibliography}
+
+\newpage
+
+\includepdf[scale=0.8, pages={1}, pagecommand={\section{Anexo A - Ficha de Notificação}}]{anexos/ficha-srag-final-27.07.2020_final.pdf} 
+\includepdf[scale=0.8, pages={2}]{anexos/ficha-srag-final-27.07.2020_final.pdf} 
+
+\includepdf[scale=0.8, angle=90, pages={1}, pagecommand={\section{Anexo B - Dicionário de dados}}]{anexos/dicionario-de-dados-srag-hospitalizado-27.07.2020-final.pdf} 
+\includepdf[scale=0.8, angle=90, pages={2-}]{anexos/dicionario-de-dados-srag-hospitalizado-27.07.2020-final.pdf} 
