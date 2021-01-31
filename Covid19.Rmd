@@ -12,10 +12,8 @@ date: "Janeiro de 2021"
 institute: "PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS"
 output: pdf_document
 fontsize: 12pt
-geometry: margin=0.9in
 latex_engine: latex2
 --- 
-
 
 \let\oldShaded\Shaded
 \let\endoldShaded\endShaded
@@ -60,18 +58,19 @@ O uso de técnicas de inteligência artificial, mais especificamente algoritmos 
 
 \qquad Por fim, pode-se destacar a técnica de mineração de dados de árvore de decisão na aprendizagem de máquina. De acordo com Hosokawa (2011) \cite{Hosokawa:2011}, a árvore de decisão é um modelo preditivo, representado por um gráfico em forma de árvore, contendo as decisões a serem tomadas e seus possíveis riscos, custo e prejuízos. 
 
-\qquad Neste sentido, este trabalho utilizou as técnicas citadas acima, dentre outras, para análise de dados do Sistema Único de Saúde (SUS) relacionados às Síndromes Respiratórias Agudas Graves (SARS), de forma a subsidiar a implementação de políticas de saúde pública e melhorar o planejamento na área da saúde quanto à necessidade de ventilação invasiva para atender aos casos de SARS. 
+\qquad Neste sentido, este trabalho utilizou as técnicas citadas acima, dentre outras, para análise de dados do Sistema Único de Saúde (SUS) relacionados às Síndromes Respiratórias Agudas Graves (SARS) com enfase da convid-19, em 2020. De forma, a identificar as regiões do Brasil mais impactadas pela covid-19, bem como os perfis com mair risco de morte. De modo, a subsidiar a implementação de políticas de saúde pública. A exemplo, a elaboração de um plano nacional de vacinação.
 
+\newpage
 
 \subsection{1.1 Contextualização}
 
-\qquad O ano de 2020 foi marcado por isolamento, medo e insegurança, causados pela pandemia do Coronavírus SARS-CoV-2 (Covid-19) e, com ela, pelo aumento considerável dos casos de Síndrome Respiratória Aguda Grave (SARS). 
+\qquad O ano de 2020 foi marcado por isolamento, medo e insegurança, causados pela pandemia do novo coronavírus SARS-CoV-2 e, com ela, o aumento considerável dos casos de óbitos por covid-19.
 
 \qquad Durante todo o curso da pandemia, um dos principais problemas que as autoridades e os profissionais de saúde enfrentaram foi a falta de informação, de recursos médicos, como respiradores, e de um plano adequado para sua distribuição. 
 
-\qquad Como o novo coronavírus é a principal causa para o aumento nos casos de Síndrome Respiratória Aguda Grave, ser capaz de prever que tipo de recurso um indivíduo pode precisar no momento de ser testado positivo, será de grande ajuda para as autoridades, pois elas seriam capazes de obter e providenciar os recursos necessários para salvar a vida daquele paciente, principalmente no que se refere a respiradores, recurso essencial para tratamento de casos de SARS.
+\qquad Como o novo coronavírus é a principal causa para o aumento dos casos de mortes de Síndrome Respiratória Aguda Grave (SARS), identificar as regiões do Brasil mais afetas, bem como ser capaz de prever os perfis com maior risco de morte, será de grande ajuda para as autoridades, na elaboração de políticas públicas na área da saúde e de um plano de vacinação nacional.
 
-\qquad Dado o atual volume de informações relacionados ao SARS-CoV-2 (Covid-19) e às Síndromes Respiratórias Agudas Graves disponíveis, é possível se utilizar da tecnologia, como a inteligência artificial, para realizar predições que auxiliem as autoridades da área de saúde e os médicos no tratamento dos pacientes. 
+\qquad Dado o atual volume de informações relacionados ao SARS-CoV-2 (Covid-19) e às Síndromes Respiratórias Agudas Graves disponíveis, é possível se utilizar da tecnologia, como a inteligência artificial, para realizar predições que auxiliem as autoridades da área de saúde e os médicos na elaboração de planos no combate ao novo corona vírus.
 
 \qquad Sobre o uso das informações geradas com base nestas análises preditivas, Roberto Moreira Santos (2017) afirma que:
 
@@ -87,26 +86,21 @@ A aplicação desses resultados provenientes das análises é de suma importânc
 
 \qquad Neste contexto, “A analítica preditiva pode ser apoiada por técnicas da computação como aprendizagem de máquina (machine learning) e a mineração de dados para aumentar seu potencial de precisão” (WAYNE, 2007 apud SANTOS, 2017, p.11).
 
-\qquad Dada a situação de calamidade pública provocada pelo Coronavírus SARS-CoV-2 (Covid-19) e o elevado aumento nos casos de Síndrome Respiratória Aguda Grave (SARS), que levou o Brasil a ultrapassar a marca de 206 mil mortes por Covid-19, no início de 2021, buscou-se utilizar, neste trabalho, técnicas de mineração de dados e machine learning, com apoio do rstudio para o desenvolvimento de um Rmarkdown com scripts em R diversas bibliotecas, conforme Tabela 1 apresentada abaixo: 
+\qquad Dada a situação de calamidade pública provocada pelo novo Coronavírus SARS-CoV-2, que levou o Brasil a ultrapassar a marca de 180 mil mortes por covid-19, em 2020 e a chegada da vacina, buscou-se utilizar, neste trabalho, técnicas de mineração de dados e machine learning, com apoio do rstudio para o desenvolvimento de um projeto de ciência de dados com proposito de contribuir com a contenção da doença no Brasil. As bibliotecas utilizadas na elaboração do projeto estão descritas na tabela \ref{tab:pacotesR} da página \pageref{tab:pacotesR}.
 
-\begin{table}[hbp]
+\begin{table}[htp!]
 \center
-\begin{tabular}{|l|l|} \hline
-ggplot2 & Facilita a visualização dos dados a partir criação de gráficos sofisticados.  \\ \hline
-gridExtra & Permite a visualização dos gráficos em grades.  \\ \hline
-geobr & Acesso fácil aos dados espaciais do Brasil facilitando a criação dos mapas. \\ \hline
-dplyr & O Facilita a manipulação de dados e a criação de JOINs no dataframe. \\ \hline 
-latexpdf & Cria o pdf a partir do RMarkdown. \\ \hline
-stringr & Pacote com funções para manipular strings. \\ \hline
-openxlsx & Importar dados de arquivo xlsx \\ \hline
-rpart & Algorítimo de marchine learning baseado em árvore de decisão. \\ \hline
-e1071 & Algorítimo de marchine learning baseado em naive bayes. \\ \hline
-randomForest & Algorítimo de marchine learning baseado em seleção de atributos. \\ \hline
-scales & Permite a inclusão de legendas e melhora a estética dos gráficos.\\ \hline
+\begin{tabular}{|c|c|c|c|c|c|} \hline
+ggplot2 & gridExtra & geobr & geobr & dplyr & latexpdf \\ \hline
+stringr & openxlsx & rpart & e1071 & randomForest & scales  \\ \hline
 \end{tabular}
 \caption{Pacotes R}
 \label{tab:pacotesR}
 \end{table}
+
+\qquad Assim, espera-se que as predições apresentadas com base no uso dessas tecnologias gerem conhecimentos úteis que auxiliem as autoridades públicas na implementação de políticas públicas na área da saúde, e capacitem melhor o país na contenção da doença. 
+
+\newpage
 
 ```{r pacotes, include=FALSE}
 #Instalar 
@@ -147,21 +141,24 @@ ptBr <- list(
 
 ```
 
-\qquad Assim, espera-se que as predições apresentadas com base no uso dessas tecnologias gerem conhecimentos úteis que auxiliem as autoridades públicas na implementação de políticas públicas na área da saúde, e capacitem melhor o país para atender aos casos de SARS. 
-
 \subsection{1.2 O problema proposto}
 
-\qquad Conforme mencionado, neste trabalho, iremos abordar a análise de dados do Sistema Único de Saúde (SUS) referentes aos quadros de Síndrome Respiratória Aguda Grave (SARS), durante a pandemia de Covid-19, em 2020.
+\qquad A pandemia da COVID-19 está impondo ao Brasil e ao mundo um desafio sem precedentes na história. No Brasil e no mundo, as autoridades implementam políticas públicas para conter o avança da doença e o crescente número de óbitos. Embora o Brasil, tenha o mais robusto sistema de saúde da America Latina, a capacidade de atendimento em todo país é bastante desigual.
 
-\qquad Esta análise tem o objetivo de entender a evolução dos casos de SARS com foco na COVID para capacitar as autoridades da área de saúde na construção de políticas públicas voltadas a atender a esses casos, bem como no planejamento dos recursos que serão utilizados por estes pacientes. Ajudando, assim, essas autoridades adotarem ações preventivas, de forma que tenham como fornecer o tratamento adequado especificamente no que tange os recurso de suporte a ventilação pulmonar a todos os pacientes com Síndrome Respiratória Aguda Grave. 
+\qquad Nas regiões mais pobre do Brasil onde a capacidade de atendimento médico é menor, verifica-se que a taxa de letalidade da doença é ainda maior.
+
+
+\subsection{1.3 Objetivo}
+
+\qquad É objetivo deste trabalho identificar as regiões com maiores número de óbitos, bem como as taxas de mortalidade e letalidade. Assim como, identificar os perfis dos pacientes com maiores riscos de morte. Para contribuir com as autoridades da área de saúde na construção de políticas públicas voltadas para redução dos números de óbitos a e contenção do novo corona vírus.
 
 \newpage
 
 \section{2. Coleta dos dados}
 
-\subsection{2.1 Dados do Sistema Único de Saúde}
+\subsection{2.1 Dados OpenDataSUS}
 
-\qquad Dentre os dados utilizados neste trabalho, destacam-se os fornecidos pelo portal OpenDataSUS. Sobre os dados coletados informa-se no portal OpenDataSUS:
+\qquad Dentre os dados utilizados neste trabalho, destacam-se os dados fornecidos pelo Ministério da Saúde por meio da Secretaria de Vigilância em Sáude no portal OpenDataSUS. Sobre os dados coletados informa-se no portal OpenDataSUS:
 
 \
 \begin{flushright}
@@ -171,42 +168,41 @@ O Ministério da Saúde (MS), por meio da Secretaria de Vigilância em Saúde (S
 \end{footnotesize}
 \end{minipage}
 \end{flushright}
-\
-\begin{flushright}
-\begin{minipage}{0.7\linewidth}
-\begin{footnotesize} 
-Os dados de 2021 são disponibilizados semanalmente, às quartas-feiras, podendo, excepcionalmente, a atualização ocorrer em outro dia.
-\end{footnotesize}
-\end{minipage}
-\end{flushright}
-\
 
-\qquad O arquivo é disponibilizado para \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/42bd5e0e-d61a-4359-942e-ebc83391a137}{\underline{\color{blue} download em formato CSV}}. No momento do download o arquivo continha dados até 04/01/2021. Contendo 1.103.183 (um milhão cento e três mil e cento e oitenta e três) observações e 154 variáveis. Cada linha do arquivo corresponde ao registro de um paciente com a síndrome respiratória aguda grave. As 154 colunas são campos coletados a partir da  \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/bd725e4c-c869-400f-a479-9b544c2812b4}{\underline{\color{blue} ficha de notificação do paciente}}, além de informações geradas pelo sistema.
+\qquad A Secretaria de Vigilância disponibiliza o arquivo para \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/42bd5e0e-d61a-4359-942e-ebc83391a137}{\underline{\color{blue} download em formato CSV}}. Esse arquivo é atualizado semanalmente, no momento do download o arquivo disponibilizado continha dados até 04/01/2021.
+
+\qquad Como a Secretaria de Vigilância em Saúde atualiza o arquivo CSV semanalmente, para garantir o acesso ao arquivo exato, analisado neste traballho, fez-se necessário manter uma cópia do arquivo no Google drive. O arquivo pode ser acessado no link: \url{https://drive.google.com/drive/folders/1l52SO-RMHYfs2ci_2pBAZJNw2hA5i2me?usp=sharing}
+
+\qquad O arquivo contém 1.103.183 (um milhão cento e três mil e cento e oitenta e três) observações e 154 variáveis. Cada linha do arquivo corresponde ao registro de um paciente com a síndrome respiratória aguda grave. As 154 colunas são campos coletados a partir da  \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/bd725e4c-c869-400f-a479-9b544c2812b4}{\underline{\color{blue} ficha de notificação do paciente}}, além de informações geradas pelo sistema. A ficha de notificação e o dicionário de dados estão disponíveis na seção anexo.
 
 ```{r importarArquivoSuS}
 arquivo = read.csv("dados/INFLUD-04-01-2021.csv", header = T, sep = ";",
 na.strings = "",stringsAsFactors = T)
 ```
 
-```{r selectColunasSUS, include=F}
-#Selecionando campos de interesse
-pacientes = arquivo[ , c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI", "SG_UF_NOT",
-                         "ID_MUNICIP", "CO_MUN_NOT", "ID_UNIDADE", "CO_UNI_NOT",
-"CS_SEXO", "NU_IDADE_N", "CS_GESTANT", "CS_RACA", "SURTO_SG", "NOSOCOMIAL", "FEBRE",
-"TOSSE", "GARGANTA", "DISPNEIA", "DESC_RESP", "SATURACAO", "DIARREIA", "VOMITO", "DOR_ABD",
-"FADIGA",  "PERD_OLFT", "PERD_PALA", "FATOR_RISC", "PUERPERA", "CARDIOPATI", "HEMATOLOGI",
-"SIND_DOWN", "HEPATICA", "ASMA", "DIABETES", "NEUROLOGIC", "PNEUMOPATI", "IMUNODEPRE",
-"RENAL", "OBESIDADE", "OBES_IMC", "VACINA", "ANTIVIRAL", "HOSPITAL", "DT_INTERNA", "UTI",
-"DT_ENTUTI", "DT_SAIDUTI", "SUPORT_VEN", "RAIOX_RES", "TOMO_RES", "AMOSTRA", "TP_TES_AN",
-"RES_AN", "POS_AN_FLU", "TP_FLU_AN", "POS_AN_OUT", "AN_SARS2", "AN_VSR", "AN_PARA1",
-"AN_PARA2", "AN_PARA3", "AN_ADENO", "PCR_RESUL", "POS_PCRFLU", "TP_FLU_PCR", "PCR_FLUASU",
-"PCR_FLUBLI", "POS_PCROUT", "PCR_SARS2", "PCR_VSR", "PCR_PARA1", "PCR_PARA2", "PCR_PARA3",
-"PCR_PARA4", "PCR_ADENO", "PCR_METAP", "PCR_BOCA", "PCR_RINO", "TP_AM_SOR", "TP_SOR",
-"RES_IGG", "RES_IGM", "RES_IGA", "CLASSI_FIN", "CRITERIO", "EVOLUCAO", "DT_EVOLUCA")]
+\qquad Após a importação dos dados as colunas objeto da análise foram selecionadas, bem como renomeadas a fim de facilitar a identificação nas seções seguintes. 
 
-#Renomeando os campo pra facilitar a identificação dos dados
+```{r selectColunasSUS, results='hide'}
+pacientes = arquivo[ , c("DT_NOTIFIC", "SEM_NOT", "DT_SIN_PRI", "SEM_PRI", "SG_UF_NOT",
+"ID_MUNICIP", "CO_MUN_NOT", "ID_UNIDADE", "CO_UNI_NOT",
+"CS_SEXO", "NU_IDADE_N", "CS_GESTANT", "CS_RACA", "SURTO_SG", "NOSOCOMIAL", "FEBRE",
+"TOSSE", "GARGANTA", "DISPNEIA", "DESC_RESP", "SATURACAO", "DIARREIA", "VOMITO", 
+"DOR_ABD","FADIGA",  "PERD_OLFT", "PERD_PALA", "FATOR_RISC", "PUERPERA", 
+"CARDIOPATI", "HEMATOLOGI", "SIND_DOWN", "HEPATICA", "ASMA", "DIABETES", 
+"NEUROLOGIC", "PNEUMOPATI", "IMUNODEPRE","RENAL", "OBESIDADE", "OBES_IMC", "VACINA",
+"ANTIVIRAL", "HOSPITAL", "DT_INTERNA", "UTI","DT_ENTUTI", "DT_SAIDUTI",
+"SUPORT_VEN", "RAIOX_RES", "TOMO_RES", "AMOSTRA", "TP_TES_AN","RES_AN",
+"POS_AN_FLU", "TP_FLU_AN", "POS_AN_OUT", "AN_SARS2", "AN_VSR",
+"AN_PARA1", "AN_PARA2", "AN_PARA3", "AN_ADENO", "PCR_RESUL", "POS_PCRFLU",
+"TP_FLU_PCR", "PCR_FLUASU","PCR_FLUBLI", "POS_PCROUT", "PCR_SARS2", "PCR_VSR",
+"PCR_PARA1", "PCR_PARA2", "PCR_PARA3","PCR_PARA4", "PCR_ADENO", "PCR_METAP",
+"PCR_BOCA", "PCR_RINO", "TP_AM_SOR", "TP_SOR","RES_IGG", "RES_IGM", "RES_IGA",
+"CLASSI_FIN", "CRITERIO", "EVOLUCAO", "DT_EVOLUCA")]
+```
+
+```{r renomearColuna, results='hide'}
 colnames(pacientes) =  c("DT_NOTIFICACAO", "SEMANA_NOTIFICACAO", "DT_PRIMEIROS_SINTOMAS",
-                         "SEMANA_PRIMEIROS_SINTOMAS", "SG_UF", "MUNICIPIO",
+"SEMANA_PRIMEIROS_SINTOMAS", "SG_UF", "MUNICIPIO",
 "COD_MUNICIPIO", "HOSPITAL", "COD_HOSPITAL","CS_SEXO", "NU_IDADE", "CS_GESTANTE",
 "CS_RACA", "IN_SURTO_SINDROME_GRIPAL", "IN_NOSOCOMIAL", "IN_FEBRE", "IN_TOSSE",
 "IN_GARGANTA", "IN_DISPNEIA", "IN_DESCONFORTO_RESP", "IN_SATURACAO", "IN_DIARREIA",
@@ -216,34 +212,52 @@ colnames(pacientes) =  c("DT_NOTIFICACAO", "SEMANA_NOTIFICACAO", "DT_PRIMEIROS_S
 "IN_PNEUMOPATIA_CRONICA", "IN_IMUNODEPRESSAO", "IN_DOENCA_RENAL", "IN_OBESIDADE",
 "NU_OBESIDADE_IMC", "IN_RECEBEU_VACINA_GRIPE", "IN_USOU_ANTIVIRAL", "IN_HOSPITALIZADO",
 "DT_INTERNACAO", "IN_UTI", "DT_ENTRADA_UTI", "DT_SAIDA_UTI", "CS_SUPORTE_VENTILATORIO",
-"CS_RAIOX_RESULTADO", "CS_TOMOGRAFIA_RESULTADO", "IN_COLETOU_AMOSTRA", "CS_TESTE_ANTIGENO",
-"CS_RESULTADO_ANTIGENO", "IN_POSITIVO_INFLUENZA", "CS_TIPO_INFLUENZA",
-"IN_POSITIVO_OUT_VIRUS", "IN_POSITIVO_SARS2", "IN_POSITIVO_VSR",
-"IN_POSITIVO_PARAINFLUENZA1", "IN_POSITIVO_PARAINFLUENZA2", "IN_POSITIVO_PARAINFLUENA3",
-"IN_POSITIVO_ADENOVIRUS", "CS_PCR_RESULTADO", "IN_POSITIVO_PCR_INFLUENZA",
-"CS_TIPO_INFLUENZA_PCR", "CS_PCR_INFLUENZA_A_SUBTIPO", "CS_PCR_FLU_B_LINHAGEM",
-"IN_PCR_POSITIVO_OUT_VIRUS", "IN_PCR_POSITIVO_SARS2", "IN_PCR_POSITIVO_VSR",
-"IN_PCR_POSITIVO_PARAINFLUENZA1", "IN_PCR_POSITIVO_PARAINFLUENZA2",
-"IN_PCR_POSITIVO_PARAINFLUENZA3", "IN_PCR_POSITIVO_PARAINFLUENZA4",
-"IN_PCR_POSITIVO_ADENOVIRUS", "IN_PCR_POSITIVO_METAPNEUMOVIRUS",
-"IN_PCR_POSITIVO_BOCAVIRUS", "IN_PCR_POSITIVO_RINOVIRUS",
-"CS_TIPO_AMOSTRA_SOROLOGICA_SARS_COV2", "CS_TESTE_SOROLOGICO",
-"IN_SOROLOGICO_POSITIVO_IGG", "IN_SOROLOGICO_POSITIVO_IGM", "IN_RESULTADO_POSITIVO_IGA",
-"CS_CLASSICACAO_FINAL", "CS_CRITERIO_CONFIRMACAO", "CS_EVOLUCAO", "DT_EVOLUCAO")
+"CS_RAIOX_RESULTADO", "CS_TOMOGRAFIA_RESULTADO", "IN_COLETOU_AMOSTRA",
+"CS_TESTE_ANTIGENO","CS_RESULTADO_ANTIGENO", "IN_POSITIVO_INFLUENZA",
+"CS_TIPO_INFLUENZA","IN_POSITIVO_OUT_VIRUS", "IN_POSITIVO_SARS2",
+"IN_POSITIVO_VSR","IN_POSITIVO_PARAINFLUENZA1", "IN_POSITIVO_PARAINFLUENZA2",
+"IN_POSITIVO_PARAINFLUENA3","IN_POSITIVO_ADENOVIRUS", "CS_PCR_RESULTADO",
+"IN_POSITIVO_PCR_INFLUENZA","CS_TIPO_INFLUENZA_PCR", "CS_PCR_INFLUENZA_A_SUBTIPO",
+"CS_PCR_FLU_B_LINHAGEM","IN_PCR_POSITIVO_OUT_VIRUS", "IN_PCR_POSITIVO_SARS2",
+"IN_PCR_POSITIVO_VSR","IN_PCR_POSITIVO_PARAINFLUENZA1",
+"IN_PCR_POSITIVO_PARAINFLUENZA2","IN_PCR_POSITIVO_PARAINFLUENZA3",
+"IN_PCR_POSITIVO_PARAINFLUENZA4","IN_PCR_POSITIVO_ADENOVIRUS",
+"IN_PCR_POSITIVO_METAPNEUMOVIRUS","IN_PCR_POSITIVO_BOCAVIRUS",
+"IN_PCR_POSITIVO_RINOVIRUS", "CS_TIPO_AMOSTRA_SOROLOGICA_SARS_COV2",
+"CS_TESTE_SOROLOGICO","IN_SOROLOGICO_POSITIVO_IGG", "IN_SOROLOGICO_POSITIVO_IGM",
+"IN_RESULTADO_POSITIVO_IGA","CS_CLASSICACAO_FINAL", "CS_CRITERIO_CONFIRMACAO",
+"CS_EVOLUCAO", "DT_EVOLUCAO")
 ```
+
+\newpage
 
 \subsection{2.1 Dados do Instituto Brasileiro de Geografia e Estatística}
 
-\qquad Para enriquecer este trabalho, utilizou-se como fonte de informação, além do SUS, o Instituto Brasileiro de Geografia e Estatística - IBGE. Através dos dados fornecidos pelo IBGE, foi possível trabalhar dados populacionais para cálculo das taxas de mortalidade por região, bem como para produção de mapas. O Arquivo disponibilizado para download está em formato xls, após o dowload foi convertido para o formato xlsx para facilitar a importação no R Studio. O arquivo contém duas abas uma com a estimativa populacional por UF e região e outra aba com a estimativa populacional por municípios. Para este trabalho importamos apenas a aba de municípios, dado que a população por UF ou por Região pode ser obitida a partir do somatório populacional dos municípios. Iniciamos a impotação a partir da terceira linha do arquivo a fim de desconsiderar as linhas referentes a cabeçalho.
+\qquad Fez-se necessário enriquecer este trabalho com dados do Instituto Brasileiro de Geografia e Estatística - IBGE, tanto para o cálculo das taxas de mortalidades, bem como para elaboração dos mapas.
 
-```{r importarDadosIBGE, include=FALSE}
+\qquad O IBGE disponibiliza o arquivo no link: \url{https://www.ibge.gov.br/estatisticas/downloads-estatisticas.html}, no diretório: Estimativa_de_Populacao/Estimativas_2020, em formato xls. Conforme figura \ref{fig:downloadIbge} da página \pageref{fig:downloadIbge}. Após o download, o arquivo foi convertido para o formato xlsx, no LibreOffice, para facilitar a importação para o R Studio. O arquivo contém duas abas, uma com a estimativa populacional por unidade federativa e outra aba com a estimativa populacional por municípios. Para este trabalho, importamos apenas os dados da aba municípios, dado que a população por estado ou por região pode ser facilmente obitida a partir do somatório populacional dos municípios.
+
+\qquad A importação iniciou-se, a partir da terceira linha do arquivo, a fim de desconsiderar as linhas referentes ao cabeçalho.
+
+```{r importarDadosIBGE, results='hide'}
 arquivoIBGE=read.xlsx("dados/POP2020_20201030.xlsx", sheet = "Municípios",
 startRow = 3, colNames =FALSE, rowNames = FALSE)
 #Download de conjuntos de dados espaciais oficiais do Brasil.
-estados <- read_state(year=2019)
 municipios <- read_municipality(year=2019)
+```
+
+```{r importarDadosIBGE2, include=FALSE}
+estados <- read_state(year=2019)
 regioes <- read_region(year=2019)
 ```
+
+
+\begin{figure}[htp!]
+\center
+\includegraphics[width=0.5\linewidth]{anexos/download-ibge.png}
+\caption{Arquivo IBGE}
+\label{fig:downloadIbge}
+\end{figure}
 
 \newpage
 
@@ -251,18 +265,22 @@ regioes <- read_region(year=2019)
 
 \subsection{3.1 Dados do Instituto Brasileiro de Geografia e Estatística}
 
-\qquad Os dados populacionais dos municipios estão presentes no arquivo do IBGE da linha 3 até a linha 5572. Veja figura \underline{\color{blue}\ref{fig:arquivoIbge}} e a figura \underline{\color{blue}\ref{fig:rodapeIbge}} na página \underline{\color{blue}\pageref{fig:arquivoIbge}}. Como a importação foi realizada a partir da linha três do arquivo, a seleção no dataframe resultante inicia da linha 1 até a linha 5570. Após a seleção dos dados populacionais foi criando um campo extra para o código do município sem o dígito validador. Este campo foi utilizdo em JOIN com os dados do SUS. 
+\qquad A planilha disponibilizada pelo IBGE contém cabeçalho e rodapé com metadados. Os dados populacionais necessários para este trabalho estão presentes da linha 3 até a linha 5572. Veja figura \underline{\color{blue}\ref{fig:arquivoIbge}} e a figura \underline{\color{blue}\ref{fig:rodapeIbge}} na página \underline{\color{blue}\pageref{fig:arquivoIbge}}.
+
+\qquad A importação dos dados foi realizada a partir da linha três do arquivo, descartando o cabeçalho. Para descartar o rodapé, o data frame resultante da importação foi selecionado somente até a linha 5570. Por fim, foi criando um campo extra no data frame para armazenar o código do município sem o último dígito.
+
+\qquad O campo criado com o código do município sem o dígito verificador, será utilizado em JOINs nas seções seguintes.
 
 \begin{figure}[htp]
 \center
-\includegraphics[width=0.7\linewidth]{anexos/cabecalho-IBGE.png}
+\includegraphics[width=0.5\linewidth]{anexos/cabecalho-IBGE.png}
 \caption{Arquivo IBGE}
 \label{fig:arquivoIbge}
 \end{figure}
 
 \begin{figure}[htp]
 \center
-\includegraphics[width=0.7\linewidth]{anexos/rodape-IBGE.png}
+\includegraphics[width=0.5\linewidth]{anexos/rodape-IBGE.png}
 \caption{Rodapé arquivo IBGE}
 \label{fig:rodapeIbge}
 \end{figure}
@@ -287,7 +305,9 @@ municipiosIBGE$NU_POPULACAO = str_replace_all(municipiosIBGE$NU_POPULACAO, c("\\
 municipiosIBGE$NU_POPULACAO = as(municipiosIBGE$NU_POPULACAO, "integer")
 ```
 
-\qquad Foi criada uma matriz com os estados e suas repectivas regiões. Esta matriz permitiu enriquecer o dataframe de pacientes com as regiões do Brasil, para possibilitar a elaboração de gráficos sumarizados pelas regiões.
+\qquad Nas seções seguintes será necessário a criação de gráficos sumarizados pelas regiões do país. Entretanto, a planilha com os dados populacionais do IBGE e o CSV disponibilizado no portal OpenDataSUS, não consta essa informação. Veja figura \underline{\color{blue}\ref{fig:arquivoIbge}} na página \underline{\color{blue}\pageref{fig:arquivoIbge}}. 
+
+\qquad Assim, fez-se necessário a criação de uma matriz com os estados e suas respectivas regiões. Essa matriz permitiu o enriquecimento dos dados e a produção dos gráficos sumarizados.
 
 ```{r matrizRegiao}
 #Essas regiões são utilizadas nos gráficos.
@@ -394,7 +414,6 @@ qtdNotificacoesMes = pacientes %>%
 arrange(MES_NOTIFICACAO)
 ```
 
-
 ```{r grfDtNotificacao, include=FALSE}
 #Exibir gráfico com o número de notificações por mês.
 grfDtNotificacao=ggplot(qtdNotificacoesMes) + 
@@ -448,8 +467,6 @@ grfIdade=ggplot(pacientes) +
 ```{r gridIdade, echo=FALSE}
 grid.arrange(grfIdade, bottom="Gráfico 2: Idades por Região")
 ```
-
-
 
 \newpage
 
@@ -1703,7 +1720,6 @@ merge[merge$TIPO=="Nordeste",]
 
 \qquad Nas últimas semanas do ano a taxa de letalidade da região norte voltou a subir e na 52ª semana do ano a região norte, com taxa de 38% superou a região nordeste, com 37% e ainda em queda. 
 
-
 \qquad A Região sul que havia permanecido com as menores taxas de letalidde de covid-19 do país em 2020 em dezembro deve uma subida acentuada levando-a a taxas de letalidade equiparaveis com o Nordeste. Região que praticamente liderou o rank das maiores taxas de letalidade por todo ano. 
 
 
@@ -1728,7 +1744,7 @@ grid.arrange(grfTxLetalidadeRegiao, bottom="Gráfico 6: Taxa de Mortalidade Capi
 10 a 14 anos & 30 a 34 anos & 50 a 54 anos & 70 a 74 anos & \\ \hline
 15 a 19 anos & 35 a 39 anos & 55 a 59 anos & 75 a 79 anos & \\ \hline
 \end{tabular}
-\caption{Capitais com maiores taxas de mortalidade}
+\caption{Faixa Etária}
 \label{tab:faixaEtaria}
 \end{table}
 
@@ -1777,7 +1793,15 @@ modeloRegressaoLogistica.table <- xtable(modeloRegressaoLogistica)
 print(modeloRegressaoLogistica.table, type = "LaTeX" )
 ```
 
-\begin{table}[hbp]
+\qquad Na primeira execução o modelo apresentou valores de baixa significância.
+
+\qquad Para a faixa etária, na primeira execução o modelo apresentou baixa significância nos intervalos de 5 a 9 anos e 10 a 14 anos, como também não exibiu a faixa de 0 a 4 anos. Assim, esses intervalos foram reagrupadas em um novo intervalo de 0 a 14 anos.
+
+\qquad No que se refere à raça do paciente, o modelo apresentou baixa significância para raça branca e não exibiu a raça amarela. Então, optou-se por agrupar as raças amarela e branca em um grupo misto. Conforme tabela \underline{\color{blue}\ref{tab:regTabLog1}}
+
+\newpage
+
+\begin{table}[ht]
 \center
 \begin{tabular}{|c|c|c|c|c|} \hline
    & $\beta^1$ & Std. Error & z value & Pr($>$$|$z$|$) \\ \hline
@@ -1813,11 +1837,7 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 \label{tab:regTabLog1}
 \end{table}
 
-\qquad Na primeira execução o modelo apresentou valores de baixa significância.
-
-\qquad Para a faixa etária, na primeira execução o modelo apresentou baixa significância nos intervalos de (5 a 9 anos) e (10 a 14 anos). Como também não apresentou a faixa de (0 a 4 anos) esses intervalos foram reagrupadas em um novo intervalo de (0 a 14 anos).
-
-\qquad Já para raça do paciente, o modelo apresentou baixa significância para raça branca e não expôs a raça amarela, então a raça amarela foi redefinida com raça branca, valor com maior predominância na amostra. Conforme tabela \underline{\color{blue}\ref{tab:regTabLog1}}
+\newpage
 
 ```{r ajusteModelo, include=FALSE}
 dadosRegressaoLogistica
@@ -1841,7 +1861,27 @@ modeloRegressaoLogistica.table <- xtable(modeloRegressaoLogistica)
 print(modeloRegressaoLogistica.table, type = "LaTeX" )
 ```
 
-\begin{table}[hbp]
+```{r logitRiscoDeVida, include=FALSE}
+#Maior risco de vida
+ maiorRisco = -3.1459 + 2.9888 + 0.5299 + 0.4171 + 0.3543 + 0.2465
+ maiorRisco =  (exp(maiorRisco) / (1+exp(maiorRisco)))
+ maiorRisco
+ #Maior risco de vida
+ menorRisco = -3.1459 - 0.1689
+ menorRisco =  (exp(menorRisco) / (1+exp(menorRisco)))
+ menorRisco
+```
+
+\qquad Após o ajuste do modelo e a reexecução em uma amostra com 383.266 (trezentos e oitenta e três mil e duzentos e sesenta e seis) pacientes. Conclui-se que o perfil com maior risco de morte tem: idade de 80 (oitenta) anos ou mais ($\beta^1$ : 2.9888), já apresenta doenças preexistentes ($\beta^1$ : 0.5299), reside na região nordeste ($\beta^1$ : 0.4171), é de cor preta 
+($\beta^1$ : 0.3543) e homem ($\beta^1$ : 0.2465), com probabilidade de óbito de 80%.
+
+\qquad Já o perfil com menor risco de morte no Brasil: reside na região sul ($\beta^1$ : -0.1689), tem idade de 0 (zero) a 14 (quatorze) anos, não tem doenças preexistentes, é de cor branca ou amarela e do sexo feminino, com probabilidade de óbito por covid-19 de 3,5%.
+
+\qquad Os valores de $\beta^0$ e $\beta^1$ do modelo otimizado podem ser verificados na tabela: \underline{\color{blue}\ref{tab:regTabLog2}}
+
+\newpage
+
+\begin{table}[ht]
 \center
 \begin{tabular}{|c|c|c|c|c|} \hline
    & $\beta^1$ & Std. Error & z value & Pr($>$$|$z$|$) \\ \hline
@@ -1873,29 +1913,6 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 \caption{Modelo de regressão logística otimizado}
 \label{tab:regTabLog2}
 \end{table}
-
-```{r logitRiscoDeVida, include=FALSE}
-#Maior risco de vida
- maiorRisco = -3.1459 + 2.9888 + 0.5299 + 0.4171 + 0.3543 + 0.2465
- maiorRisco =  (exp(maiorRisco) / (1+exp(maiorRisco)))
- maiorRisco
- #Maior risco de vida
- menorRisco = -3.1459 - 0.1689
- menorRisco =  (exp(menorRisco) / (1+exp(menorRisco)))
- menorRisco
-```
-
-
-\qquad Após o ajuste do modelo e a reexecução em uma amostra com 383.266 (trezentos e oitenta e três mil e duzentos e sesenta e seis) pacientes. Conclui-se que o perfil com maior risco de morte tem: idade de 80 (oitenta) anos ou mais ($\beta^1$ : 2.9888), já apresenta doenças preexistentes ($\beta^1$ : 0.5299), reside na região nordeste ($\beta^1$ : 0.4171), é de cor preta 
-($\beta^1$ : 0.3543) e homem ($\beta^1$ : 0.2465), com probabilidade de óbito de 80%.
-
-\qquad Já o perfil com menor risco de morte no Brasil: reside na região sul ($\beta^1$ : -0.1689), tem idade de 0 (zero) a 14 (quatorze) anos, não tem doenças preexistentes, é de cor branca ou amarela e do sexo feminino, com probabilidade de óbito por covid-19 de 35%.
-
-\qquad Os valores de $\beta^0$ e $\beta^1$ do modelo otimizado podem ser verificados na tabela: \underline{\color{blue}\ref{tab:regTabLog2}}
-
-\newpage
-
-\section{6. Machine Learning}
 
 \newpage
 
