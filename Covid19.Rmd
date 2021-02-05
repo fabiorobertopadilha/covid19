@@ -9,8 +9,6 @@ header-includes:
 output: pdf_document
 fontsize: 12pt
 latex_engine: latex2
-documentclass: article
-classoption: a4paper
 --- 
 
 \begin{titlepage}
@@ -1377,7 +1375,7 @@ merge[merge$TIPO=="Nordeste",]
 
 
 ```{r gridTxLetalidadeRegiao, echo=FALSE}
-grid.arrange(grfTxLetalidadeRegiao, bottom="Gráfico 6: Taxa de Mortalidade Capitais")
+grid.arrange(grfTxLetalidadeRegiao, bottom="Gráfico 6: Média Móvel Taxa de Letalidade")
 ```
 
 
@@ -1726,7 +1724,6 @@ taxaAcerto = (confusao[1]+confusao[4])/sum(confusao)
 taxaAcerto
 ```
 
-
 \newpage
 
 \section{Referência bibliográfica}
@@ -1753,8 +1750,60 @@ SANTOS, Roberto Moreira. \emph{A importância do uso de ferramentas de analític
 
 \newpage
 
-\includepdf[scale=0.8, pages={1}, pagecommand={\section{Anexo A - Ficha de Notificação}}]{anexos/ficha-srag-final-27.07.2020_final.pdf} 
-\includepdf[scale=0.8, pages={2}]{anexos/ficha-srag-final-27.07.2020_final.pdf} 
+\section{Apêndice A - Taxa de Mortalidade Estados e Capitais}
 
-\includepdf[scale=0.8, angle=90, pages={1}, pagecommand={\section{Anexo B - Dicionário de dados}}]{anexos/dicionario-de-dados-srag-hospitalizado-27.07.2020-final.pdf} 
-\includepdf[scale=0.8, angle=90, pages={2-}]{anexos/dicionario-de-dados-srag-hospitalizado-27.07.2020-final.pdf} 
+```{r apendice1, echo=FALSE, results='hide'}
+
+txEstados = taxaDeMortalidadePorRegiao[,c("SG_UF", "QTD_MUNICIPIO", "NU_POPULACAO", "TX_MORTALIDADE")]
+txCapitais = taxaDeMortalidadePorCapitais[,c("SG_UF", "COD_MUNICIPIO.y", "MUNICIPIO", "NU_POPULACAO", "TX_MORTALIDADE")]
+colnames(txCapitais) = c("SG_UF", "COD_MUNICIPIO", "MUNICIPIO", "NU_POPULACAO_CAPITAL", "TX_MORTALIDADE_CAPITAL")
+estadosECapitais = txEstados %>% inner_join(txCapitais, c("SG_UF" = "SG_UF")) %>%
+arrange(desc(TX_MORTALIDADE))
+estadosECapitais = estadosECapitais[, c("SG_UF", "NU_POPULACAO", "TX_MORTALIDADE", "MUNICIPIO", "NU_POPULACAO_CAPITAL", "TX_MORTALIDADE_CAPITAL")]
+estadosECapitais.table <- xtable(estadosECapitais)
+print(estadosECapitais.table, type = "LaTeX" )
+```
+
+\begin{table}[htp!]
+\center
+\begin{tabular}{|c|c|l|l|c|r|r|} \hline
+   & UF & População & Mortalidade & Capital & População & Mortalidade \\ \hline
+  1 & RJ & 17366189 & 1470 & Rio de Janeiro & 6747815 & 2556 \\ \hline
+  2 & DF & 3055149 & 1439 & Brasília & 3055149 & 1439 \\ \hline
+  3 & AM & 4207714 & 1254 & Manaus & 2219580 & 1774 \\ \hline
+  4 & CE & 9187103 & 1119 & Fortaleza & 2686612 & 2126 \\ \hline
+  5 & SE & 2318822 & 1110 & Aracaju & 664908 & 2472 \\ \hline
+  6 & SP & 46289333 & 1020 & São Paulo & 12325232 & 1436 \\ \hline
+  7 & PE & 9616621 & 997 & Recife & 1653461 & 3313 \\ \hline
+  8 & RR & 631181 & 969 & Boa Vista & 419652 & 1458 \\ \hline
+  9 & RO & 1796460 & 927 & Porto Velho & 539354 & 1902 \\ \hline
+  10 & GO & 7113540 & 924 & Goiânia & 1536097 & 1764 \\ \hline
+  11 & PB & 4039277 & 906 & João Pessoa & 817511 & 1913 \\ \hline
+  12 & ES & 4064052 & 879 & Vitória & 365855 & 1697 \\ \hline
+  13 & MS & 2809394 & 849 & Campo Grande & 906092 & 1498 \\ \hline
+  14 & PA & 8690745 & 839 & Belém & 1499641 & 2175 \\ \hline
+  15 & RS & 11422973 & 788 & Porto Alegre & 1488252 & 1820 \\ \hline
+  16 & AP & 861773 & 770 & Macapá & 512902 & 1015 \\ \hline 
+  17 & AL & 3351543 & 751 & Maceió & 1025360 & 1566 \\ \hline
+  18 & TO & 1590248 & 728 & Palmas & 306296 & 1227 \\ \hline
+  19 & PI & 3281480 & 723 & Teresina & 868075 & 1999 \\ \hline
+  20 & SC & 7252502 & 706 & Florianópolis & 508826 & 972 \\ \hline
+  21 & PR & 11516840 & 666 & Curitiba & 1948626 & 1508 \\ \hline
+  22 & RN & 3534165 & 655 & Natal & 890480 & 1593 \\ \hline
+  23 & AC & 894470 & 655 & Rio Branco & 413418 & 1306 \\ \hline
+  24 & MG & 21292666 & 565 & Belo Horizonte & 2521564 & 1009 \\ \hline
+  25 & MT & 3526220 & 560 & Cuiabá & 618124 & 1389 \\ \hline
+  26 & BA & 14930634 & 557 & Salvador & 2886698 & 1426 \\ \hline
+  27 & MA & 7114598 & 467 & São Luís & 1108975 & 1264 \\ \hline
+\end{tabular}
+\caption{Taxa Mortalidade Estados e Capitais}
+\label{tab:taxaEstadosECapitais}
+\end{table}
+
+\newpage
+
+\includepdf[scale=0.7, pages={1}, pagecommand={\section{Anexo A - Ficha de Notificação}}]{anexos/ficha-srag-final-27.07.2020_final.pdf} 
+\includepdf[scale=0.7, pages={2}]{anexos/ficha-srag-final-27.07.2020_final.pdf} 
+
+\includepdf[scale=0.7, angle=90, pages={1}, pagecommand={\section{Anexo B - Dicionário de dados}}]{anexos/dicionario-de-dados-srag-hospitalizado-27.07.2020-final.pdf} 
+\includepdf[scale=0.7, angle=90, pages={2-}]{anexos/dicionario-de-dados-srag-hospitalizado-27.07.2020-final.pdf} 
