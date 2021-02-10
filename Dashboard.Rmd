@@ -1,0 +1,357 @@
+---
+title: "TCC-PUC Dashboard / Covid-19"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    theme: cerulean
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(dplyr)
+library(ggplot2)
+library(zoo)
+library(geobr)
+library(sf)
+```
+
+```{r}
+cores = c("#eabeac", "#b6dfe0", "#e2cfb4", "#d7d9bd", "#d6b9dd", "#b3b4e3", "#abcaeb", 
+"#ebabab", "#e6b0c7", "#eabeac", "#c1d8be", "#d7d9bd", "#d6b9dd", "#eabeac")
+coresIntensas = c("#ff4b03", "#2ae4e8", "#baa07b", "green", "#bf36e0")
+ptBr <- list(
+  ª = "."
+)
+```
+
+
+```{r}
+dadosDashBoard = read.csv("dados/dashboard_pacientes.csv", header = T, sep=";",
+                          na.strings = "", stringsAsFactors = T)
+dadosDashBoard$DT_NOTIFICACAO = as.Date(dadosDashBoard$DT_NOTIFICACAO, format="%Y-%m-%d")
+dadosDashBoard["MES_NOTIFICACAO"]=format(dadosDashBoard$DT_NOTIFICACAO, "%Y/%m")    
+dadosDashBoard$DT_EVOLUCAO = as.Date(dadosDashBoard$DT_EVOLUCAO, format="%Y-%m-%d")
+dadosDashBoard["SEMANA_EVOLUCAO"] =  format(dadosDashBoard$DT_EVOLUCAO, "%U");
+dadosDashBoard$SEMANA_EVOLUCAO=as.integer(dadosDashBoard$SEMANA_EVOLUCAO)
+dadosDashBoard$REGIAO=as.character(dadosDashBoard$REGIAO)
+dadosDashBoard[dadosDashBoard$REGIAO=="Centro-Oeste", ]$REGIAO="Centro Oeste"
+```
+
+
+Dashboard
+===
+
+Inputs {.sidebar} 
+-----------------------------------------------------------------------
+```{r}
+regioes = unique(dadosDashBoard$REGIAO)
+regioes = as.vector(regioes, mode = "character")
+regioes = c("Brasil", regioes)
+fillCol(height = 200, flex = c(NA, 1), 
+  inputPanel(
+    selectInput("regiao", label = "Regiões", choices = regioes  )
+  ),
+  uiOutput("selectEstados", height = "100%")
+)
+output$selectEstados <- renderUI({
+  dadosDashBoard = dadosDashBoard %>% filter(dadosDashBoard$REGIAO == input$regiao)
+  estados = unique(dadosDashBoard$SG_UF)
+  estados = as.vector(estados, mode = "character")
+  estados = c("Todos", estados)
+  fillCol(height = 200, flex = c(NA, 1), 
+    inputPanel(
+      selectInput("estado", label = "Estados", choices = estados ) 
+    ),
+    uiOutput("selectMunicipios", height = "100%")
+  )
+})
+output$selectMunicipios <- renderUI({
+  dadosDashBoard = dadosDashBoard %>% filter(dadosDashBoard$SG_UF == input$estado)
+  municipios = dadosDashBoard %>% group_by(COD_MUNICIPIO, MUNICIPIO) %>% summarise(.groups = "drop_last") 
+  municipios = unique(dadosDashBoard$MUNICIPIO)
+  municipios = as.vector(municipios, mode = "character")
+  municipios = c("Todos", municipios)
+  fillCol(height = 200, flex = c(NA, 1), 
+    inputPanel(
+      selectInput("municipio", label = "Municípios", municipios)
+    )
+  )
+})
+```
+
+```{r}
+observeEvent(input$regiao, {
+  regi <- input$regiao
+  if (is.null(regi)) {
+    regi <- "Brasil"
+  }
+  pacientesCovidTxLetalidade = dadosDashBoard[ complete.cases(dadosDashBoard$SEMANA_EVOLUCAO),]
+  sumariopacientesCovid = pacientesCovidTxLetalidade %>% filter(regi=="Brasil" | regi==REGIAO) %>% 
+    group_by(SEMANA_EVOLUCAO) %>%
+    summarise(.groups = "drop_last",
+    obito = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito"]),
+    total = n(),
+  ) %>% arrange(SEMANA_EVOLUCAO)
+})
+```
+
+
+```{r}
+#Número de Óbitos
+output$plotNumeroObitos=renderPlot({
+esta <- input$estado
+if (is.null(esta)) {
+  esta <- "Todos"
+}
+muni <- input$municipio
+if (is.null(muni)) {
+  muni <- "Todos"
+}
+qtdNotificacoesMes = dadosDashBoard %>% filter(input$regiao=="Brasil" | input$regiao==REGIAO) %>% 
+  filter(esta=="Todos" | esta==SG_UF) %>%
+  filter(muni=="Todos" | muni==MUNICIPIO) %>%
+  group_by(MES_NOTIFICACAO) %>%
+  summarise(
+    .groups = "drop_last",
+    OCORRENCIAS=n()
+  ) %>%
+arrange(MES_NOTIFICACAO)
+ggplot(qtdNotificacoesMes) + 
+  aes(x=MES_NOTIFICACAO, y=OCORRENCIAS, fill=MES_NOTIFICACAO)  +
+  geom_bar(stat = "identity", na.rm = F) +
+  scale_fill_manual(values = cores[14:1]) +
+  labs(x=NULL, y="Quantidade", fill = "Mês",
+       title = input$regiao,
+       subtitle = paste(muni, esta, sep = " / " )) +
+  theme_bw() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))   
+})
+```
+
+
+```{r}
+#Taxa Letalidade
+output$plotTaxaLetalidade=renderPlot({
+esta <- input$estado
+if (is.null(esta)) {
+  esta <- "Todos"
+}
+muni <- input$municipio
+if (is.null(muni)) {
+  muni <- "Todos"
+}
+pacientesCovidTxLetalidade = dadosDashBoard[ complete.cases(dadosDashBoard$SEMANA_EVOLUCAO),]
+sumariopacientesCovid = pacientesCovidTxLetalidade %>% filter(input$regiao=="Brasil" | input$regiao==REGIAO) %>% 
+  filter(esta=="Todos" | esta==SG_UF) %>%
+  filter(muni=="Todos" | muni==MUNICIPIO) %>%
+  group_by(SEMANA_EVOLUCAO) %>%
+  summarise(.groups = "drop_last",
+    obito = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito"]),
+    total = n(),
+  ) %>%
+arrange(SEMANA_EVOLUCAO)
+sumariopacientesCovid = sumariopacientesCovid[sumariopacientesCovid$SEMANA_EVOLUCAO>=12,]
+sumariopacientesCovid["TAXA"]=sumariopacientesCovid$obito/sumariopacientesCovid$total
+mediaMovel <- rollmean(sumariopacientesCovid$TAXA, 7, align = "right")
+semanaMediaMovel <- cbind(sumariopacientesCovid$SEMANA_EVOLUCAO, c(rep(NA, 6), mediaMovel))
+dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel), c("SEMANA", "TAXA"))
+ggplot(dfMediaMovelTxLetalidade) +
+geom_line(aes(x = SEMANA, y = TAXA), na.rm = T)+
+labs(x="Semana do ano", y="Taxa letalidade",
+title = input$regiao,
+subtitle = paste(muni, esta, sep = " / " )) +
+scale_y_continuous(labels = scales::percent)+
+scale_x_continuous(labels = scales::ordinal_format(rules = ptBr))+
+scale_color_manual(values = coresIntensas) +
+theme_bw() +
+theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),
+axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+})
+```
+
+```{r tratamentoIBGE, results='hide'}
+#Tratamento IBGE
+regiao = matrix(data = NA, nrow = 27, ncol = 2, byrow = TRUE)
+regiao[1,] = c("AC", "Norte")
+regiao[2,] = c("AP", "Norte")
+regiao[3,] = c("AM", "Norte")
+regiao[4,] = c("PA", "Norte")
+regiao[5,] = c("RO", "Norte")
+regiao[6,] = c("RR", "Norte")
+regiao[7,] = c("TO", "Norte")
+regiao[8,] = c("AL", "Nordeste")
+regiao[9,] = c("BA", "Nordeste")
+regiao[10,] = c("CE", "Nordeste")
+regiao[11,] = c("MA", "Nordeste")
+regiao[12,] = c("PB", "Nordeste")
+regiao[13,] = c("PE", "Nordeste")
+regiao[14,] = c("PI", "Nordeste")
+regiao[15,] = c("RN", "Nordeste")
+regiao[16,] = c("SE", "Nordeste")
+regiao[17,] = c("ES", "Sudeste")
+regiao[18,] = c("MG", "Sudeste")
+regiao[19,] = c("RJ", "Sudeste")
+regiao[20,] = c("SP", "Sudeste")
+regiao[21,] = c("PR", "Sul")
+regiao[22,] = c("RS", "Sul")
+regiao[23,] = c("SC", "Sul")
+regiao[24,] = c("DF", "Centro Oeste")
+regiao[25,] = c("GO", "Centro Oeste")
+regiao[26,] = c("MT", "Centro Oeste")
+regiao[27,] = c("MS", "Centro Oeste")
+regiao=data.frame(regiao)
+colnames(regiao)=c("SG_UF", "REGIAO")
+municipios <- readRDS(file = "dados/municipios_2019.rds")
+estados <- readRDS(file = "dados/estados_2019.rds")
+regioes <- readRDS(file = "dados/regioes_2019.rds")
+municipiosIBGE = read.csv("dados/dashboard_populacao.csv", header = T, sep=";",
+                          na.strings = "", stringsAsFactors = T)
+estadoIBGE=municipiosIBGE %>% 
+  group_by(SG_UF) %>%
+  summarise(.groups = "drop_last",
+    QTD_MUNICIPIO=n(),
+    NU_POPULACAO=sum(NU_POPULACAO)
+  ) %>%
+arrange(desc(QTD_MUNICIPIO))
+estadoIBGE = estadoIBGE %>% inner_join(regiao, c("SG_UF" = "SG_UF"))
+regiaoIBGE=estadoIBGE %>% 
+  group_by(REGIAO) %>%
+  summarise(.groups = "drop_last",
+    QTD_ESTADO=n(),
+    NU_POPULACAO=sum(NU_POPULACAO)
+  ) %>%
+arrange(desc(QTD_ESTADO))
+codCapitais= c(2800308, 1501402, 3106200, 1400100, 5300108, 5002704, 2408102, 5103403,
+               4106902, 4205407, 2304400, 5208707, 2507507, 1600303, 2704302,
+               1302603, 1721000, 4314902, 1100205, 2611606, 1200401, 3304557, 
+               2927408, 2111300, 3550308, 2211001, 3205309)
+capitais = matrix(data = NA, nrow = 27, ncol = 1, byrow = TRUE)
+capitais=data.frame(capitais);
+colnames(capitais)= c("COD_MUNICIPIO")
+capitais$COD_MUNICIPIO=codCapitais
+capitaisPopulacao <- inner_join(municipiosIBGE, capitais, by = c("COD_MUNICIPIO" = "COD_MUNICIPIO"))
+```
+
+
+```{r}
+#Taxa Mortalidade
+output$plotTaxaMortalidade=renderPlot({
+regi <- input$regiao
+esta <- input$estado
+if (is.null(esta)) {
+  esta <- "Todos"
+}
+if (esta!="Todos"){
+  mortalidadePor=dadosDashBoard[complete.cases(
+  dadosDashBoard[,c("CS_EVOLUCAO")]) &
+  dadosDashBoard$CS_EVOLUCAO=="Óbito",] %>% filter( esta==SG_UF) %>% 
+  group_by(COD_MUNICIPIO) %>%
+  summarise(.groups = "drop_last",
+  QTD_MORTES=n()
+  ) %>%
+  arrange(desc(QTD_MORTES))
+  taxaDeMortalidadePorRegiao = mortalidadePor %>% left_join(municipiosIBGE, c("COD_MUNICIPIO" = "COD_MUNICIPIO6"))
+  #Taxa de Mortalidade por Milhão de habitantes
+  taxaDeMortalidadePorRegiao$TX_MORTALIDADE=(taxaDeMortalidadePorRegiao$QTD_MORTES / taxaDeMortalidadePorRegiao$NU_POPULACAO) * 1000000
+  taxaDeMortalidadePorRegiao$TX_MORTALIDADE = as(taxaDeMortalidadePorRegiao$TX_MORTALIDADE, "integer")
+  taxaDeMortalidadePorRegiao = taxaDeMortalidadePorRegiao[order(taxaDeMortalidadePorRegiao$TX_MORTALIDADE,
+  decreasing = T),]
+  sf <- municipios[municipios$abbrev_state==esta, ] %>% left_join(taxaDeMortalidadePorRegiao, by = c("code_muni" = "COD_MUNICIPIO.y"))
+  label = sf %>% inner_join(capitaisPopulacao, c("code_muni" = "COD_MUNICIPIO"))
+  label_points <- st_point_on_surface(label)
+  label_coords <- as.data.frame(st_coordinates(label_points))
+  label_coords$REGIAO <- label$name_muni
+}
+else if (regi!="Brasil"){
+  mortalidadePor=dadosDashBoard[complete.cases(
+  dadosDashBoard[,c("CS_EVOLUCAO")]) &
+  dadosDashBoard$CS_EVOLUCAO=="Óbito",] %>% filter( regi==REGIAO) %>% 
+  group_by(SG_UF) %>%
+  summarise(.groups = "drop_last",
+  QTD_MORTES=n()
+  ) %>%
+  arrange(desc(QTD_MORTES))
+  taxaDeMortalidadePorRegiao = mortalidadePor %>% left_join(estadoIBGE, c("SG_UF" = "SG_UF"))
+  #Taxa de Mortalidade por Milhão de habitantes
+  taxaDeMortalidadePorRegiao$TX_MORTALIDADE=(taxaDeMortalidadePorRegiao$QTD_MORTES / taxaDeMortalidadePorRegiao$NU_POPULACAO) * 1000000
+  taxaDeMortalidadePorRegiao$TX_MORTALIDADE = as(taxaDeMortalidadePorRegiao$TX_MORTALIDADE, "integer")
+  taxaDeMortalidadePorRegiao = taxaDeMortalidadePorRegiao[order(taxaDeMortalidadePorRegiao$TX_MORTALIDADE,
+  decreasing = T),]
+  sf <- inner_join(estados, taxaDeMortalidadePorRegiao, by = c("abbrev_state" = "SG_UF"))
+  label = sf
+  label_points <- st_point_on_surface(label)
+  label_coords <- as.data.frame(st_coordinates(label_points))
+  label_coords$REGIAO <- label$abbrev_state
+}
+else if (regi=="Brasil"){
+  mortalidadePor=dadosDashBoard[complete.cases(
+  dadosDashBoard[,c("CS_EVOLUCAO")]) &
+  dadosDashBoard$CS_EVOLUCAO=="Óbito",] %>% 
+  group_by(REGIAO) %>%
+  summarise(.groups = "drop_last",
+  QTD_MORTES=n()
+  ) %>%
+  arrange(desc(QTD_MORTES))
+  taxaDeMortalidadePorRegiao = mortalidadePor %>% left_join(regiaoIBGE, c("REGIAO" = "REGIAO"))
+  #Taxa de Mortalidade por Milhão de habitantes
+  taxaDeMortalidadePorRegiao$TX_MORTALIDADE=(taxaDeMortalidadePorRegiao$QTD_MORTES / taxaDeMortalidadePorRegiao$NU_POPULACAO) * 1000000
+  taxaDeMortalidadePorRegiao$TX_MORTALIDADE = as(taxaDeMortalidadePorRegiao$TX_MORTALIDADE, "integer")
+  taxaDeMortalidadePorRegiao = taxaDeMortalidadePorRegiao[order(taxaDeMortalidadePorRegiao$TX_MORTALIDADE,
+  decreasing = T),]
+  sf <- inner_join(regioes, taxaDeMortalidadePorRegiao, by = c("name_region" = "REGIAO"))
+  label = sf
+  label_points <- st_point_on_surface(label)
+  label_coords <- as.data.frame(st_coordinates(label_points))
+  label_coords$REGIAO <- label$name_region
+}
+  ggplot() +
+  geom_sf(data=sf, aes(fill=TX_MORTALIDADE), size=.15, color="red") +
+  geom_text(data = label_coords, aes(X, Y, label = REGIAO), colour = "darkgreen") +
+  labs(fill = "Mortalidade",
+  title = input$regiao,
+  subtitle = esta) +
+  theme_bw() +
+  theme(axis.text.x = element_text(size = 10), axis.title.x = element_blank(),
+  axis.text.y = element_text(size = 14), axis.title.y =element_blank()  ,
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))+
+  scale_fill_gradient(low = "white", high = "#DC143C")
+})
+```
+
+
+
+Row {data-height=250}
+-----------------------------------------------------------------------
+
+### Taxa Mortalidade
+
+```{r}
+plotOutput("plotTaxaMortalidade", height = "100%")
+```
+
+### Taxa Letalidade
+
+```{r}
+plotOutput("plotTaxaLetalidade", height = "100%")
+```
+
+Row {data-height=250}
+-------------------------------------
+
+### Número de Óbitos
+```{r}
+plotOutput("plotNumeroObitos", height = "100%")
+```
+
+
+
+
+
+
+

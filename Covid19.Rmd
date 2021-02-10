@@ -6,17 +6,27 @@ header-includes:
   - \usepackage{color}
   - \usepackage{pdfpages} 
   - \usepackage[titletoc,toc,page]{appendix}
+  - \usepackage{parskip}
+  - \usepackage{indentfirst}
+  - \usepackage{setspace}
+  - \usepackage{geometry}
+  - \geometry{ a4paper, total={170mm,257mm}, left=20mm, top=20mm }
 output: pdf_document
 fontsize: 12pt
 latex_engine: latex2
 --- 
+
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{1.25cm}
+\onehalfspacing 
+
 
 \begin{titlepage}
 \vfill
 \begin{center}
 {\normalsize \textbf{PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS \\ NÚCLEO DE EDUCAÇÃO À DISTÂNCIA \\ Pós-graduação Lato Sensu em Ciência de Dados e Big Data}} \\[5cm]
 {\large \textbf{Fábio Roberto Barros Padilha}}\\[4.5cm]
-{\normalsize ANÁLISE DE DADOS NACIONAIS SOBRE A EVOLUÇÃO \\ DAS SÍNDROMES RESPIRATÓRIAS AGUDAS GRAVES \\ POR SARS-CoV-2, NO ANO DE 2020}\\[8.5cm]
+{\normalsize ANÁLISE DE DADOS NACIONAIS SOBRE A EVOLUÇÃO \\ DAS SÍNDROMES RESPIRATÓRIAS AGUDAS GRAVES \\ POR SARS-CoV-2, NO ANO DE 2020}\\[9.8cm]
 \large \textbf{Belo Horizonte}\\
 \large \textbf{2021}
 \end{center}
@@ -29,13 +39,12 @@ latex_engine: latex2
 \vfill
 \begin{center}
 {\large \textbf{Fábio Roberto Barros Padilha}}\\[7cm]
-{\normalsize ANÁLISE DE DADOS NACIONAIS SOBRE A EVOLUÇÃO \\ DAS SÍNDROMES RESPIRATÓRIAS AGUDAS GRAVES \\ POR SARS-CoV-2, NO ANO DE 2020}\\[3.5cm]
+{\normalsize ANÁLISE DE DADOS NACIONAIS SOBRE A EVOLUÇÃO \\ DAS SÍNDROMES RESPIRATÓRIAS AGUDAS GRAVES \\ POR SARS-CoV-2, NO ANO DE 2020}\\[5cm]
 \hspace{.45\textwidth} %posiciona a minipage
 \begin{minipage}{.5\textwidth}
-\large Trabalho de Conclusão de Curso apresentado ao Curso de Especialização em Ciência de Dados e Big Data como requisito parcial à obtenção do título de especialista. \\[1cm]
+\large Trabalho de Conclusão de Curso apresentado ao Curso de Especialização em Ciência de Dados e Big Data como requisito parcial à obtenção do título de especialista. 
 \end{minipage}
 \vfill
-\vspace{4cm}
 \large \textbf{Belo Horizonte}\\
 \large \textbf{2021}
 \end{center}
@@ -66,9 +75,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 \vspace{0.5cm}
 
-\qquad Nos últimos anos, o aumento de dados disponíveis digitalmente e o aparecimento de novas tecnologias têm favorecido a produção de conhecimento útil para sociedade.
+Nos últimos anos, o aumento de dados disponíveis digitalmente e o aparecimento de novas tecnologias têm favorecido a produção de conhecimento útil para sociedade.
 
-\qquad De acordo com Gilson Medeiros de Oliveira Junior (2010):
+De acordo com Gilson Medeiros de Oliveira Junior (2010):
 
 \vspace{0.5cm}
 
@@ -82,15 +91,15 @@ O uso de técnicas de inteligência artificial, mais especificamente algoritmos 
 
 \vspace{0.5cm}
 
-\qquad Esses algoritmos de aprendizagem estão relacionados ao aprendizado de máquina (machine learning), que é uma parte de Inteligência Artificial (IA) onde um algoritmo computacional cria, a partir dos dados disponíveis, modelos de aprendizado para a resolução de problemas (MEHTA, 2017).\cite{MEHTA:2017}
+Esses algoritmos de aprendizagem estão relacionados ao aprendizado de máquina (machine learning), que é uma parte de Inteligência Artificial (IA) onde um algoritmo computacional cria, a partir dos dados disponíveis, modelos de aprendizado para a resolução de problemas (MEHTA, 2017).\cite{MEHTA:2017}
 
-\qquad Dentre as técnicas de aprendizagem de máquina, pode-se citar o algoritmo de Naive Bayes, importante classificador probabilístico, que é, frequentemente, utilizado em processamento de diagnósticos médicos (cálculo de probabilidades em cima de diagnóstico de doenças), segundo Pedro César Tebaldi Gomes (2019) \cite{GOMES:2019}.
+Dentre as técnicas de aprendizagem de máquina, pode-se citar o algoritmo de Naive Bayes, importante classificador probabilístico, que é, frequentemente, utilizado em processamento de diagnósticos médicos (cálculo de probabilidades em cima de diagnóstico de doenças), segundo Pedro César Tebaldi Gomes (2019) \cite{GOMES:2019}.
 
-\qquad Outros importantes algoritmos de aprendizagem são as máquinas de vetores suporte - SVMs (Support Vector Machines), que “[...] têm a capacidade de resolver problemas de classificação e regressão, adquirindo com o aprendizado na etapa de treinamento a capacidade de generalização” (JUNIOR, 2010, p.5). \cite{JUNIOR:2010}
+Outros importantes algoritmos de aprendizagem são as máquinas de vetores suporte - SVMs (Support Vector Machines), que “[...] têm a capacidade de resolver problemas de classificação e regressão, adquirindo com o aprendizado na etapa de treinamento a capacidade de generalização” (JUNIOR, 2010, p.5). \cite{JUNIOR:2010}
 
-\qquad Por fim, pode-se destacar a técnica de mineração de dados de árvore de decisão na aprendizagem de máquina. De acordo com Hosokawa (2011) \cite{Hosokawa:2011}, a árvore de decisão é um modelo preditivo, representado por um gráfico em forma de árvore, contendo as decisões a serem tomadas e seus possíveis riscos, custo e prejuízos. 
+Por fim, pode-se destacar a técnica de mineração de dados de árvore de decisão na aprendizagem de máquina. De acordo com Hosokawa (2011) \cite{Hosokawa:2011}, a árvore de decisão é um modelo preditivo, representado por um gráfico em forma de árvore, contendo as decisões a serem tomadas e seus possíveis riscos, custo e prejuízos. 
 
-\qquad Neste sentido, este trabalho utilizou as técnicas citadas acima, dentre outras, para análise de dados do Sistema Único de Saúde (SUS) relacionados às Síndromes Respiratórias Agudas Graves (SARS) relacionadas à convid-19, em 2020. De forma a identificar as regiões do Brasil mais impactadas pela covid-19, bem como os perfis com maior risco de morte, contribuindo com informações importantes para implementação de políticas de saúde pública, a exemplo da elaboração de um plano nacional de vacinação.
+Neste sentido, este trabalho utilizou as técnicas citadas acima, dentre outras, para análise de dados do Sistema Único de Saúde (SUS) relacionados às Síndromes Respiratórias Agudas Graves (SARS) relacionadas à convid-19, em 2020. De forma a identificar as regiões do Brasil mais impactadas pela covid-19, bem como os perfis com maior risco de morte, contribuindo com informações importantes para implementação de políticas de saúde pública, a exemplo da elaboração de um plano nacional de vacinação.
 
 \vspace{0.5cm}
 
@@ -98,15 +107,15 @@ O uso de técnicas de inteligência artificial, mais especificamente algoritmos 
 
 \vspace{0.5cm}
 
-\qquad O ano de 2020 foi marcado por isolamento, medo e insegurança, causados pela pandemia do novo coronavírus SARS-CoV-2 e, com ela, pelo aumento considerável dos casos de óbitos por covid-19.
+O ano de 2020 foi marcado por isolamento, medo e insegurança, causados pela pandemia do novo coronavírus SARS-CoV-2 e, com ela, pelo aumento considerável dos casos de óbitos por covid-19.
 
-\qquad Durante todo o curso da pandemia, um dos principais problemas que as autoridades e os profissionais de saúde enfrentaram foi a falta de informação: de recursos médicos, como respiradores, e de um plano adequado para sua distribuição. 
+Durante todo o curso da pandemia, um dos principais problemas que as autoridades e os profissionais de saúde enfrentaram foi a falta de informação: de recursos médicos, como respiradores, e de um plano adequado para sua distribuição. 
 
-\qquad Como o novo coronavírus é a principal causa para o aumento dos casos de mortes de Síndrome Respiratória Aguda Grave (SARS), identificar as regiões do Brasil mais afetas, bem como ser capaz de prever os perfis com maior risco de morte, será de grande ajuda para as autoridades na elaboração de políticas públicas na área da saúde.
+Como o novo coronavírus é a principal causa para o aumento dos casos de mortes de Síndrome Respiratória Aguda Grave (SARS), identificar as regiões do Brasil mais afetas, bem como ser capaz de prever os perfis com maior risco de morte, será de grande ajuda para as autoridades na elaboração de políticas públicas na área da saúde.
 
-\qquad Dado o atual volume de informações relacionados ao SARS-CoV-2 (Covid-19) e às Síndromes Respiratórias Agudas Graves disponíveis, é possível se utilizar da tecnologia, como a inteligência artificial, para realizar predições que auxiliem as autoridades da área de saúde e os médicos na elaboração de planos no combate ao novo coronavírus.
+Dado o atual volume de informações relacionados ao SARS-CoV-2 (Covid-19) e às Síndromes Respiratórias Agudas Graves disponíveis, é possível se utilizar da tecnologia, como a inteligência artificial, para realizar predições que auxiliem as autoridades da área de saúde e os médicos na elaboração de planos no combate ao novo coronavírus.
 
-\qquad Sobre o uso das informações geradas com base nestas análises preditivas, Roberto Moreira Santos (2017) afirma que:
+Sobre o uso das informações geradas com base nestas análises preditivas, Roberto Moreira Santos (2017) afirma que:
 
 \vspace{0.5cm}
 
@@ -120,9 +129,9 @@ A aplicação desses resultados provenientes das análises é de suma importânc
 
 \vspace{0.5cm}
 
-\qquad Neste contexto, “A analítica preditiva pode ser apoiada por técnicas da computação como aprendizagem de máquina (machine learning) e a mineração de dados para aumentar seu potencial de precisão” (WAYNE, 2007 apud SANTOS, 2017, p.11).
+Neste contexto, “A analítica preditiva pode ser apoiada por técnicas da computação como aprendizagem de máquina (machine learning) e a mineração de dados para aumentar seu potencial de precisão” (WAYNE, 2007 apud SANTOS, 2017, p.11).
 
-\qquad Dada a situação de calamidade pública provocada pelo novo Coronavírus SARS-CoV-2, que levou o Brasil a ultrapassar a marca de 180 mil mortes por covid-19, em 2020, e a chegada da vacina, buscou-se utilizar, neste trabalho, técnicas de mineração de dados e machine learning, com apoio do RStudio para o desenvolvimento de um projeto de ciência de dados com proposito de contribuir com a contenção da doença no Brasil. As bibliotecas utilizadas na elaboração do projeto estão descritas na tabela \ref{tab:pacotesR} apresentada abaixo:
+Dada a situação de calamidade pública provocada pelo novo Coronavírus SARS-CoV-2, que levou o Brasil a ultrapassar a marca de 180 mil mortes por covid-19, em 2020, e a chegada da vacina, buscou-se utilizar, neste trabalho, técnicas de mineração de dados e machine learning, com apoio do RStudio para o desenvolvimento de um projeto de ciência de dados com proposito de contribuir com a contenção da doença no Brasil. As bibliotecas utilizadas na elaboração do projeto estão descritas na Tabela \ref{tab:pacotesR} apresentada abaixo:
 
 \begin{table}[htp!]
 \center
@@ -134,7 +143,7 @@ stringr & openxlsx & rpart & e1071 & randomForest & scales  \\ \hline
 \label{tab:pacotesR}
 \end{table}
 
-\qquad Assim, espera-se que as predições apresentadas com base no uso dessas tecnologias gerem conhecimentos úteis que auxiliem as autoridades públicas na implementação de políticas públicas na área da saúde e capacitem melhor o país na contenção da doença. 
+Assim, espera-se que as predições apresentadas com base no uso dessas tecnologias gerem conhecimentos úteis que auxiliem as autoridades públicas na implementação de políticas públicas na área da saúde e capacitem melhor o país na contenção da doença. 
 
 \vspace{0.5cm}
 
@@ -181,15 +190,17 @@ ptBr <- list(
 
 \vspace{0.5cm}
 
-\qquad A pandemia do SARS-CoV-2 está impondo ao Brasil e ao mundo o maior desafio sanitário dos últimos 100 anos, tendo sido a Gripe Espanhola, ocorrida no ano de 1918, a última pandemia registrada de grande impacto mundial. Neste contexto, há uma atuação ativa por parte das autoridades de saúde na implementação de políticas públicas para conter o avanço da doença e o crescente número de óbitos. 
+A pandemia do SARS-CoV-2 está impondo ao Brasil e ao mundo o maior desafio sanitário dos últimos 100 anos, tendo sido a Gripe Espanhola, ocorrida no ano de 1918, a última pandemia registrada de grande impacto mundial. Neste contexto, há uma atuação ativa por parte das autoridades de saúde na implementação de políticas públicas para conter o avanço da doença e o crescente número de óbitos. 
 
-\qquad Embora o Brasil, tenha um dos melhores sistemas de saúde da América Latina, a capacidade de atendimento em todo país é bastante desigual. Nas regiões mais pobres, onde a capacidade de atendimento de saúde é menor, têm-se observado a existência de situações críticas, como a falta de médicos, de recursos e de leitos hospitalares.
+Embora o Brasil, tenha um dos melhores sistemas de saúde da América Latina, a capacidade de atendimento em todo país é bastante desigual. Nas regiões mais pobres, onde a capacidade de atendimento de saúde é menor, têm-se observado a existência de situações críticas, como a falta de médicos, de recursos e de leitos hospitalares.
 
-\qquad Neste contexto, este trabalho tem como objetivo geral entender, de forma regionalizada, a evolução dos casos graves da doença, a fim de contribuir com as autoridades da área de saúde na construção de políticas públicas voltadas para redução do número de óbitos e para contenção do novo coronavírus.
+Neste contexto, este trabalho tem como objetivo geral entender, de forma regionalizada, a evolução dos casos graves da doença, a fim de contribuir com as autoridades da área de saúde na construção de políticas públicas voltadas para redução do número de óbitos e para contenção do novo coronavírus.
 
-\qquad É importante destacar que, para este trabalho, são considerados casos graves de covid-19 aqueles existentes no arquivo CSV do OpenDataSUS. 
+É importante destacar que, para este trabalho, são considerados casos graves de covid-19 aqueles existentes no arquivo CSV do OpenDataSUS. 
 
-\qquad Por fim, têm-se os seguintes objetivos específicos que irão ajudar na consecução do objetivo geral deste trabalho de conclusão de curso:
+Por fim, têm-se os seguintes objetivos específicos que irão ajudar na consecução do objetivo geral deste trabalho de conclusão de curso:
+
+\vspace{0.5cm}
 
 \begin{itemize}
 \item identificar as regiões brasileiras com maior número de óbitos por covid-19;
@@ -206,7 +217,7 @@ ptBr <- list(
 
 \vspace{0.5cm}
 
-\qquad Nesse trabalho foram utilizada 2 (duas) fontes de dados, uma disponibilizada pela Secretaria de Vigilância em Saúde no portal OpenDataSUS e a outra disponibilizada no portal do Instituto Brasileiro de Geografia e Estatística (IBGE), cujo detalhamento será apresentado nas seções seguintes.
+Nesse trabalho foram utilizada 2 (duas) fontes de dados, uma disponibilizada pela Secretaria de Vigilância em Saúde no portal OpenDataSUS e a outra disponibilizada no portal do Instituto Brasileiro de Geografia e Estatística (IBGE), cujo detalhamento será apresentado nas seções seguintes.
 
 \vspace{0.5cm}
 
@@ -214,7 +225,7 @@ ptBr <- list(
 
 \vspace{0.5cm}
 
-\qquad Dentre os dados utilizados neste trabalho, destacam-se os dados fornecidos pela Secretaria de Vigilância em Saúde, que está vinculada ao Ministério da Saúde, no portal OpenDataSUS. Sobre os dados coletados, o portal OpenDataSUS informa que:\cite{OPENDATASUS:2021}
+Dentre os dados utilizados neste trabalho, destacam-se os dados fornecidos pela Secretaria de Vigilância em Saúde, que está vinculada ao Ministério da Saúde, no portal OpenDataSUS. Sobre os dados coletados, o portal OpenDataSUS informa que:\cite{OPENDATASUS:2021}
 
 \vspace{0.5cm}
 
@@ -228,11 +239,11 @@ Esta página tem como finalidade disponibilizar o legado dos bancos de dados (BD
 
 \vspace{0.5cm}
 
-\qquad O arquivo utilizado neste trabalho foi disponibilizado para \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/42bd5e0e-d61a-4359-942e-ebc83391a137}{\underline{\color{blue} download em formato CSV}}. É importante observar que este arquivo é atualizado semanalmente e que, no momento do download, continha dados até 04/01/2021.
+O arquivo utilizado neste trabalho foi disponibilizado para \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/42bd5e0e-d61a-4359-942e-ebc83391a137}{\underline{\color{blue} download em formato CSV}}. É importante observar que este arquivo é atualizado semanalmente e que, no momento do download, continha dados até 04/01/2021.
 
-\qquad Como a Secretaria de Vigilância em Saúde atualiza os dados semanalmente, para garantir o acesso ao arquivo analisado neste trabalho, fez-se necessário manter uma cópia no Google drive, que pode ser acessada no link: \underline{\color{blue} \url{https://drive.google.com/drive/folders/1l52SO-RMHYfs2ci_2pBAZJNw2hA5i2me?usp=sharing}}
+Como a Secretaria de Vigilância em Saúde atualiza os dados semanalmente, para garantir o acesso ao arquivo analisado neste trabalho, fez-se necessário manter uma cópia no \href{https://drive.google.com/drive/folders/1l52SO-RMHYfs2ci_2pBAZJNw2hA5i2me?usp=sharing}{\underline{\color{blue}Google drive}}.
 
-\qquad O arquivo contém 1.103.183 (um milhão cento e três mil e cento e oitenta e três) linhas e 154 colunas. Cada linha do arquivo corresponde ao registro de um paciente com a síndrome respiratória aguda grave. As 154 colunas são campos coletados a partir da  \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/bd725e4c-c869-400f-a479-9b544c2812b4}{\underline{\color{blue} ficha de notificação do paciente}}, além de informações geradas pelo sistema. A ficha de notificação e o dicionário de dados estão disponíveis, respectivamente, nos anexos A e B. O trecho de código para importação do arquivo segue descrito abaixo:
+O arquivo contém 1.103.183 (um milhão cento e três mil e cento e oitenta e três) linhas e 154 colunas. Cada linha do arquivo corresponde ao registro de um paciente com a síndrome respiratória aguda grave. As 154 colunas são campos coletados a partir da  \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/bd725e4c-c869-400f-a479-9b544c2812b4}{\underline{\color{blue} ficha de notificação do paciente}}, além de informações geradas pelo sistema. A ficha de notificação e o dicionário de dados estão disponíveis, respectivamente, nos anexos A e B. O trecho de código para importação do arquivo segue descrito abaixo:
 
 \vspace{0.5cm}
 
@@ -243,7 +254,7 @@ na.strings = "",stringsAsFactors = T)
 
 \vspace{0.5cm}
 
-\qquad Após a importação dos dados, as colunas objeto da análise foram selecionadas e renomeadas, a fim de facilitar a identificação nas seções seguintes. Os trechos de código, para selecionar e renomear as colunas seguem descritos abaixo:
+Após a importação dos dados, as colunas objeto da análise foram selecionadas e renomeadas, a fim de facilitar a identificação nas seções seguintes. Os trechos de código, para selecionar e renomear as colunas seguem descritos abaixo:
 
 \vspace{0.5cm}
 
@@ -310,9 +321,9 @@ colnames(pacientes) =  c("DT_NOTIFICACAO", "SEMANA_NOTIFICACAO", "DT_PRIMEIROS_S
 
 \vspace{0.5cm}
 
-\qquad Fez-se necessário enriquecer este trabalho com dados do Instituto Brasileiro de Geografia e Estatística - IBGE, tanto para o cálculo das taxas de mortalidades, bem como para elaboração dos mapas.
+Fez-se necessário enriquecer este trabalho com dados do Instituto Brasileiro de Geografia e Estatística - IBGE, tanto para o cálculo das taxas de mortalidades, bem como para elaboração dos mapas.
 
-\qquad O IBGE disponibiliza o arquivo no link: \underline{\color{blue} \url{https://www.ibge.gov.br/estatisticas/downloads-estatisticas.html}}, no diretório: Estimativa_de_Populacao/Estimativas_2020, em formato xls, conforme figura \ref{fig:downloadIbge} abaixo:
+O IBGE disponibiliza o arquivo neste \href{https://www.ibge.gov.br/estatisticas/downloads-estatisticas.html}{\underline{\color{blue} link}} , no diretório:  \textbf{ \\ Estimativa_de_Populacao/Estimativas_2020}, em formato xls, conforme Figura \ref{fig:downloadIbge} abaixo:
 
 \vspace{0.5cm}
 
@@ -325,11 +336,11 @@ colnames(pacientes) =  c("DT_NOTIFICACAO", "SEMANA_NOTIFICACAO", "DT_PRIMEIROS_S
 
 \vspace{0.5cm}
 
-\qquad Após o download, o arquivo foi convertido para o formato xlsx, no LibreOffice, para facilitar a importação para RStudio. O arquivo contém duas abas, uma com a estimativa populacional por unidade federativa e outra aba com a estimativa populacional por municípios.
+Após o download, o arquivo foi convertido para o formato xlsx, no LibreOffice, para facilitar a importação para RStudio. O arquivo contém duas abas, uma com a estimativa populacional por unidade federativa e outra aba com a estimativa populacional por municípios.
 
-\qquad Para este trabalho, importamos apenas os dados da aba municípios, uma vez que a população por estado ou por região pode ser facilmente obtida a partir do somatório populacional dos municípios.
+Para este trabalho, importamos apenas os dados da aba municípios, uma vez que a população por estado ou por região pode ser facilmente obtida a partir do somatório populacional dos municípios.
 
-\qquad A importação dos dados foi iniciada a partir da terceira linha do arquivo, a fim de desconsiderar as linhas referentes ao cabeçalho, conforme trecho de código a seguir:
+A importação dos dados foi iniciada a partir da terceira linha do arquivo, a fim de desconsiderar as linhas referentes ao cabeçalho, conforme trecho de código a seguir:
 
 \vspace{0.5cm}
 
@@ -343,7 +354,15 @@ startRow = 3, colNames =FALSE, rowNames = FALSE)
 municipios <- read_municipality(year=2019)
 estados <- read_state(year=2019)
 regioes <- read_region(year=2019)
+regioes
 ```
+
+```{r salvarDadosIBGE2, include=FALSE}
+saveRDS(municipios, "dados/municipios_2019.rds")
+saveRDS(estados, "dados/estados_2019.rds")
+saveRDS(regioes, "dados/regioes_2019.rds")
+```
+
 
 \newpage
 
@@ -351,20 +370,20 @@ regioes <- read_region(year=2019)
 
 \vspace{0.5cm}
 
-\qquad Este capítulo contempla as transformações realizadas nos data frames resultantes das importações dos arquivos CSV (disponibilizado no portal OpenDataSUS) e XLS (disponibilizado no portal do IBGE). Estes campos tratados são os principais atributos utilizados nos algoritmos e gráficos constantes nos capítulos seguintes.
+Este capítulo contempla as transformações realizadas nos data frames resultantes das importações dos arquivos CSV (disponibilizado no portal OpenDataSUS) e XLS (disponibilizado no portal do IBGE). Estes campos tratados são os principais atributos utilizados nos algoritmos e gráficos constantes nos capítulos seguintes.
 
 \subsection{3.1 Dados do Instituto Brasileiro de Geografia e Estatística}
 
 \vspace{0.5cm}
 
-\qquad Os dados populacionais do IBGE, necessários para realização deste trabalho, estão presentes da linha 3 até a linha 5572, de acordo com as figuras \underline{\color{blue}\ref{fig:arquivoIbge}} e \underline{\color{blue}\ref{fig:rodapeIbge}}:
+Os dados populacionais do IBGE, necessários para realização deste trabalho, estão presentes da linha 3 até a linha 5572, de acordo com as Figuras \ref{fig:arquivoIbge} e \ref{fig:rodapeIbge}:
 
 \vspace{0.5cm}
 
 \begin{figure}[htp]
 \center
 \includegraphics[width=0.5\linewidth]{anexos/cabecalho-IBGE.png}
-\caption{Arquivo IBGE}
+\caption{Cabeçalho arquivo IBGE}
 \label{fig:arquivoIbge}
 \end{figure}
 
@@ -377,9 +396,9 @@ regioes <- read_region(year=2019)
 
 \vspace{0.5cm}
 
-\qquad A importação dos dados foi iniciada a partir da linha três do arquivo, descartando o cabeçalho. Para descartar o rodapé do data frame resultante da importação, foi selecionado somente até a linha 5.570 (cinco mil quinhentos e setenta). Por fim, foi criado um campo extra no data frame para armazenar o código do município sem o último dígito.
+A importação dos dados foi iniciada a partir da linha três do arquivo, descartando o cabeçalho. Para descartar o rodapé do data frame resultante da importação, foi selecionado somente até a linha 5.570 (cinco mil quinhentos e setenta). Por fim, foi criado um campo extra no data frame para armazenar o código do município sem o último dígito.
 
-\qquad A necessidade de criar uma coluna extra para o município sem o dígito verificador ocorreu devido à ausência do dígito verificar no arquivo CSV disponibilizado no portal OpenDataSUS. O campo criado com o código do município sem o dígito verificador foi utilizado em JOINs nas seções seguintes, onde serão criados gráficos pelas diversas localidades do país.
+A necessidade de criar uma coluna extra para o município sem o dígito verificador ocorreu devido à ausência do dígito verificar no arquivo CSV disponibilizado no portal OpenDataSUS. O campo criado com o código do município sem o dígito verificador foi utilizado em JOINs nas seções seguintes, onde serão criados gráficos pelas diversas localidades do país.
 
 ```{r transfIBGE, include=FALSE}
 #Seleção dos dados e criação do campo sem dígito validador
@@ -399,7 +418,13 @@ municipiosIBGE$NU_POPULACAO = str_replace_all(municipiosIBGE$NU_POPULACAO, c("\\
 municipiosIBGE$NU_POPULACAO = as(municipiosIBGE$NU_POPULACAO, "integer")
 ```
 
-\qquad É importante destacar que a informação das regiões do país (norte, nordeste, centro-oeste, sudeste e sul) não estavam presentes nos arquivos apresentados. Tornando-se necessária a criação de uma matriz com os estados e suas respectivas regiões. Essa matriz permitiu o enriquecimento dos dados e a produção dos gráficos sumarizados, conforme trecho de código abaixo:
+```{r dashBoardPopulacao, include=FALSE}
+write.csv2(municipiosIBGE[, c("SG_UF", "COD_MUNICIPIO6", "COD_MUNICIPIO", "MUNICIPIO", "NU_POPULACAO")],
+file ="dados/dashboard_populacao.csv")
+```
+
+
+É importante destacar que a informação das regiões do país (norte, nordeste, centro-oeste, sudeste e sul) não estavam presentes nos arquivos apresentados. Tornando-se necessária a criação de uma matriz com os estados e suas respectivas regiões. Essa matriz permitiu o enriquecimento dos dados e a produção dos gráficos sumarizados, conforme trecho de código abaixo:
 
 \vspace{0.5cm}
 
@@ -468,7 +493,7 @@ arrange(desc(QTD_ESTADO))
 
 \vspace{0.5cm}
 
-\qquad A transformação dos dados do SUS, disponibilizados no portal OpenDataSUS, foi realizada em duas etapas. Na primeira etapa, o processamento teve como finalidade favorecer a elaboração de gráficos no ggplot2 a fim de apresentar a distribuição dos dados. Já na segunda etapa, outras transformações aconteceram com o propósito de ajustar os dados para as execuções dos algoritmos de machine learning.
+A transformação dos dados do SUS, disponibilizados no portal OpenDataSUS, foi realizada em duas etapas. Na primeira etapa, o processamento teve como finalidade favorecer a elaboração de gráficos no ggplot2 a fim de apresentar a distribuição dos dados. Já na segunda etapa, outras transformações aconteceram com o propósito de ajustar os dados para as execuções dos algoritmos de machine learning.
 
 ```{r percentualValoresOmissos, include=FALSE}
 #Percentuais de Valores Omissos nas colunas selecionadas
@@ -482,38 +507,38 @@ NAS
 
 \vspace{0.5cm}
 
-\qquad A partir dessa seção será feita a limpeza e transformação dos dados, de maneira mais significativa. Nas seções anteriores, o processamento dos dados se restringiu a importar os arquivos objeto da análise e enriquecer um dos data frame resultante da importação com as regiões do país. Para melhor visualizar o que já foi realizado até o momento, segue figura com fluxo do pré-processamento dos dados: \underline{\color{blue}\ref{fig:preProcDados}}
+A partir dessa seção será feita a limpeza e transformação dos dados, de maneira mais significativa. Nas seções anteriores, o processamento dos dados se restringiu a importar os arquivos objeto da análise e enriquecer um dos data frame resultante da importação com as regiões do país. Para melhor visualizar o que já foi realizado até o momento, segue Figura \ref{fig:preProcDados} com fluxo do pré-processamento dos dados:
 
-\begin{figure}[htp!]
+\begin{figure}[ht!]
 \center
-\includegraphics[width=0.8\linewidth]{anexos/fluxocoleta.png}
+\includegraphics[width=0.6\linewidth]{anexos/fluxocoleta.png}
 \caption{Pré-processamento dos dados}
 \label{fig:preProcDados}
 \end{figure}
 
-\qquad Nas subseções abaixo, será realizado o detalhamento das principais colunas do arquivo CSV disponibilizado no portal OpenDataSUS. Ressalta-se que não foi necessário detalhar a transformação do arquivo disponibilizado pelo IBGE, uma vez que o mesmo não precisou de transformações significativas, além das já mencionadas no item 3.1.  
+Nas subseções abaixo, será realizado o detalhamento das principais colunas do arquivo CSV disponibilizado no portal OpenDataSUS. Ressalta-se que não foi necessário detalhar a transformação do arquivo disponibilizado pelo IBGE, uma vez que o mesmo não precisou de transformações significativas, além das já mencionadas no item 3.1.  
 
-\qquad É importante enfatizar, ainda, que foi necessário elaborar gráficos preliminares nessas subseções, a fim de validar o processamento. No entanto, os gráficos mais elaborados e que trazem informações mais importantes para este trabalho estão dispostos no capítulo 4.
+É importante enfatizar, ainda, que foi necessário elaborar gráficos preliminares nessas subseções, a fim de validar o processamento. No entanto, os gráficos mais elaborados e que trazem informações mais importantes para este trabalho estão dispostos no capítulo 4.
 
 \subsubsection{3.3.1 Notificações}
 
 \vspace{0.5cm}
 
-\qquad O campo DT_NOTIFICACAO, que contém a data do preenchimento da ficha de notificação, foi ajustado para o formato dd/mm/aaaa. Após a conversão do campo, foi necessária a realização de algumas limpezas nos dados, como a remoção dos registros com data de notificação superior a 31/12/2020 do data frame, visto que o escopo desse trabalho é o ano de 2020, bem como a retirada das notificações que não foram classificadas como casos de covid-19. 
+O campo DT_NOTIFICACAO, que contém a data do preenchimento da ficha de notificação, foi ajustado para o formato dd/mm/aaaa. Após a conversão do campo, foi necessária a realização de algumas limpezas nos dados, como a remoção dos registros com data de notificação superior a 31/12/2020 do data frame, visto que o escopo desse trabalho é o ano de 2020, bem como a retirada das notificações que não foram classificadas como casos de covid-19. Conforme trecho de código abaixo:
 
 \vspace{0.5cm}
 
 ```{r dtNotificacao}
 #Redefinir tipo de dados da coluna 
 pacientes$DT_NOTIFICACAO = as.Date(pacientes$DT_NOTIFICACAO, format="%d/%m/%Y")
-pacientes["MES_NOTIFICACAO"]=format(pacientes$DT_NOTIFICACAO, "%Y/%m");
+pacientes["MES_NOTIFICACAO"]=format(pacientes$DT_NOTIFICACAO, "%Y/%m")
 #Removendo ocorrencia com datas de notificação superior a 31/12/2020 
 pacientes=pacientes[pacientes$DT_NOTIFICACAO<as.Date("01/01/2021", format="%d/%m/%Y"),]
 ```
 
 \vspace{0.5cm}
 
-\qquad É importante destacar que não existem valores omissos na coluna DT_NOTIFICACAO.
+É importante destacar que não existem valores omissos na coluna DT_NOTIFICACAO.
 
 ```{r dtNotificacaoOmisso, include=FALSE}
 #Percentual valores omissos
@@ -551,7 +576,7 @@ grfDtNotificacao=ggplot(qtdNotificacoesMes) +
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen")) 
 ```
 
-\qquad A partir deste processamento foi possível a criação do Gráfico 1 (Notificações de Covid-19 por Mês) e verificar que no Brasil, em 2020, os primeiros casos de covid-19 foram registrados em fevereiro e que, no mês de julho, ocorreu o maior número de casos.
+A partir deste processamento foi possível a criação do Gráfico 1 (Notificações de Covid-19 por Mês) e verificar que no Brasil, em 2020, os primeiros casos de covid-19 foram registrados em fevereiro e que, no mês de julho, ocorreu o maior número de casos.
 
 ```{r gridDtNotificacao, echo=FALSE}
 grid.arrange(grfDtNotificacao, bottom="Gráfico 1: Notificações de Covid-19 por Mês")
@@ -563,19 +588,19 @@ grid.arrange(grfDtNotificacao, bottom="Gráfico 1: Notificações de Covid-19 po
 
 \vspace{0.5cm}
 
-\qquad No processamento da coluna NU_IDADE, atribuiu-se a média da idade nacional dos casos de covid-19, que é de 59 (cinquenta e nove) anos, nas ocorrências com valores superiores a 110 (cento e dez) anos. Essa transformação teve como objetivo minimizar os valores outliers e os prováveis erros de digitação. Conforme trecho de código abaixo:
+No processamento da coluna NU_IDADE, atribuiu-se a média da idade nacional dos casos de covid-19, que é de 59 (cinquenta e nove) anos, nas ocorrências com valores superiores a 110 (cento e dez) anos. Essa transformação teve como objetivo minimizar os valores outliers e os prováveis erros de digitação. Conforme trecho de código abaixo:
 
 \vspace{0.5cm}
 
 ```{r idade}
 #Idades acima de 110 anos atribui a idade média. 
 pacientes$NU_IDADE=as(pacientes$NU_IDADE, "integer");
-pacientes[pacientes$NU_IDADE >110, ]$NU_IDADE =as.integer(mean(pacientes$NU_IDADE, na.rm = T))
+pacientes[pacientes$NU_IDADE>110,]$NU_IDADE=as.integer(mean(pacientes$NU_IDADE, na.rm=T))
 ```
 
 \vspace{0.5cm}
 
-\qquad Igualmente ao ocorrido no item anterior indentificou-se que não há valores omissos na coluna NU_IDADE.
+Igualmente ao ocorrido no item anterior indentificou-se que não há valores omissos na coluna NU_IDADE.
 
 ```{r idadeOmisso, include=FALSE}
 #Percentual valores omissos
@@ -597,12 +622,12 @@ grfIdade=ggplot(pacientes) +
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-\qquad Com base nesse processamento foi elaborado o Gráfico 2 (Boxplot de Idades dos casos graves de covid-19 por região), no qual fica evidênciado que:
+Com base nesse processamento foi elaborado o Gráfico 2 (Boxplot de Idades dos casos graves de covid-19 por região), no qual fica evidênciado que:
 
 \begin{itemize}
 \item a região centro-oeste e a região nordeste apresentam respectivamente a menor e a maior média nacional de idade dos casos graves de covid-19;
 \item existem outlier abaixo de 15 anos nas regiões nordeste, suldeste e sul;
-\item aproximadamente 75% dos casos graves de covid-19 possuem idade acima dos 40 anos.
+\item aproximadamente 75\% dos casos graves de covid-19 possuem idade acima dos 40 anos.
 \end{itemize}
 
 
@@ -614,7 +639,7 @@ grid.arrange(grfIdade, bottom="Gráfico 2: Boxplot de Idades dos casos graves de
 
 \subsubsection{3.3.3 Raça}
 
-\qquad Na coluna CS_RACA, os valores numéricos foram substituídos pelas strings correspondentes, conforme descrito no dicionário de dados disponível na seção anexo. Essas alterações são verificáveis no trecho de código a seguir:
+Na coluna CS_RACA, os valores numéricos foram substituídos pelas strings correspondentes, conforme descrito no dicionário de dados disponível na seção anexo. Essas alterações são verificáveis no trecho de código a seguir:
 
 \vspace{0.5cm}
 
@@ -629,7 +654,7 @@ pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==5,]$CS_RACA = 
 pacientes$CS_RACA = factor(pacientes$CS_RACA)
 ```
 
-\qquad É importante destacar que, na coluna CS_RACA, o percentual de valores é de 22% (vinte e dois por cento). Esses valores foram removidos nas elaborações de gráficos e modelos de machine learning.
+É importante destacar que, na coluna CS_RACA, o percentual de valores é de 22% (vinte e dois por cento). Esses valores foram removidos nas elaborações de gráficos e modelos de machine learning.
 
 ```{r racaOmisso, include=FALSE}
 #Percentual valores omissos
@@ -652,14 +677,14 @@ grfRaca=ggplot(pacientes[complete.cases(pacientes$CS_RACA),]) +
 
 \vspace{0.5cm}
 
-\qquad Este processamento possibilitou a construção do Gráfico 3 (Quantitativo dos casos graves de covid-19 por raça), revelando que:
+Este processamento possibilitou a construção do Gráfico 3 (Quantitativo dos casos graves de covid-19 por raça), revelando que:
 
 \begin{itemize}
 \item a raça com maior representatividade de casos graves de covid-19 é a branca seguida pela parda;
 \item a raça indigina foi a que regsitrou menos casos.
 \end{itemize}
 
-```{r gridRaca, echo=FALSE}
+```{r gridRaca, echo=FALSE, fig.height=5, fig.width=7}
 grid.arrange(grfRaca, bottom="Gráfico 3: Quantitativo dos casos graves de covid-19 por raça")
 ```
 
@@ -669,9 +694,9 @@ grid.arrange(grfRaca, bottom="Gráfico 3: Quantitativo dos casos graves de covid
 
 \vspace{0.5cm}
 
-\qquad O percentual de valores omissões na coluna CS_SEXO é de 0.01% (zero vírgula zero um por cento). Esses valores foram tratados a partir da coluna CS_GESTANTE, atribuiu-se sexo feminino, quando esta coluna informa existência de gestação. Em contrapartida, pra os valores omissões de sexo que não apresetam indicação de gestação, atribuiu-se sexo masculino, dado que a presença do sexo masculino é maior (vide Gráfico 4 abaixo) e a incidência de valores omissos é muito pequena.
+O percentual de valores omissões na coluna CS_SEXO é de 0.01% (zero vírgula zero um por cento). Esses valores foram tratados a partir da coluna CS_GESTANTE, atribuiu-se sexo feminino, quando esta coluna informa existência de gestação. Em contrapartida, pra os valores omissões de sexo que não apresetam indicação de gestação, atribuiu-se sexo masculino, dado que a presença do sexo masculino é maior (vide Gráfico 4 abaixo) e a incidência de valores omissos é muito pequena.
 
-\qquad Abaixo segue o trecho de código responsável por este processamento:
+Abaixo segue o trecho de código responsável por este processamento:
 
 \vspace{0.5cm}
 
@@ -713,7 +738,7 @@ geom_text(aes(label = percent(PERCENTUAL)),  position = position_stack(vjust = 0
 labs(x=NULL, y="Occorrência", fill = NULL, title = "Sexo") 
 ```
 
-\qquad Com base neste processamento foi gerado o Gráfico 4 (Percentual dos casos graves de covid-19 por sexo), que destaca a maior incidência de casos graves de covid-19 no sexo masculino.
+Com base neste processamento foi gerado o Gráfico 4 (Percentual dos casos graves de covid-19 por sexo), que destaca a maior incidência de casos graves de covid-19 no sexo masculino.
 
 \vspace{0.5cm}
 
@@ -727,11 +752,11 @@ grid.arrange(grSexo,  bottom="Gráfico 4: Percentual dos casos graves de covid-1
 
 \vspace{0.5cm}
 
-\qquad Nas colunas referente às comorbidades do paciente, foram convertidos os valores numéricos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B, deste trabalho. 
+Nas colunas referente às comorbidades do paciente, foram convertidos os valores numéricos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B, deste trabalho. 
 
-\qquad A coluna IN_FATOR_RISC, informa a existência de comorbidade no paciente. Nela não foram identificados valores omissos.
+A coluna IN_FATOR_RISC, informa a existência de comorbidade no paciente. Nela não foram identificados valores omissos.
 
-\qquad No trecho de código abaixo verifica-se parte do processamento realizado nas colunas referente a comorbidades.
+No trecho de código abaixo verifica-se parte do processamento realizado nas colunas referente a comorbidades.
 
 \vspace{0.5cm}
 
@@ -741,21 +766,21 @@ grid.arrange(grSexo,  bottom="Gráfico 4: Percentual dos casos graves de covid-1
 ```
 
 ```{r comorbidade1}
-#Puerpera
-#Alterando domínios
-pacientes[complete.cases(pacientes$IN_PUERPERA) & pacientes$IN_PUERPERA==9, ]$IN_PUERPERA=NA 
-pacientes[complete.cases(pacientes$IN_PUERPERA) & pacientes$IN_PUERPERA==1, ]$IN_PUERPERA="Sim"
-pacientes[complete.cases(pacientes$IN_PUERPERA) & pacientes$IN_PUERPERA==2, ]$IN_PUERPERA="Não"
+#Puerpera?
+pacientes[complete.cases(pacientes$IN_PUERPERA) &
+      pacientes$IN_PUERPERA==9,]$IN_PUERPERA=NA 
+pacientes[complete.cases(pacientes$IN_PUERPERA) &
+      pacientes$IN_PUERPERA==1,]$IN_PUERPERA="Sim"
+pacientes[complete.cases(pacientes$IN_PUERPERA) &
+      pacientes$IN_PUERPERA==2,]$IN_PUERPERA="Não"
 pacientes$IN_PUERPERA=factor(pacientes$IN_PUERPERA)
-
-#Cardiopatia
-#Alterando domínios
+#Cardiopatia?
 pacientes[complete.cases(pacientes$IN_CARDIOPATI) &
-pacientes$IN_CARDIOPATI==9, ]$IN_CARDIOPATI=NA    
+      pacientes$IN_CARDIOPATI==9, ]$IN_CARDIOPATI=NA    
 pacientes[complete.cases(pacientes$IN_CARDIOPATI) &
-pacientes$IN_CARDIOPATI==1, ]$IN_CARDIOPATI="Sim"
+      pacientes$IN_CARDIOPATI==1, ]$IN_CARDIOPATI="Sim"
 pacientes[complete.cases(pacientes$IN_CARDIOPATI) &
-pacientes$IN_CARDIOPATI==2, ]$IN_CARDIOPATI="Não"
+      pacientes$IN_CARDIOPATI==2, ]$IN_CARDIOPATI="Não"
 pacientes$IN_CARDIOPATI=factor(pacientes$IN_CARDIOPATI)
 #Continua para todos os campos do grupo comorbidades...
 ```
@@ -933,9 +958,9 @@ grfComorbidades = ggplot(comorbidades) +
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-\qquad Com base no processamento acima foi possível gerar o Gráfico 5 (Comorbidades preexistentes nos casos graves de covid-19) no qual verifica-se a maior incidência de comobridades referente a cardiopatias e diabetes.
+Com base no processamento acima foi possível gerar o Gráfico 5 (Comorbidades preexistentes nos casos graves de covid-19) no qual verifica-se a maior incidência de comobridades referente a cardiopatias e diabetes.
 
-```{r gridComorbidades, echo=FALSE, fig.height=3, fig.width=7}
+```{r gridComorbidades, echo=FALSE, fig.height=5, fig.width=7}
 grid.arrange(grfComorbidades, bottom="Gráfico 5: Comorbidades preexistentes nos casos graves de covid-19")
 ```
 
@@ -945,9 +970,9 @@ grid.arrange(grfComorbidades, bottom="Gráfico 5: Comorbidades preexistentes nos
 
 \vspace{0.5cm}
 
-\qquad Nesta seção constam os recursos que foram utilizados pelo paciente durante o tratamento. Os recurso são: se o paciente precisou de oxigênio, se precisou de suporte de ventilação pulmonar, se foi pra UTI, se tomou algum antiviral ou se foi hospitalizado.
+Nesta seção constam os recursos que foram utilizados pelo paciente durante o tratamento. Os recurso são: se o paciente precisou de oxigênio, se precisou de suporte de ventilação pulmonar, se foi pra UTI, se tomou algum antiviral ou se foi hospitalizado.
 
-\qquad Ressalta-se que a coluna mais utilizada deste grupo foi a IN_HOSPITALIZADO, cujo percentual de valores omissos é de 2.61% (dois virgula sessenta e um por cento), estes valores foram removidos na geração dos gráficos e modelos de machine learning.
+Ressalta-se que a coluna mais utilizada deste grupo foi a IN_HOSPITALIZADO, cujo percentual de valores omissos é de 2.61% (dois virgula sessenta e um por cento), estes valores foram removidos na geração dos gráficos e modelos de machine learning.
 
 ```{r recursosOmissos, include=FALSE}
 #Percentual valores omissos
@@ -967,14 +992,12 @@ pacientes[complete.cases(pacientes$IN_UTI) & pacientes$IN_UTI==9,]$IN_UTI=NA
 (sum(is.na(pacientes$IN_UTI))*100) / length(pacientes$IN_UTI)
 ```
 
-\qquad Nas colunas referente a recursos do tratamento do paciente, foram convertidos os valores numéricos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B. O trecho de código abaixo reflete este processamento:
+Nas colunas referente a recursos do tratamento do paciente, foram convertidos os valores numéricos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B. O trecho de código abaixo reflete este processamento:
 
 \vspace{0.5cm}
 
 ```{r recursos1}
-#Usou Suporte Ventilatório Invasivo / Não Invasivo
-#Foi Hospitalizado
-#Alterando domínios
+#Foi Hospitalizado?
 pacientes[complete.cases(pacientes$IN_HOSPITALIZADO) &
   pacientes$IN_HOSPITALIZADO==1, ]$IN_HOSPITALIZADO="Sim"
 pacientes[complete.cases(pacientes$IN_HOSPITALIZADO) &
@@ -1058,7 +1081,7 @@ grfRecursos=ggplot(recursos) +
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-\qquad Esse processamento permitiu a elaboração do Gráfico 6 (Recursos utilizados nos casos graves de covid-19), do qual concluí-se que aproximadamente metade dos pacientes hospitalizados precisaram de oxigêncio não invasivo.
+Esse processamento permitiu a elaboração do Gráfico 6 (Recursos utilizados nos casos graves de covid-19), do qual concluí-se que aproximadamente metade dos pacientes hospitalizados precisaram de oxigêncio não invasivo.
 
 \vspace{0.5cm}
 
@@ -1072,9 +1095,9 @@ grid.arrange(grfRecursos, bottom="Gráfico 6: Recursos utilizados nos casos grav
 
 \vspace{0.5cm}
 
-\qquad Na coluna CS_EVOLUCAO, os valores numéricos foram convertidos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B, deste trabalho. 
+Na coluna CS_EVOLUCAO, os valores numéricos foram convertidos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B, deste trabalho. 
 
-\qquad O percentual de valores omissos nesta coluna é de 12,31% (doze virgula trinta e um por cento), os quais foram removidos na eloboração dos gráficos e modelos de machine learning.
+O percentual de valores omissos nesta coluna é de 12,31% (doze virgula trinta e um por cento), os quais foram removidos na eloboração dos gráficos e modelos de machine learning.
 
 ```{r evolucaoOmissos, include=FALSE}
 pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
@@ -1082,7 +1105,7 @@ pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
 (sum(is.na(pacientes$DT_EVOLUCAO))*100) / length(pacientes$DT_EVOLUCAO)
 ```
 
-\qquad O trecho de código abaixo reflete o processamento desta coluna:
+O trecho de código abaixo reflete o processamento desta coluna:
 
 \vspace{0.5cm}
 
@@ -1092,8 +1115,10 @@ pacientes$DT_EVOLUCAO = as.Date(pacientes$DT_EVOLUCAO, format="%d/%m/%Y")
 pacientes["SEMANA_EVOLUCAO"] =  format(pacientes$DT_EVOLUCAO, "%U");
 pacientes$SEMANA_EVOLUCAO=as.integer(pacientes$SEMANA_EVOLUCAO)
 #Resultado Evolução / Desfecho
-pacientes[complete.cases(pacientes$CS_EVOLUCAO) & pacientes$CS_EVOLUCAO==1, ]$CS_EVOLUCAO="Cura"
-pacientes[complete.cases(pacientes$CS_EVOLUCAO) & pacientes$CS_EVOLUCAO==2, ]$CS_EVOLUCAO="Óbito"
+pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
+  pacientes$CS_EVOLUCAO==1, ]$CS_EVOLUCAO="Cura"
+pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
+  pacientes$CS_EVOLUCAO==2, ]$CS_EVOLUCAO="Óbito"
 pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
   pacientes$CS_EVOLUCAO==3, ]$CS_EVOLUCAO="Óbito por outras causas"
 pacientes$CS_EVOLUCAO=factor(pacientes$CS_EVOLUCAO)
@@ -1139,11 +1164,11 @@ grfEvolucao = ggplot(evolucao) +
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-\qquad A partir desse processamento foi elaborado o Gráfico 7 (Evolução dos casos graves de covid-19), do qual concluí-se que, aproximadamente, 1/3 (um terço) dos pacientes graves de covid-19 evoluem para óbito.
+A partir desse processamento foi elaborado o Gráfico 7 (Evolução dos casos graves de covid-19), do qual concluí-se que, aproximadamente, 1/3 (um terço) dos pacientes graves de covid-19 evoluem para óbito.
 
 \vspace{0.5cm}
 
-```{r gridEvolucao, echo=FALSE}
+```{r gridEvolucao, echo=FALSE, fig.height=4, fig.width=7}
 grid.arrange(grfEvolucao, bottom="Gráfico 7: Evolução dos casos graves de covid-19")
 ```
 
@@ -1153,15 +1178,15 @@ grid.arrange(grfEvolucao, bottom="Gráfico 7: Evolução dos casos graves de cov
 
 \vspace{0.5cm}
 
-\qquad Neste capítulo, serão detalhadas as taxas de mortalidade e letalidada, bem como o número de mortes absolutos decorrentes de covid-19 no Brasil, em 2020. É importante observar que essa analise utilizou a tecnica de drill down, detalhando as informações até o nível de capitais.
+Neste capítulo, serão detalhadas as taxas de mortalidade e letalidada, bem como o número de mortes absolutos decorrentes de covid-19 no Brasil, em 2020. É importante observar que essa analise utilizou a tecnica de drill down, detalhando as informações até o nível de capitais.
 
-\qquad Com intuido de facilitar as analises presente neste capitulo, torna-se necessário nivelar alguns conceitos, tais como: taxas de mortalidade e letalidade.
+Com intuido de facilitar as analises presente neste capitulo, torna-se necessário nivelar alguns conceitos, tais como: taxas de mortalidade e letalidade.
 
-\qquad A taxa de mortalidade é a razão entre o número total de óbitos e o total da população vezes uma constante utilizada como unidade de medida, neste trabalho será adotado 1.000.000 (um milhão) de habitantes.
+A taxa de mortalidade é a razão entre o número total de óbitos e o total da população vezes uma constante utilizada como unidade de medida, neste trabalho será adotado 1.000.000 (um milhão) de habitantes.
 
-\qquad Já a taxa de letalidade é a razão entre o número total de óbitos e o número total de casos graves. 
+Já a taxa de letalidade é a razão entre o número total de óbitos e o número total de casos graves. 
 
-\qquad Essas taxas foram calculadas exclusivamente a partir dos casos graves de covid-19. Deve-se relembrar que, para este trabalho, considera-se casos graves de covid-19 aqueles presente no arquivo CSV do OpenDataSUS. 
+Essas taxas foram calculadas exclusivamente a partir dos casos graves de covid-19. Deve-se relembrar que, para este trabalho, considera-se casos graves de covid-19 aqueles presente no arquivo CSV do OpenDataSUS. 
 
 \vspace{0.5cm}
 
@@ -1169,9 +1194,9 @@ grid.arrange(grfEvolucao, bottom="Gráfico 7: Evolução dos casos graves de cov
 
 \vspace{0.5cm}
 
-\qquad No ano de 2020, o Brasil teve 187.727 (cento e oitenta e sete mil e setecentos e vinte e sete) mortes por covid-19. Neste sentido, o Sudeste apresentou quase a metade dos casos de mortes por covid-19 do país, com 88.362 (oitenta e oito mil e trezentos e sessenta e duas) mortes. As demais regiões registraram juntas um número de mortes um pouco superior, totalizando 99.365 (noventa e nove mil e trezentos e sessenta e cinco) mortes, o que representa 52,93% (cinquenta e dois vírgula noventa e três por cento) do total de óbitos registrados no país por covid-19.
+No ano de 2020, o Brasil teve 187.727 (cento e oitenta e sete mil e setecentos e vinte e sete) mortes por covid-19. Neste sentido, o Sudeste apresentou quase a metade dos casos de mortes por covid-19 do país, com 88.362 (oitenta e oito mil e trezentos e sessenta e duas) mortes. As demais regiões registraram juntas um número de mortes um pouco superior, totalizando 99.365 (noventa e nove mil e trezentos e sessenta e cinco) mortes, o que representa 52,93% (cinquenta e dois vírgula noventa e três por cento) do total de óbitos registrados no país por covid-19.
 
-\qquad A este respeito, o Gráfico 8 (Mortes de covid-19 por região) apresenta a distribuição das mortes decorrente de covid-19, de forma regionalizada, conforme pode ser visto abaixo:
+A este respeito, o Gráfico 8 (Mortes de covid-19 por região) apresenta a distribuição das mortes decorrente de covid-19, de forma regionalizada, conforme pode ser visto abaixo:
 
 ```{r mortesPorRegiao, include=FALSE}
 mortesPorRegiao=pacientes[complete.cases(pacientes[,c("CS_EVOLUCAO")]) & pacientes$CS_EVOLUCAO=="Óbito",] %>% 
@@ -1179,6 +1204,13 @@ group_by(REGIAO) %>%
 summarise(.groups = "drop_last", QTD_MORTES=n()) %>%
 arrange(desc(QTD_MORTES))
 ```
+
+```{r gerarDadosDashBoard, include=FALSE}
+write.csv2(pacientes[, c("DT_NOTIFICACAO", "REGIAO", "SG_UF", "MUNICIPIO",
+"COD_MUNICIPIO", "COD_HOSPITAL", "HOSPITAL", "DT_EVOLUCAO", "CS_EVOLUCAO" )],
+file ="dados/dashboard_pacientes.csv")
+```
+
 
 ```{r grfMortePorRegiao, include=FALSE}
 #Exibir gráfico com quantidade de mortes por região
@@ -1194,13 +1226,13 @@ plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 
 \vspace{0.5cm}
 
-```{r grdMortesPorRegiao, echo=FALSE, fig.height=4, fig.width=7}
+```{r grdMortesPorRegiao, echo=FALSE, fig.height=3, fig.width=7}
 grid.arrange(grdMortesPorRegiao, bottom="Gráfico 8: Mortes de covid-19 por região")
 ```
 
 \vspace{0.5cm}
 
-\qquad Após a região sudeste, o Nordeste aparece como a segunda região com maior número de mortes do Brasil, totalizando 44.965 (quarenta e quatro mil e novecentos e sessenta e cinco) mortes, ou seja, 23,95% (vinte e três vírgula noventa e cinco por cento) do total de mortes por covid-19 do país.
+Após a região sudeste, o Nordeste aparece como a segunda região com maior número de mortes do Brasil, totalizando 44.965 (quarenta e quatro mil e novecentos e sessenta e cinco) mortes, ou seja, 23,95% (vinte e três vírgula noventa e cinco por cento) do total de mortes por covid-19 do país.
 
 ```{r mortesPorRegiaoSudeste, include=FALSE}
 mortesPorRegiaoSudeste=pacientes[complete.cases(pacientes[,c("CS_EVOLUCAO")]) & pacientes$CS_EVOLUCAO=="Óbito" &
@@ -1225,7 +1257,7 @@ axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
 plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-\qquad No Sudeste, o Estado de São Paulo foi responsável por 53,45% (cinquenta e três virgula quarenta e cinco por cento) das mortes, registrando 47.226 (quarenta e sete mil duzentos e vinte e seis) óbitos, ou seja, mais da metade das mortes na região, como pode ser visto no gráfico 9 (Mortes por covid-19 na região Sudeste) apresentado abaixo:
+No Sudeste, o Estado de São Paulo foi responsável por 53,45% (cinquenta e três virgula quarenta e cinco por cento) das mortes, registrando 47.226 (quarenta e sete mil duzentos e vinte e seis) óbitos, ou seja, mais da metade das mortes na região, como pode ser visto no gráfico 9 (Mortes por covid-19 na região Sudeste) apresentado abaixo:
 
 \vspace{0.5cm}
 
@@ -1255,9 +1287,9 @@ axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
 plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-\qquad É importante observarmos que o Estado de São Paulo apresenta mais mortes do que a região nordeste inteira, que é a segunda maior região com casos de morte por covid-19 no país.
+É importante observarmos que o Estado de São Paulo apresenta mais mortes do que a região nordeste inteira, que é a segunda maior região com casos de morte por covid-19 no país.
 
-\qquad No que se refere ao Nordeste, o Estado do Ceará apresenta, aproximadamente, 1/4 (um quarto) do número de óbitos, no total de 10.281 (dez mil duzentos e oitenta e um) óbitos, seguido por Pernambuco e Bahia, com 9.597 (nove mil quinhentos e noventa e sete) e 8.321 (oito mil trezentos e vinte e um) óbitos, respectivamente. Esses três estados, juntos, têm quase 60% (sessenta por cento) das mortes por covid-19 no Nordeste. Sobre este assunto, o Gráfico 10 (Mortes por covid-19 na região Nordeste),  exibido abaixo, apresenta a distribuição de mortes por covid-19 na região.
+No que se refere ao Nordeste, o Estado do Ceará apresenta, aproximadamente, 1/4 (um quarto) do número de óbitos, no total de 10.281 (dez mil duzentos e oitenta e um) óbitos, seguido por Pernambuco e Bahia, com 9.597 (nove mil quinhentos e noventa e sete) e 8.321 (oito mil trezentos e vinte e um) óbitos, respectivamente. Esses três estados, juntos, têm quase 60% (sessenta por cento) das mortes por covid-19 no Nordeste. Sobre este assunto, o Gráfico 10 (Mortes por covid-19 na região Nordeste),  exibido abaixo, apresenta a distribuição de mortes por covid-19 na região.
 
 \vspace{0.5cm}
 
@@ -1271,7 +1303,7 @@ grid.arrange(grdMortesPorRegiaoNordeste, bottom="Gráfico 10: Mortes por covid-1
 
 \vspace{0.5cm}
 
-\qquad Apesar do estado de São Paulo liderar o números de mortes absoluto por covid-19 no Brasil, em relação ao tamanho da população, a situação é diferente. Verifica-se que 5 (cinco) estados do país ultrapassam São Paulo em mortes por milhão de habitantes. O Rio de Janeiro é o estado com a mais alta taxa de mortalidade do país, seguido pelo Distrito Federal. Para desmostrar segue a Tabela \underline{\color{blue}\ref{tab:txMortalidade}}.
+Apesar do estado de São Paulo liderar o números de mortes absoluto por covid-19 no Brasil, em relação ao tamanho da população, a situação é diferente. Verifica-se que 5 (cinco) estados do país ultrapassam São Paulo em mortes por milhão de habitantes. O Rio de Janeiro é o estado com a mais alta taxa de mortalidade do país, seguido pelo Distrito Federal. Para desmostrar segue a Tabela \ref{tab:txMortalidade}}.
 
 \begin{table}[htp!]
 \center
@@ -1283,7 +1315,7 @@ RJ & DF & AM & CE & SE & SP \\ \hline
 \label{tab:txMortalidade}
 \end{table}
 
-\qquad Apesar da Tabela \underline{\color{blue}\ref{tab:txMortalidade}} apresentar apenas os 6 (seis) estados com as maiores taxas de mortalidade, pode-se visualizar no Gráfico 11 o mapa de calor das taxas de mortalidade por estado. De forma complementar, tem-se, ainda, a tabela completa com as taxas de mortalidade por covid-19 de todos os estados disponível no Apêndice A.
+Apesar da Tabela \ref{tab:txMortalidade}} apresentar apenas os 6 (seis) estados com as maiores taxas de mortalidade, pode-se visualizar no Gráfico 11 o mapa de calor das taxas de mortalidade por estado. De forma complementar, tem-se, ainda, a tabela completa com as taxas de mortalidade por covid-19 de todos os estados disponível no Apêndice A.
 
 ```{r mortalidadePorUF, include=FALSE}
 mortalidadePorUF=pacientes[complete.cases(
@@ -1331,11 +1363,11 @@ grid.arrange(grfTxMortalidade, bottom="Gráfico 11: Mapa de calor das taxas de m
 
 \vspace{0.5cm}
 
-\qquad No que se refere as capitais brasileiras, as taxas de mortalidade são ainda maiores que as estaduais. A média da taxa de mortalidade nas capitais é de 1.689 (um mil seiscentos e oitenta e nove) óbitos por milhão de habitantes, superior ao Estado do Rio de Janeiro, Estado com maior taxa de mortalidade do país (veja Tabela \underline{\color{blue}\ref{tab:txMortalidade}}).
+No que se refere as capitais brasileiras, as taxas de mortalidade são ainda maiores que as estaduais. A média da taxa de mortalidade nas capitais é de 1.689 (um mil seiscentos e oitenta e nove) óbitos por milhão de habitantes, superior ao Estado do Rio de Janeiro, Estado com maior taxa de mortalidade do país (veja Tabela \ref{tab:txMortalidade}}).
 
-\qquad Recife é a capital com maior número de mortes por milhão de habitantes, com 3.313 (três mil trezentos de treze) óbitos por covid-19, o que representa uma taxa 96% (noventa e seis por cento) superior à média nacional das capitais. 
+Recife é a capital com maior número de mortes por milhão de habitantes, com 3.313 (três mil trezentos de treze) óbitos por covid-19, o que representa uma taxa 96% (noventa e seis por cento) superior à média nacional das capitais. 
 
-\qquad Das 7 (sete) maiores taxas de mortalidade por covid-19 nas capitais as regiões norte e nordeste ocupam 6 posições no ranking, com exceção da cidade do Rio de Janeiro. Já o município de São Paulo tem taxa de mortalidade inferior a média nacional e ocupa a 19ª (décima nona) posição do ranking, com 1.436 mortes por milhão de habitantes, esse raking consta na Tabela \underline{\color{blue}\ref{tab:txMortalidadeCapitais}} abaixo. 
+Das 7 (sete) maiores taxas de mortalidade por covid-19 nas capitais as regiões norte e nordeste ocupam 6 posições no ranking, com exceção da cidade do Rio de Janeiro. Já o município de São Paulo tem taxa de mortalidade inferior a média nacional e ocupa a 19ª (décima nona) posição do ranking, com 1.436 mortes por milhão de habitantes, esse raking consta na Tabela \ref{tab:txMortalidadeCapitais}} abaixo. 
 
 \begin{table}[htp!]
 \center
@@ -1377,7 +1409,6 @@ taxaDeMortalidadePorCapitais
 
 ```{r meanCapitais, include=FALSE}
 mediaCapitais=mean(taxaDeMortalidadePorCapitais$TX_MORTALIDADE)
-mediaCapitais
 taxaMortalidadeRecife=taxaDeMortalidadePorCapitais[taxaDeMortalidadePorCapitais$MUNICIPIO=="Recife", ]$TX_MORTALIDADE
 proporcRecifeVsMediaNacional=taxaMortalidadeRecife/mediaCapitais
 ```
@@ -1395,7 +1426,7 @@ proporcRecifeVsMediaNacional=taxaMortalidadeRecife/mediaCapitais
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-\qquad As taxas de mortlidade das capitais por covid-19 estão representadas em forma geométrica de triangulo invertido no Grafico 12 (Taxa de mortalidade por covid-19 nas capitais), sendo o maior trinangulo, a maior taxa de mortalidade, pondendo-se, ainda, visualizar mais detalhes das taxas de mortalidade por covid-19 nas capitais no Apêndice A, deste trabalho.
+As taxas de mortlidade das capitais por covid-19 estão representadas em forma geométrica de triangulo invertido no Grafico 12 (Taxa de mortalidade por covid-19 nas capitais), sendo o maior trinangulo, a maior taxa de mortalidade, pondendo-se, ainda, visualizar mais detalhes das taxas de mortalidade por covid-19 nas capitais no Apêndice A, deste trabalho.
 
 ```{r gridTxMortalidadeCap, echo=FALSE}
 grid.arrange(grfTxMortalidadeCap, bottom="Gráfico 12: Taxa de mortalidade por covid-19 nas capitais")
@@ -1407,7 +1438,7 @@ grid.arrange(grfTxMortalidadeCap, bottom="Gráfico 12: Taxa de mortalidade por c
 
 \vspace{0.5cm}
 
-\qquad A taxa de letalide de covid-19 no Brasil, com verificação a partir de teste de hipótese, é de 35% (trinca e cinco por cento), com nível de significancia de 95% (noventa e cinco por cento). Para este teste, utilizou-se uma amostra com 493.035 (quatrocentos e noventa e três mil e trinta e cinco) pacientes hospitalizados. Esta taxa coincide com a identificada no estudo realizado no Reino Unido, no qual comparou-se a taxa de letalidade da covid-19 com a do vírus ebola. A seguir, verifica-se o trecho de código para realização do teste de hipotese:
+A taxa de letalide de covid-19 no Brasil, com verificação a partir de teste de hipótese, é de 35% (trinca e cinco por cento), com nível de significancia de 95% (noventa e cinco por cento). Para este teste, utilizou-se uma amostra com 493.035 (quatrocentos e noventa e três mil e trinta e cinco) pacientes hospitalizados. Esta taxa coincide com a identificada no estudo realizado no Reino Unido, no qual comparou-se a taxa de letalidade da covid-19 com a do vírus ebola. A seguir, verifica-se o trecho de código para realização do teste de hipotese:
 
 \vspace{0.5cm}
 
@@ -1426,7 +1457,7 @@ prop.test(qtdObitos, totalPacientes, 0.35, conf.level = 0.95)
 
 \vspace{0.5cm}
 
-\qquad A figura \underline{\color{blue}\ref{fig:Gallagher2020}} mostra a manchete da matéria da BBC NEWS, que faz referência ao estudo Britânico citado acima.
+A Figura \ref{fig:Gallagher2020}} mostra a manchete da matéria da BBC NEWS, que faz referência ao estudo Britânico citado acima.
 
 \begin{figure}[htp]
 \center
@@ -1435,7 +1466,7 @@ prop.test(qtdObitos, totalPacientes, 0.35, conf.level = 0.95)
 \label{fig:Gallagher2020}
 \end{figure}
 
-\qquad De acordo com James Gallagher (2020), repórter de ciência e saúde\cite{Gallagher:2020}:
+De acordo com James Gallagher (2020), repórter de ciência e saúde\cite{Gallagher:2020}:
 
 \vspace{0.5cm}
 
@@ -1554,15 +1585,15 @@ merge[merge$TIPO=="Sul",]
 merge[merge$TIPO=="Nordeste",]
 ```   
 
-\qquad No que se refere à média móvel das taxas de letalidade por covid-19 do Brasil e regiões, Norte e Nordeste apresentaram, no início da pandemia, as maiores médias do país, ambas acima de 50% (cinquenta por cento), atingindo pico na 20ª (vigésima) semana. 
+No que se refere à média móvel das taxas de letalidade por covid-19 do Brasil e regiões, Norte e Nordeste apresentaram, no início da pandemia, as maiores médias do país, ambas acima de 50% (cinquenta por cento), atingindo pico na 20ª (vigésima) semana. 
 
-\qquad Nas semanas seguintes, a região Norte apresentou queda acentuada de sua taxa, chegando ao seu ponto mais baixo na 43ª (quadragésima terceira) semana. Nesta ocasião, chegou a apresentar a menor média do país. Contudo, à partir da semana 44ª (quadragésima quarta) semana voltou a subir, mantendo-se em ascensão até o término do ano de 2020, ocasião na qual ultrapassou a média das demais regiões. 
+Nas semanas seguintes, a região Norte apresentou queda acentuada de sua taxa, chegando ao seu ponto mais baixo na 43ª (quadragésima terceira) semana. Nesta ocasião, chegou a apresentar a menor média do país. Contudo, à partir da semana 44ª (quadragésima quarta) semana voltou a subir, mantendo-se em ascensão até o término do ano de 2020, ocasião na qual ultrapassou a média das demais regiões. 
 
-\qquad Quanto ao Nordeste, este se manteve com média acima das apresentadas no Brasil e demais regiões, praticamente, durante todo ano de 2020, com exceção do mês de dezembro quando foi ultrapassada pela Região Norte.
+Quanto ao Nordeste, este se manteve com média acima das apresentadas no Brasil e demais regiões, praticamente, durante todo ano de 2020, com exceção do mês de dezembro quando foi ultrapassada pela Região Norte.
 
-\qquad É importante destacar que a Região Sul apresentou, durante quase todo ano de 2020, as menores médias do país. No entanto, à partir da 48ª (quadragésima oitava) semana, passou a apresentar uma subida acentuada de sua taxa.
+É importante destacar que a Região Sul apresentou, durante quase todo ano de 2020, as menores médias do país. No entanto, à partir da 48ª (quadragésima oitava) semana, passou a apresentar uma subida acentuada de sua taxa.
 
-\qquad Estes resultado podem ser observados no Gráfico 13 (Média móvel semanal da taxa de letalidade), que está apresentado abaixo:
+Estes resultado podem ser observados no Gráfico 13 (Média móvel semanal da taxa de letalidade), que está apresentado abaixo:
 
 \vspace{0.5cm}
 
@@ -1574,11 +1605,23 @@ grid.arrange(grfTxLetalidadeRegiao, bottom="Gráfico 13: Média móvel semanal d
 
 \section{5. Inferência Estatística}
 
-\qquad No capítulo anterior, foi analisado os diferentes impactos da covid-19 a parti da regiões, estados e município. Neste capítulo, o foco será identificar quais as características do paciente que impactam a taxa de letalidade da covid-19, no Brasil.  
+\vspace{0.5cm}
+
+No capítulo anterior, foram analisados os número absolutos de óbitos por covid-19, a média móvel da taxa de letalida nacional por região, bem como as taxas de mortalidade de covid-19 nas regiões, estados e capitais brasileiras.
+
+Neste capítulo, o foco será identificar o perfil do paciente hospitalizado com maior e menor risco de morte por covid-19, no Brasil.
 
 \subsection{5.1 Perfil do brasileiro com maior e menor risco de morte}
 
-\qquad Para reduzir a variação dos valores as idades foram agrupadas em faixas. Neste momento, foram adotados os mesmos intervalos utilizados pelo \href{https://educa.ibge.gov.br/jovens/conheca-o-brasil/populacao/18318-piramide-etaria.html}{IBGE}. 
+\vspace{0.5cm}
+
+Dos atributos disponíveis no data frame, foram selecionadas as seguintes colunas para construção dos perfis de pacientes hospitalizados com maior risco de morte: sexo, idade, existência de comorbidades, raça e região.
+
+Na tentativa de reduzir os número de perfis e torná-los mais representativos para este modelo, foram adotados alguns tratamentos que serão detalhados nos próximos parágrafos.
+
+No que se refere à idade, os valores foram agrupados em intervalos, adotando-se os mesmos intervalos utilizados na piramide etária adotada pelo Instituto Brasileiro de Geografia e Estatística (IBGE), conforme Tabela \ref{tab:faixaEtaria}} abaixo:
+
+\vspace{0.5cm}
 
 \begin{table}[htp!]
 \center
@@ -1591,6 +1634,14 @@ grid.arrange(grfTxLetalidadeRegiao, bottom="Gráfico 13: Média móvel semanal d
 \caption{Faixa Etária}
 \label{tab:faixaEtaria}
 \end{table}
+
+\vspace{0.5cm}
+
+No que se refere à comorbidade, as colunas que detalham os tipos de comorbidades foram ignoradas para construção deste modelo, sendo adotada apenas a coluna fator de risco, que indica a existência de doença preexistente ou não.
+
+As execuções necessárias para a otimização deste modelo foram realizadas em duas etapas:
+
+\vspace{0.5cm}
 
 ```{r faixaEtaria, include=FALSE}
 pacientesCovidTxLetalidade["FAIXA_ETARIA"]=NA;
@@ -1625,9 +1676,23 @@ dadosRegressaoLogistica$IN_FATOR_RISC=if_else(dadosRegressaoLogistica$IN_FATOR_R
 dadosRegressaoLogistica["IN_OBITO_COVID"]=if_else(dadosRegressaoLogistica$CS_EVOLUCAO=="Óbito", 1,0)
 ```
 
-\begin{flushleft}
-\large\underline{\textbf{Primeira Execução}}
-\end{flushleft}
+A) Primeira execução:
+\vspace{0.5cm}
+
+Na primeira execução o modelo de regressão logística apresentou valores de baixa significância para:
+
+\vspace{0.5cm} 
+
+\begin{itemize}
+\item faixa etária: nos intervalos de 5 a 9 anos, 10 a 14 anos, bem como não exibiu a faixa de 0 a 4 anos;
+\item raça do paciente: na cor branca, bem como não exibiu a cor amarela. 
+\end{itemize}
+
+\vspace{0.5cm}
+
+O código utilizado na execução do modelo de regressão logistica pode ser verificado no trecho de código abaixo, bem como o resultado da execução na Tabela \ref{tab:regTabLog1}}.
+
+\vspace{0.5cm}
 
 ```{r modeloRegressaoLogistica1, results='hide'}
 modeloRegressaoLogistica = glm(formula = IN_OBITO_COVID ~ CS_SEXO +
@@ -1637,13 +1702,7 @@ modeloRegressaoLogistica.table <- xtable(modeloRegressaoLogistica)
 print(modeloRegressaoLogistica.table, type = "LaTeX" )
 ```
 
-\qquad Na primeira execução o modelo apresentou valores de baixa significância.
-
-\qquad Para a faixa etária, nos intervalos de 5 a 9 anos e 10 a 14 anos o modelo apresentou baixa significância, o modelo, também não exibiu a faixa de 0 a 4 anos. Assim, esses intervalos foram reagrupadas em um novo intervalo de 0 a 14 anos.
-
-\qquad No que se refere à raça do paciente, o modelo apresentou baixa significância para raça branca e não exibiu a raça amarela. Então, optou-se por agrupar as raças amarela e branca em um grupo misto. Conforme tabela \underline{\color{blue}\ref{tab:regTabLog1}} da página \underline{\color{blue}\pageref{tab:regTabLog1}}.
-
-\newpage
+\vspace{0.5cm}
 
 \begin{table}[htp!]
 \center
@@ -1681,7 +1740,7 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 \label{tab:regTabLog1}
 \end{table}
 
-\newpage
+\vspace{0.5cm}
 
 ```{r ajusteModelo, include=FALSE}
 dadosRegressaoLogistica$FAIXA_ETARIA=as.character(dadosRegressaoLogistica$FAIXA_ETARIA)
@@ -1692,9 +1751,16 @@ dadosRegressaoLogistica[dadosRegressaoLogistica$CS_RACA=="Amarela", ]$CS_RACA = 
 dadosRegressaoLogistica$CS_RACA=as.factor(dadosRegressaoLogistica$CS_RACA)
 ```
 
-\begin{flushleft}
-\large\underline{\textbf{Segunda Execução}}
-\end{flushleft}
+B) Segunda execução:
+
+\vspace{0.5cm}
+
+Após o ajuste do modelo e a reexecução em uma amostra com 383.266 (trezentos e oitenta e três mil e duzentos e sessenta e seis) pacientes. Conclui-se que o perfil com maior risco de morte tem: idade de 80 (oitenta) anos ou mais ($\beta^1$ : 2.9888), já apresenta doenças preexistentes ($\beta^1$ : 0.5299), reside na região nordeste ($\beta^1$ : 0.4171), é de cor preta 
+($\beta^1$ : 0.3543) e homem ($\beta^1$ : 0.2465), com probabilidade de óbito de 80%.
+
+Já o perfil com menor risco de morte no Brasil: reside na região sul ($\beta^1$ : -0.1689), tem idade de 0 (zero) a 14 (quatorze) anos, não tem doenças preexistentes, é de cor branca ou amarela e do sexo feminino, com probabilidade de óbito por covid-19 de 3,5%. Abaixo segue o trecho de código responsável pela segunda execução do modelo.
+
+\vspace{0.5cm}
 
 ```{r modeloRegressaoLogistica2, results='hide'}
 modeloRegressaoLogistica = glm(formula = IN_OBITO_COVID ~ CS_SEXO +
@@ -1715,14 +1781,11 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
  menorRisco
 ```
 
-\qquad Após o ajuste do modelo e a reexecução em uma amostra com 383.266 (trezentos e oitenta e três mil e duzentos e sessenta e seis) pacientes. Conclui-se que o perfil com maior risco de morte tem: idade de 80 (oitenta) anos ou mais ($\beta^1$ : 2.9888), já apresenta doenças preexistentes ($\beta^1$ : 0.5299), reside na região nordeste ($\beta^1$ : 0.4171), é de cor preta 
-($\beta^1$ : 0.3543) e homem ($\beta^1$ : 0.2465), com probabilidade de óbito de 80%.
+\vspace{0.5cm}
 
-\qquad Já o perfil com menor risco de morte no Brasil: reside na região sul ($\beta^1$ : -0.1689), tem idade de 0 (zero) a 14 (quatorze) anos, não tem doenças preexistentes, é de cor branca ou amarela e do sexo feminino, com probabilidade de óbito por covid-19 de 3,5%.
+Os valores de $\beta^0$ e $\beta^1$ resultado da reexecução do modelo ajustado podem ser verificados na Tabela: \ref{tab:regTabLog2}}.
 
-\qquad Os valores de $\beta^0$ e $\beta^1$ do modelo otimizado podem ser verificados na tabela: \underline{\color{blue}\ref{tab:regTabLog2}} da página \underline{\color{blue}\pageref{tab:regTabLog2}}.
-
-\newpage
+\vspace{0.5cm}
 
 \begin{table}[htp!]
 \center
@@ -1761,9 +1824,9 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 
 \section{6. Machine learning}
 
-\qquad Neste capítulo, utiliza-se técnicas de machine learning para identificar outros atributos com impacto no risco de óbito dos pacientes, além dos atributos já descritos nas seções anteriores novos atributos serão incorporados aos modelos. Os algoritmos, também serão diversificados. 
+Neste capítulo, utiliza-se técnicas de machine learning para identificar outros atributos com impacto no risco de óbito dos pacientes, além dos atributos já descritos nas seções anteriores novos atributos serão incorporados aos modelos. Os algoritmos, também serão diversificados. 
 
-\qquad A eficiência dos atributos selecionados, bem como o algoritmo utilizado, será mensurada a partir da taxa de acerto do algoritmo.
+A eficiência dos atributos selecionados, bem como o algoritmo utilizado, será mensurada a partir da taxa de acerto do algoritmo.
 
 ```{r dataFrameDadosMachineLearning, include=FALSE}
 #Preparando o datafreme a ser testado.
@@ -1798,7 +1861,7 @@ dadosMachineLearningObito$IN_RECEBEU_VACINA_GRIPE=as.factor(dadosMachineLearning
 dadosMachineLearningObito=dadosMachineLearningObito[complete.cases(dadosMachineLearningObito),];
 ```
 
-\qquad Os dados utilizados nos treinamentos dos modelos, bem como os dados utilizados nos testes, serão extraídos a partir de uma amostra aleatória com 1000 (um mil) registros. Sendo 70% (setenta por cento) da amostra destinada para o treinamento e 30%(trinta por cento) destinada para os testes.
+Os dados utilizados nos treinamentos dos modelos, bem como os dados utilizados nos testes, serão extraídos a partir de uma amostra aleatória com 1000 (um mil) registros. Sendo 70% (setenta por cento) da amostra destinada para o treinamento e 30%(trinta por cento) destinada para os testes.
 
 ```{r amostraMachine, echo=FALSE}
 amostra = sample(2,1000, replace = T, prob=c(0.7,0.3))
@@ -1808,7 +1871,7 @@ dadosTeste=dadosMachineLearningObito[amostra==2,]
 
 \subsection{6.1 Árvore de Desisão de Classificação}
 
-\qquad Na primeira execução, o algorítimo utilizado será o rpart e os atributos serão os mesmos utilizados nas seção de inferência estatística. Com essa configuração a taxa de acerto do modelo foi 69% (sessenta e nove por cento).
+Na primeira execução, o algorítimo utilizado será o rpart e os atributos serão os mesmos utilizados nas seção de inferência estatística. Com essa configuração a taxa de acerto do modelo foi 69% (sessenta e nove por cento).
 
 ```{r arvore1}
 arvoreClassificacao = rpart(formula =  CS_EVOLUCAO ~ CS_SEXO +
@@ -1830,7 +1893,7 @@ taxaAcerto
 
 \subsection{6.2 Arvore de Decição e Seleção de Atributos}
 
-\qquad Com método randomForest e mantendo praticamente os mesmo atributos da execução anterior, com exceção do atributo REGIAO, substituído pelo atributo SG_UF a taxa de acerto referente ao risco de morte do paciente, apresenta uma pequena melhora. A após a mudança, a taxa de acertou passou para 70% (setenta por cento).
+Com método randomForest e mantendo praticamente os mesmo atributos da execução anterior, com exceção do atributo REGIAO, substituído pelo atributo SG_UF a taxa de acerto referente ao risco de morte do paciente, apresenta uma pequena melhora. A após a mudança, a taxa de acertou passou para 70% (setenta por cento).
 
 ```{r randomForest}
 selecaoAtributos = randomForest(CS_EVOLUCAO ~ CS_SEXO +
@@ -1849,7 +1912,7 @@ taxaAcerto = (confusao[1]+confusao[4])/sum(confusao)
 taxaAcerto
 ```
 
-\qquad O gráfico abaixo apresenta os atributos mais significativos na classificação de risco de morte do paciente. A FAIXA_ETARIA do paciente é o atributo com maior peso na classificação do registro em relação ao risco de morte. Nas próximas execuções detalharemos mais os atributos FAIXA_ETARIA e SG_UF.
+O gráfico abaixo apresenta os atributos mais significativos na classificação de risco de morte do paciente. A FAIXA_ETARIA do paciente é o atributo com maior peso na classificação do registro em relação ao risco de morte. Nas próximas execuções detalharemos mais os atributos FAIXA_ETARIA e SG_UF.
 
 ```{r varImpPlot}
 varImpPlot(selecaoAtributos, main="Atributos mais significativos")
@@ -1857,7 +1920,7 @@ varImpPlot(selecaoAtributos, main="Atributos mais significativos")
 
 \subsection{6.3 Árvore de Decisão de Classificação otimizado}
 
-\qquad Utilizando novamente a função rpart agora com atributo NU_IDADE e MUNICIPIO, a taxa de acerto passou a ser de 71% (setenta e um por cento)
+Utilizando novamente a função rpart agora com atributo NU_IDADE e MUNICIPIO, a taxa de acerto passou a ser de 71% (setenta e um por cento)
 
 ```{r arvore2}
 arvoreClassificacao = rpart(formula =  CS_EVOLUCAO ~  NU_IDADE + MUNICIPIO,
@@ -1875,7 +1938,7 @@ confusao=table(previsao$CS_EVOLUCAO, previsao$PREVISAO)
 taxaAcerto = (confusao[1]+confusao[4])/sum(confusao)
 taxaAcerto
 ```
-\qquad Quando adicionado o hospital de atendimento do paciente como atributo do modelo, a taxa de acerto passa a ser de 74% (setenta e quatro por cento).
+Quando adicionado o hospital de atendimento do paciente como atributo do modelo, a taxa de acerto passa a ser de 74% (setenta e quatro por cento).
 
 ```{r arvore3}
 arvoreClassificacao = rpart(formula =  CS_EVOLUCAO ~  NU_IDADE + MUNICIPIO + HOSPITAL,
@@ -1896,7 +1959,7 @@ taxaAcerto
 
 \subsection{6.4 Naive Bayse}
 
-\qquad Com os mesmo atributos da seção anterior e o método naiveBayes do pacote e1071 a taxa de acerto foi menor, 71% (setenta e um por cento)
+Com os mesmo atributos da seção anterior e o método naiveBayes do pacote e1071 a taxa de acerto foi menor, 71% (setenta e um por cento)
 
 ```{r modeloNaiveBayes, results='hide'}
 modeloNaiveBayes = naiveBayes(formula =  CS_EVOLUCAO ~  NU_IDADE + MUNICIPIO + HOSPITAL,
