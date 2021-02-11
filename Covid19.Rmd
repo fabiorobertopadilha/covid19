@@ -1207,7 +1207,7 @@ arrange(desc(QTD_MORTES))
 
 ```{r gerarDadosDashBoard, include=FALSE}
 write.csv2(pacientes[, c("DT_NOTIFICACAO", "REGIAO", "SG_UF", "MUNICIPIO",
-"COD_MUNICIPIO", "COD_HOSPITAL", "HOSPITAL", "DT_EVOLUCAO", "CS_EVOLUCAO" )],
+"COD_MUNICIPIO", "COD_HOSPITAL", "HOSPITAL", "DT_EVOLUCAO", "CS_EVOLUCAO", "IN_FATOR_RISC", "CS_RACA", "CS_SEXO", "NU_IDADE")],
 file ="dados/dashboard_pacientes.csv")
 ```
 

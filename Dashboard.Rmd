@@ -1,10 +1,11 @@
 ---
-title: "TCC-PUC Dashboard / Covid-19"
+title: "Dashboard - Síndrome respiratória aguda grave por covid-19"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
     vertical_layout: fill
     theme: cerulean
+    css: www/styles.css
 runtime: shiny
 ---
 
@@ -16,12 +17,13 @@ library(ggplot2)
 library(zoo)
 library(geobr)
 library(sf)
+library(shinyWidgets)
 ```
 
 ```{r}
 cores = c("#eabeac", "#b6dfe0", "#e2cfb4", "#d7d9bd", "#d6b9dd", "#b3b4e3", "#abcaeb", 
 "#ebabab", "#e6b0c7", "#eabeac", "#c1d8be", "#d7d9bd", "#d6b9dd", "#eabeac")
-coresIntensas = c("#ff4b03", "#2ae4e8", "#baa07b", "green", "#bf36e0")
+coresIntensas = c("#DC143C", "#ff4b03", "#2ae4e8", "#baa07b", "green", "#bf36e0")
 ptBr <- list(
   ª = "."
 )
@@ -30,14 +32,14 @@ ptBr <- list(
 
 ```{r}
 dadosDashBoard = read.csv("dados/dashboard_pacientes.csv", header = T, sep=";",
-                          na.strings = "", stringsAsFactors = T)
+                          na.strings = "NA", stringsAsFactors = T)
 dadosDashBoard$DT_NOTIFICACAO = as.Date(dadosDashBoard$DT_NOTIFICACAO, format="%Y-%m-%d")
 dadosDashBoard["MES_NOTIFICACAO"]=format(dadosDashBoard$DT_NOTIFICACAO, "%Y/%m")    
-dadosDashBoard$DT_EVOLUCAO = as.Date(dadosDashBoard$DT_EVOLUCAO, format="%Y-%m-%d")
-dadosDashBoard["SEMANA_EVOLUCAO"] =  format(dadosDashBoard$DT_EVOLUCAO, "%U");
-dadosDashBoard$SEMANA_EVOLUCAO=as.integer(dadosDashBoard$SEMANA_EVOLUCAO)
+dadosDashBoard["SEMANA_NOTIFICACAO"] =  format(dadosDashBoard$DT_NOTIFICACAO, "%U");
+dadosDashBoard$SEMANA_NOTIFICACAO=as.integer(dadosDashBoard$SEMANA_NOTIFICACAO)
 dadosDashBoard$REGIAO=as.character(dadosDashBoard$REGIAO)
 dadosDashBoard[dadosDashBoard$REGIAO=="Centro-Oeste", ]$REGIAO="Centro Oeste"
+dadosDashBoard[complete.cases(dadosDashBoard$CS_RACA) & dadosDashBoard$CS_RACA=="Amarela", ]$CS_RACA="Branca"
 ```
 
 
@@ -77,10 +79,64 @@ output$selectMunicipios <- renderUI({
   fillCol(height = 200, flex = c(NA, 1), 
     inputPanel(
       selectInput("municipio", label = "Municípios", municipios)
+    ),
+    uiOutput("perfilPaciente", height = "100%")
+  )
+})
+```
+
+```{r}
+output$perfilPaciente <- renderUI({
+  regi <- input$regiao
+  if (is.null(regi)) {
+    regi <- "Brasil"
+  }
+  esta <- input$estado
+  if (is.null(esta)) {
+    esta <- "Todos"
+  }
+  muni <- input$municipio
+  if (is.null(muni)) {
+    muni <- "Todos"
+  }
+  dadosDashBoard = dadosDashBoard %>% filter(regi=="Brasil" | REGIAO==regi) %>%
+  filter(esta=="Todos" | SG_UF == esta) %>% filter(muni=="Todos" | MUNICIPIO == muni)
+  racas = unique(dadosDashBoard[complete.cases(dadosDashBoard$CS_RACA), ]$CS_RACA)
+  fillCol(height = 300, flex = c(NA, 1),
+    inputPanel(
+      tags$span("Predição"),
+      tags$span("Risco de Morte"),
+      tags$h3("Perfil do Paciente"),
+      sliderInput("idade", "Idade", min = 0, max = 100, step = 1, value = 50),
+      materialSwitch(
+        inputId = "comorbidade",
+        label = "Tem comorbidade?",
+        value = TRUE, 
+        status = "danger"
+      ),
+      selectInput("raca", label = "Raça", racas),
+      radioGroupButtons(
+        inputId = "sexo",
+        label = "Sexo",
+        choices = list("Feminino" = 0, "Masculino" = 1),
+        justified = TRUE,
+        checkIcon = list(
+          yes = icon("ok", lib = "glyphicon")
+        )
+      ),
+      tags$div(
+        actionBttn(
+        inputId = "btnCalcular",
+        label = "Calcular", 
+        style = "material-flat",
+        color = "danger"
+       ), class="center"
+      )
     )
   )
 })
 ```
+
 
 ```{r}
 observeEvent(input$regiao, {
@@ -88,13 +144,13 @@ observeEvent(input$regiao, {
   if (is.null(regi)) {
     regi <- "Brasil"
   }
-  pacientesCovidTxLetalidade = dadosDashBoard[ complete.cases(dadosDashBoard$SEMANA_EVOLUCAO),]
+  pacientesCovidTxLetalidade = dadosDashBoard[ complete.cases(dadosDashBoard$SEMANA_NOTIFICACAO),]
   sumariopacientesCovid = pacientesCovidTxLetalidade %>% filter(regi=="Brasil" | regi==REGIAO) %>% 
-    group_by(SEMANA_EVOLUCAO) %>%
+    group_by(SEMANA_NOTIFICACAO) %>%
     summarise(.groups = "drop_last",
-    obito = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito"]),
+    obito = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito"]),
     total = n(),
-  ) %>% arrange(SEMANA_EVOLUCAO)
+  ) %>% arrange(SEMANA_NOTIFICACAO)
 })
 ```
 
@@ -129,7 +185,7 @@ ggplot(qtdNotificacoesMes) +
   theme_bw() +
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
   axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
-  plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))   
+  plot.title = element_text(size = 14, face = "bold", color = "darkgreen") )   
 })
 ```
 
@@ -145,23 +201,24 @@ muni <- input$municipio
 if (is.null(muni)) {
   muni <- "Todos"
 }
-pacientesCovidTxLetalidade = dadosDashBoard[ complete.cases(dadosDashBoard$SEMANA_EVOLUCAO),]
+pacientesCovidTxLetalidade = dadosDashBoard[ complete.cases(dadosDashBoard$SEMANA_NOTIFICACAO),]
 sumariopacientesCovid = pacientesCovidTxLetalidade %>% filter(input$regiao=="Brasil" | input$regiao==REGIAO) %>% 
   filter(esta=="Todos" | esta==SG_UF) %>%
   filter(muni=="Todos" | muni==MUNICIPIO) %>%
-  group_by(SEMANA_EVOLUCAO) %>%
+  group_by(SEMANA_NOTIFICACAO) %>%
   summarise(.groups = "drop_last",
-    obito = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito"]),
+    obito = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito"]),
     total = n(),
   ) %>%
-arrange(SEMANA_EVOLUCAO)
-sumariopacientesCovid = sumariopacientesCovid[sumariopacientesCovid$SEMANA_EVOLUCAO>=12,]
+arrange(SEMANA_NOTIFICACAO)
+sumariopacientesCovid = sumariopacientesCovid[sumariopacientesCovid$SEMANA_NOTIFICACAO>=12,]
 sumariopacientesCovid["TAXA"]=sumariopacientesCovid$obito/sumariopacientesCovid$total
 mediaMovel <- rollmean(sumariopacientesCovid$TAXA, 7, align = "right")
-semanaMediaMovel <- cbind(sumariopacientesCovid$SEMANA_EVOLUCAO, c(rep(NA, 6), mediaMovel))
+semanaMediaMovel <- cbind(sumariopacientesCovid$SEMANA_NOTIFICACAO, c(rep(NA, 6), mediaMovel))
 dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel), c("SEMANA", "TAXA"))
+dfMediaMovelTxLetalidade["TIPO"]= paste(input$regiao, paste(muni, esta, sep = " / " ), sep=" - ")
 ggplot(dfMediaMovelTxLetalidade) +
-geom_line(aes(x = SEMANA, y = TAXA), na.rm = T)+
+geom_line(aes(x = SEMANA, y = TAXA), na.rm = T,)+
 labs(x="Semana do ano", y="Taxa letalidade",
 title = input$regiao,
 subtitle = paste(muni, esta, sep = " / " )) +
@@ -318,25 +375,93 @@ else if (regi=="Brasil"){
   subtitle = esta) +
   theme_bw() +
   theme(axis.text.x = element_text(size = 10), axis.title.x = element_blank(),
-  axis.text.y = element_text(size = 14), axis.title.y =element_blank()  ,
+  axis.text.y = element_text(size = 14), axis.title.y =element_blank(), 
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))+
-  scale_fill_gradient(low = "white", high = "#DC143C")
+  scale_fill_gradient(low = "#f5e1e5", high = "#DC143C")
 })
 ```
 
+```{r}
+#Predição do Risco de Morte
+output$probabilidadeRiscoDeMorte=renderUI({
+  regi <- input$regiao
+  esta <- input$estado
+  if (is.null(esta)) {
+    esta <- "Todos"
+  }
+  fluidRow(   
+      column(width = 12,
+          tags$h1(textOutput("valorRiscoMorte"), class="center font8em fontRed")
+      ),
+      column(width = 12,
+          tags$h4("ATENÇÃO: Essa probabilidade é calculada considerando os casos graves de covid-19, tendo correspondência apenas com quem evolui para este quadro. O risco de morte geral por covid-19 é menor, visto que a maioria das pessoas tem sintomas leves ou mesmo são assintomáticas.", class="justify")  
+      )
+  )
+})
+```
+
+
+```{r}
+
+calcularProbabilidade = function(modelo, isHomem, idade, temFatorRisco, raca){
+  idxRaca = paste("CS_RACA",raca, sep="")
+  config = 0
+  config = config + modelo$coefficients[["(Intercept)"]]
+  config=config + (modelo$coefficients[["NU_IDADE"]]*idade)
+  for (i in 1:length(names(modelo$coefficients))){
+    if (names(modelo$coefficients)[i]==idxRaca){
+      config=config + (modelo$coefficients[[idxRaca]])
+    }
+  }
+  if (isHomem){
+    config = config + modelo$coefficients[["IN_SEXO_MASC"]]
+  }
+  if (temFatorRisco){
+    config = config + modelo$coefficients[["IN_FATOR_RISC"]]
+  }
+  return  (exp(config) / (1+exp(config)))
+}
+observeEvent(input$btnCalcular, {
+  regi <- input$regiao
+  if (is.null(regi)) {
+    regi <- "Brasil"
+  }
+  esta <- input$estado
+  if (is.null(esta)) {
+   esta <- "Todos"
+  }
+  muni <- input$municipio
+  if (is.null(muni)) {
+    muni <- "Todos"
+  }
+  dadosRegressaoLogistica = dadosDashBoard %>% filter(regi=="Brasil" | regi==REGIAO) %>% 
+  filter(esta=="Todos" | esta==SG_UF) %>%
+  filter(muni=="Todos" | muni==MUNICIPIO)
+  dadosRegressaoLogistica$IN_FATOR_RISC=if_else(dadosRegressaoLogistica$IN_FATOR_RISC=="S", 1,0)
+  dadosRegressaoLogistica$IN_SEXO_MASC=if_else(dadosRegressaoLogistica$CS_SEXO=="M", 1, 0)
+  dadosRegressaoLogistica["IN_OBITO_COVID"]=if_else(dadosRegressaoLogistica$CS_EVOLUCAO=="Óbito", 1,0)
+  dadosRegressaoLogistica=dadosRegressaoLogistica[complete.cases(dadosRegressaoLogistica),]
+  modeloRegressaoLogistica = glm(formula = IN_OBITO_COVID ~ IN_SEXO_MASC +
+  NU_IDADE + CS_RACA + IN_FATOR_RISC,
+  data = dadosRegressaoLogistica, family = binomial(link = "logit"))
+  round(12.69555, digits = 2)
+  valor = round(calcularProbabilidade(modeloRegressaoLogistica, input$sexo==1, input$idade, input$comorbidade, input$raca) , digits=4)
+  valor = as.character(valor * 100)
+  calcularProbabilidade(modeloRegressaoLogistica, TRUE, 40, TRUE, "Brancssa")
+  output$valorRiscoMorte = renderText(paste(valor,"%", sep="" ))
+})
+```
 
 
 Row {data-height=250}
 -----------------------------------------------------------------------
 
-### Taxa Mortalidade
-
+### Taxa de Mortalidade
 ```{r}
 plotOutput("plotTaxaMortalidade", height = "100%")
 ```
 
-### Taxa Letalidade
-
+### Média Móvel da Taxa Letalidade
 ```{r}
 plotOutput("plotTaxaLetalidade", height = "100%")
 ```
@@ -349,8 +474,34 @@ Row {data-height=250}
 plotOutput("plotNumeroObitos", height = "100%")
 ```
 
+### Predição do Risco de Morte
+```{r}
+htmlOutput("probabilidadeRiscoDeMorte")
+```
 
 
+Sobre
+===
+
+Row {data-height=300, left=100}
+-----------------------------------------------------------------------
+
+### Sobre
+```{r}
+fillCol(height = 200, flex = c(NA, NA, 0.5, 0.5, NA, NA, 0.5, NA, 1, NA),
+tags$h2("PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS", class='center'),
+tags$h2("NÚCLEO DE EDUCAÇÃO À DISTÂNCIA", class='center'),
+tags$h3("Pós-graduação Lato Sensu em Ciência de Dados e Big Data", class='center'),
+tags$h3("Fábio Roberto Barros Padilha", class='center'),
+
+tags$h3("ANÁLISE DE DADOS NACIONAIS SOBRE A EVOLUÇÃO", class='center'),
+tags$h3("DAS SÍNDROMES RESPIRATÓRIAS AGUDAS GRAVES", class='center'),
+tags$h3("POR SARS-CoV-2, NO ANO DE 2020", class='center'),
+tags$h2("Belo Horizonte", class='center'),
+tags$h2("2021", class='center'),
+tags$a(href="https://github.com/fabiorobertopadilha/covid19/", tags$h4("Para acessar o respositório do projeto, clique aqui.", class='center'))
+)
+```
 
 
 
