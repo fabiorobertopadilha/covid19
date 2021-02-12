@@ -1,0 +1,13 @@
+name: Dashboard-Covid19
+title: Dashboard-Covid19
+username:
+account: covid19tccpucminas
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3625969
+bundleId: 4213180
+url: https://covid19tccpucminas.shinyapps.io/Dashboard-Covid19/
+when: 1613096959.16855
+asMultiple: TRUE
+asStatic: FALSE
+ignoredFiles: dados/INFLUD-04-01-2021.csv|dados/POP2020_20201030.xlsx|Covid19.Rmd

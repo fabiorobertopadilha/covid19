@@ -374,6 +374,10 @@ else if (regi=="Brasil"){
   label_coords <- as.data.frame(st_coordinates(label_points))
   label_coords$REGIAO <- label$name_region
 }
+
+  st_crs(sf$geom)=4326
+
+  
   ggplot() +
   geom_sf(data=sf, aes(fill=TX_MORTALIDADE), size=.15, color="red") +
   geom_text(data = label_coords, aes(X, Y, label = REGIAO), colour = "darkgreen") +
