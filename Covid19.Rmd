@@ -178,7 +178,7 @@ coresIntensas = c("black", "#ff4b03", "#2ae4e8", "#baa07b", "green", "#bf36e0")
 coresSudeste = c("#d7d9bd", "#d7d9bd", "#d7d9bd", "#d7d9bd")
 #coresNordeste = c("#b6dfe0", "#abddde", "#9eddde", "#94dfe0", "#84dadb", "#7ddadb", "#6bdadb", "#5edfe0", "#4ddadb", "#3fd8d9", "#2fd5d6", "#1cd3d4")
 coresNordeste =  c("#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0", "#b6dfe0")
-coresEvolucao = c("#80baa6", "#e08565", "#f5a98e")
+coresEvolucao = c("#80baa6", "#e08565", "#f5a98e", "#d6ce60")
 coresFRisco = c("#1FDA9A", "#F38630")
 ptBr <- list(
   ª = "."
@@ -1097,12 +1097,10 @@ grid.arrange(grfRecursos, bottom="Gráfico 6: Recursos utilizados nos casos grav
 
 Na coluna CS_EVOLUCAO, os valores numéricos foram convertidos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B, deste trabalho. 
 
-O percentual de valores omissos nesta coluna é de 12,31% (doze virgula trinta e um por cento), os quais foram removidos na eloboração dos gráficos e modelos de machine learning.
+O percentual de valores omissos nesta coluna é de 12,31% (doze virgula trinta e um por cento), para esses valores foram atribuído a valor "Em tratamento".
 
 ```{r evolucaoOmissos, include=FALSE}
-pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
-  pacientes$CS_EVOLUCAO==9,]$CS_EVOLUCAO=NA
-(sum(is.na(pacientes$DT_EVOLUCAO))*100) / length(pacientes$DT_EVOLUCAO)
+(sum(is.na(pacientes$CS_EVOLUCAO))*100) / length(pacientes$CS_EVOLUCAO)
 ```
 
 O trecho de código abaixo reflete o processamento desta coluna:
@@ -1121,6 +1119,8 @@ pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
   pacientes$CS_EVOLUCAO==2, ]$CS_EVOLUCAO="Óbito"
 pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
   pacientes$CS_EVOLUCAO==3, ]$CS_EVOLUCAO="Óbito por outras causas"
+pacientes[is.na(pacientes$CS_EVOLUCAO), ]$CS_EVOLUCAO="Em tratamento"
+pacientes[complete.cases(pacientes$CS_EVOLUCAO) & pacientes$CS_EVOLUCAO==9,]$CS_EVOLUCAO="Em tratamento"
 pacientes$CS_EVOLUCAO=factor(pacientes$CS_EVOLUCAO)
 ```
 
@@ -1138,6 +1138,9 @@ evolucao = rbind(evolucao, resultado)
 resultado = setNames(data.frame(rep("Óbito por outras causas",
   length(pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
   pacientes$CS_EVOLUCAO=="Óbito por outras causas", ]$CS_EVOLUCAO))),c("CS_RESULTADO"))
+evolucao = rbind(evolucao, resultado)
+resultado = setNames(data.frame(rep("Em tratamento",length(pacientes[complete.cases(pacientes$CS_EVOLUCAO) &
+pacientes$CS_EVOLUCAO=="Em tratamento", ]$CS_EVOLUCAO))),c("CS_RESULTADO"))
 evolucao = rbind(evolucao, resultado)
 evolucao$CS_RESULTADO = factor(evolucao$CS_RESULTADO)
 ```
@@ -1159,7 +1162,7 @@ grfEvolucao = ggplot(evolucao) +
   subtitle = NULL) +
   scale_fill_manual(values = coresEvolucao) +
   theme_bw() +
-  theme(axis.text.x = element_text(size = 10), axis.title.x = element_text(size = 16),
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
   axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
@@ -1438,7 +1441,7 @@ grid.arrange(grfTxMortalidadeCap, bottom="Gráfico 12: Taxa de mortalidade por c
 
 \vspace{0.5cm}
 
-A taxa de letalide de covid-19 no Brasil, com verificação a partir de teste de hipótese, é de 35% (trinca e cinco por cento), com nível de significancia de 95% (noventa e cinco por cento). Para este teste, utilizou-se uma amostra com 493.035 (quatrocentos e noventa e três mil e trinta e cinco) pacientes hospitalizados. Esta taxa coincide com a identificada no estudo realizado no Reino Unido, no qual comparou-se a taxa de letalidade da covid-19 com a do vírus ebola. A seguir, verifica-se o trecho de código para realização do teste de hipotese:
+A taxa de letalide de covid-19 no Brasil, com verificação a partir de teste de hipótese, é de 30% (trinca por cento), com nível de significancia de 95% (noventa e cinco por cento). Para este teste, utilizou-se uma amostra com 564,093 (quinhentos e sessenta e quatro mil e noventa e três) pacientes hospitalizados. Esta taxa é menor do que a taxa identificada no estudo realizado no Reino Unido, no qual comparou-se a taxa de letalidade da covid-19 com a do vírus ebola. A seguir, verifica-se o trecho de código para realização do teste de hipotese:
 
 \vspace{0.5cm}
 
@@ -1481,28 +1484,28 @@ Pessoas internadas em hospitais por conta do novo coronavírus têm a mesma prob
 \vspace{0.5cm}
 
 ```{r dfTxLetalidade, include=FALSE}
-pacientesCovidTxLetalidade = pacientesCovidTxLetalidade[ complete.cases(pacientesCovidTxLetalidade$SEMANA_EVOLUCAO),]
+pacientesCovidTxLetalidade = pacientesCovidTxLetalidade[ complete.cases(pacientesCovidTxLetalidade$SEMANA_NOTIFICACAO),]
 sumariopacientesCovid = pacientesCovidTxLetalidade %>% 
-  group_by(SEMANA_EVOLUCAO) %>%
+  group_by(SEMANA_NOTIFICACAO) %>%
   summarise(.groups = "drop_last",
-    obito_BR = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito"]),
+    obito_BR = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito"]),
     total_BR = n(),
-    obito_N = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Norte"]),
-    total_N = length(SEMANA_EVOLUCAO[REGIAO=="Norte"]),
-    obito_NE = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Nordeste"]),
-    total_NE = length(SEMANA_EVOLUCAO[REGIAO=="Nordeste"]),
-    obito_CO = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Centro-Oeste"]),
-    total_CO = length(SEMANA_EVOLUCAO[REGIAO=="Centro-Oeste"]),
-    obito_SE = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Sudeste"]),
-    total_SE = length(SEMANA_EVOLUCAO[REGIAO=="Sudeste"]),
-    obito_S = length(SEMANA_EVOLUCAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Sul"]),
-    total_S = length(SEMANA_EVOLUCAO[REGIAO=="Sul"]),
+    obito_N = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Norte"]),
+    total_N = length(SEMANA_NOTIFICACAO[REGIAO=="Norte"]),
+    obito_NE = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Nordeste"]),
+    total_NE = length(SEMANA_NOTIFICACAO[REGIAO=="Nordeste"]),
+    obito_CO = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Centro-Oeste"]),
+    total_CO = length(SEMANA_NOTIFICACAO[REGIAO=="Centro-Oeste"]),
+    obito_SE = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Sudeste"]),
+    total_SE = length(SEMANA_NOTIFICACAO[REGIAO=="Sudeste"]),
+    obito_S = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito" & REGIAO=="Sul"]),
+    total_S = length(SEMANA_NOTIFICACAO[REGIAO=="Sul"]),
   ) %>%
-arrange(SEMANA_EVOLUCAO)
+arrange(SEMANA_NOTIFICACAO)
 ```
 
 ```{r colTxLetalidade, include=FALSE}
-sumariopacientesCovid = sumariopacientesCovid[sumariopacientesCovid$SEMANA_EVOLUCAO>=12,]
+sumariopacientesCovid = sumariopacientesCovid[sumariopacientesCovid$SEMANA_NOTIFICACAO>=12,]
 sumariopacientesCovid["TAXA_N"]=sumariopacientesCovid$obito_N/sumariopacientesCovid$total_N
 sumariopacientesCovid["TAXA_NE"]=sumariopacientesCovid$obito_NE/sumariopacientesCovid$total_NE
 sumariopacientesCovid["TAXA_CO"]=sumariopacientesCovid$obito_CO/sumariopacientesCovid$total_CO
@@ -1513,7 +1516,7 @@ sumariopacientesCovid["TAXA_BR"]=sumariopacientesCovid$obito_BR/sumariopacientes
 
 ```{r mediaMovelTxLetalidade, include=FALSE}
 mediaMovel_N <- rollmean(sumariopacientesCovid$TAXA_N, 7, align = "right")
-semanaMediaMovel_N <- cbind(sumariopacientesCovid$SEMANA_EVOLUCAO, c(rep(NA, 6), mediaMovel_N))
+semanaMediaMovel_N <- cbind(sumariopacientesCovid$SEMANA_NOTIFICACAO, c(rep(NA, 6), mediaMovel_N))
 dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel_N), c("SEMANA", "TAXA_N"))
 mediaMovel_NE <- rollmean(sumariopacientesCovid$TAXA_NE, 7, align = "right")
 semanaMediaMovel_NE <- cbind(dfMediaMovelTxLetalidade, c(rep(NA, 6), mediaMovel_NE))
@@ -1591,7 +1594,7 @@ Nas semanas seguintes, a região Norte apresentou queda acentuada de sua taxa, c
 
 Quanto ao Nordeste, este se manteve com média acima das apresentadas no Brasil e demais regiões, praticamente, durante todo ano de 2020, com exceção do mês de dezembro quando foi ultrapassada pela Região Norte.
 
-É importante destacar que a Região Sul apresentou, durante quase todo ano de 2020, as menores médias do país. No entanto, à partir da 48ª (quadragésima oitava) semana, passou a apresentar uma subida acentuada de sua taxa.
+É importante destacar que a Região Sul apresentou, durante quase todo ano de 2020, as menores médias do país. No entanto, no fim do ano, obteve média móvel superior a média nacional.
 
 Estes resultado podem ser observados no Gráfico 13 (Média móvel semanal da taxa de letalidade), que está apresentado abaixo:
 
@@ -1709,32 +1712,32 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 \begin{tabular}{|c|c|c|c|c|} \hline
    & $\beta^1$ & Std. Error & z value & Pr($>$$|$z$|$) \\ \hline
   $\beta^0$ & -3.1647 & 0.0743 & -42.61 & 0.0000 \\ \hline
-  Homem & 0.2465 & 0.0075 & 32.99 & 0.0000 \\ \hline
-  05 a 09 anos & -0.1450 & 0.1098 & -1.32 & 0.1865 \\ \hline
-  10 a 14 anos & 0.1796 & 0.1155 & 1.56 & 0.1199 \\ \hline
-  15 a 19 anos & 0.4714 & 0.0943 & 5.00 & 0.0000 \\ \hline
-  20 a 24 anos & 0.4353 & 0.0809 & 5.38 & 0.0000 \\ \hline
-  25 a 29 anos & 0.4097 & 0.0751 & 5.46 & 0.0000 \\ \hline
-  30 a 34 anos & 0.5109 & 0.0712 & 7.18 & 0.0000 \\ \hline
-  35 a 39 anos & 0.6436 & 0.0691 & 9.31 & 0.0000 \\ \hline
-  40 a 44 anos & 0.8465 & 0.0683 & 12.40 & 0.0000 \\ \hline
-  45 a 49 anos & 1.0456 & 0.0678 & 15.43 & 0.0000 \\ \hline
-  50 a 54 anos & 1.2462 & 0.0673 & 18.51 & 0.0000 \\ \hline
-  55 a 59 anos & 1.5130 & 0.0670 & 22.58 & 0.0000 \\ \hline
-  60 a 64 anos & 1.8458 & 0.0668 & 27.62 & 0.0000 \\ \hline
-  65 a 69 anos & 2.1292 & 0.0668 & 31.89 & 0.0000 \\ \hline
-  70 a 74 anos & 2.3683 & 0.0668 & 35.45 & 0.0000 \\ \hline
-  75 a 79 anos & 2.5917 & 0.0670 & 38.71 & 0.0000 \\ \hline
-  80 anos ou mais & 2.9861 & 0.0666 & 44.85 & 0.0000 \\ \hline
-  Branca & 0.0225 & 0.0316 & 0.71 & 0.4764 \\ \hline
-  Indígina & 0.3425 & 0.0667 & 5.13 & 0.0000 \\ \hline
-  Parda & 0.1790 & 0.0316 & 5.66 & 0.0000 \\ \hline
-  Preta & 0.3760 & 0.0343 & 10.95 & 0.0000 \\ \hline
-  Tem comorbidades & 0.5298 & 0.0085 & 62.17 & 0.0000 \\ \hline
-  Nordeste & 0.4173 & 0.0158 & 26.37 & 0.0000 \\ \hline
-  Norte & 0.3576 & 0.0181 & 19.79 & 0.0000 \\ \hline
-  Sudeste & 0.0532 & 0.0144 & 3.70 & 0.0002 \\ \hline
-  Sul & -0.1697 & 0.0169 & -10.04 & 0.0000 \\ \hline
+  Homem & 0.2391 & 0.0071 & 33.49 & 0.0000 \\ \hline
+  05 a 09 anos & -0.1248 & 0.1091 & -1.14 & 0.2526 \\ \hline
+  10 a 14 anos & 0.1606 & 0.1144 & 1.40 & 0.1603 \\ \hline
+  15 a 19 anos & 0.4831 & 0.0934 & 5.17 & 0.0000 \\ \hline
+  20 a 24 anos & 0.4469 & 0.0802 & 5.57 & 0.0000 \\ \hline
+  25 a 29 anos & 0.4227 & 0.0745 & 5.68 & 0.0000 \\ \hline
+  30 a 34 anos & 0.5345 & 0.0706 & 7.57 & 0.0000 \\ \hline
+  35 a 39 anos & 0.6648 & 0.0686 & 9.69 & 0.0000 \\ \hline
+  40 a 44 anos & 0.8634 & 0.0677 & 12.75 & 0.0000 \\ \hline
+  45 a 49 anos & 1.0554 & 0.0672 & 15.70 & 0.0000 \\ \hline
+  50 a 54 anos & 1.2525 & 0.0668 & 18.76 & 0.0000 \\ \hline
+  55 a 59 anos & 1.5067 & 0.0665 & 22.67 & 0.0000 \\ \hline
+  60 a 64 anos & 1.8241 & 0.0663 & 27.52 & 0.0000 \\ \hline
+  65 a 69 anos & 2.0901 & 0.0662 & 31.57 & 0.0000 \\ \hline
+  70 a 74 anos & 2.3196 & 0.0662 & 35.03 & 0.0000 \\ \hline
+  75 a 79 anos & 2.5236 & 0.0663 & 38.04 & 0.0000 \\ \hline
+  80 anos ou mais & 2.9123 & 0.0660 & 44.13 & 0.0000 \\ \hline
+  Branca & 0.0187 & 0.0302 & 0.62 & 0.5363 \\ \hline
+  Indígina & 0.3564 & 0.0641 & 5.56 & 0.0000 \\ \hline
+  Parda & 0.1592 & 0.0302 & 5.28 & 0.0000 \\ \hline
+  Preta & 0.3490 & 0.0328 & 10.65 & 0.0000 \\ \hline
+  Fator de Risco & 0.5169 & 0.0082 & 62.95 & 0.0000 \\ \hline
+  Nordeste & 0.3166 & 0.0150 & 21.12 & 0.0000 \\ \hline
+  Norte & 0.3953 & 0.0173 & 22.87 & 0.0000 \\ \hline
+  Sudeste & 0.0907 & 0.0138 & 6.60 & 0.0000 \\ \hline
+  Sul & -0.1248 & 0.0162 & -7.69 & 0.0000 \\ \hline
 \end{tabular}
 \caption{Modelo com valores de baixa significância presentes}
 \label{tab:regTabLog1}
@@ -1746,7 +1749,6 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 dadosRegressaoLogistica$FAIXA_ETARIA=as.character(dadosRegressaoLogistica$FAIXA_ETARIA)
 dadosRegressaoLogistica[dadosRegressaoLogistica$NU_IDADE<15, ]$FAIXA_ETARIA="0 a 14 anos"
 dadosRegressaoLogistica$FAIXA_ETARIA=as.factor(dadosRegressaoLogistica$FAIXA_ETARIA)
-dadosRegressaoLogistica[dadosRegressaoLogistica$CS_RACA=="Amarela", ]$CS_RACA
 dadosRegressaoLogistica[dadosRegressaoLogistica$CS_RACA=="Amarela", ]$CS_RACA = "Branca"
 dadosRegressaoLogistica$CS_RACA=as.factor(dadosRegressaoLogistica$CS_RACA)
 ```
@@ -1772,11 +1774,11 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 
 ```{r logitRiscoDeVida, include=FALSE}
 #Maior risco de vida
- maiorRisco = -3.1459 + 2.9888 + 0.5299 + 0.4171 + 0.3543 + 0.2465
+ maiorRisco = -3.3180 + 2.9888 + 0.5299 + 0.4171 + 0.3543 + 0.2465
  maiorRisco =  (exp(maiorRisco) / (1+exp(maiorRisco)))
  maiorRisco
  #Maior risco de vida
- menorRisco = -3.1459 - 0.1689
+ menorRisco = -3.3180 - 0.1689
  menorRisco =  (exp(menorRisco) / (1+exp(menorRisco)))
  menorRisco
 ```
@@ -1792,29 +1794,29 @@ Os valores de $\beta^0$ e $\beta^1$ resultado da reexecução do modelo ajustado
 \begin{tabular}{|c|c|c|c|c|} \hline
    & $\beta^1$ & Std. Error & z value & Pr($>$$|$z$|$) \\ \hline
   $\beta^0$ & -3.1459 & 0.0488 & -64.53 & 0.0000 \\ \hline
-  Homem & 0.2465 & 0.0075 & 32.98 & 0.0000 \\ \hline
-  15 a 19 anos & 0.4742 & 0.0817 & 5.80 & 0.0000 \\ \hline
-  20 a 24 anos & 0.4380 & 0.0659 & 6.65 & 0.0000 \\ \hline
-  25 a 29 anos & 0.4124 & 0.0585 & 7.05 & 0.0000 \\ \hline
-  30 a 34 anos & 0.5136 & 0.0534 & 9.62 & 0.0000 \\ \hline
-  35 a 39 anos & 0.6463 & 0.0507 & 12.76 & 0.0000 \\ \hline
-  40 a 44 anos & 0.8491 & 0.0494 & 17.17 & 0.0000 \\ \hline
-  45 a 49 anos & 1.0483 & 0.0487 & 21.51 & 0.0000 \\ \hline
-  50 a 54 anos & 1.2489 & 0.0481 & 25.95 & 0.0000 \\ \hline
-  55 a 59 anos & 1.5157 & 0.0477 & 31.79 & 0.0000 \\ \hline
-  60 a 64 anos & 1.8485 & 0.0474 & 38.96 & 0.0000 \\ \hline
-  65 a 69 anos & 2.1319 & 0.0473 & 45.03 & 0.0000 \\ \hline
-  70 a 74 anos & 2.3709 & 0.0474 & 50.03 & 0.0000 \\ \hline
-  75 a 79 anos & 2.5944 & 0.0476 & 54.48 & 0.0000 \\ \hline
-  80 anos ou mais & 2.9888 & 0.0471 & 63.48 & 0.0000 \\ \hline
-  Indígina & 0.3206 & 0.0595 & 5.39 & 0.0000 \\ \hline
-  Parda & 0.1574 & 0.0090 & 17.55 & 0.0000 \\ \hline
-  Preta & 0.3543 & 0.0156 & 22.64 & 0.0000 \\ \hline
-  Tem comorbidade & 0.5299 & 0.0085 & 62.18 & 0.0000 \\ \hline
-  Nordeste & 0.4171 & 0.0158 & 26.36 & 0.0000 \\ \hline
-  Norte & 0.3576 & 0.0181 & 19.79 & 0.0000 \\ \hline
-  Sudeste & 0.0535 & 0.0144 & 3.72 & 0.0002 \\ \hline
-  Sul & -0.1689 & 0.0169 & -10.01 & 0.0000 \\ \hline
+  Homem & 0.2390 & 0.0071 & 33.48 & 0.0000 \\ \hline
+  15 a 19 anos & 0.4834 & 0.0809 & 5.98 & 0.0000 \\ \hline
+  20 a 24 anos & 0.4472 & 0.0653 & 6.85 & 0.0000 \\ \hline
+  25 a 29 anos & 0.4230 & 0.0580 & 7.30 & 0.0000 \\ \hline
+  30 a 34 anos & 0.5348 & 0.0530 & 10.10 & 0.0000 \\ \hline
+  35 a 39 anos & 0.6651 & 0.0502 & 13.24 & 0.0000 \\ \hline
+  40 a 44 anos & 0.8637 & 0.0490 & 17.62 & 0.0000 \\ \hline
+  45 a 49 anos & 1.0557 & 0.0483 & 21.85 & 0.0000 \\ \hline
+  50 a 54 anos & 1.2528 & 0.0477 & 26.26 & 0.0000 \\ \hline
+  55 a 59 anos & 1.5069 & 0.0473 & 31.89 & 0.0000 \\ \hline
+  60 a 64 anos & 1.8243 & 0.0470 & 38.81 & 0.0000 \\ \hline
+  65 a 69 anos & 2.0904 & 0.0469 & 44.58 & 0.0000 \\ \hline
+  70 a 74 anos & 2.3199 & 0.0469 & 49.45 & 0.0000 \\ \hline
+  75 a 79 anos & 2.5238 & 0.0471 & 53.59 & 0.0000 \\ \hline
+  80 anos ou mais & 2.9126 & 0.0466 & 62.50 & 0.0000 \\ \hline
+  Indígina & 0.3382 & 0.0572 & 5.91 & 0.0000 \\ \hline
+  Parda & 0.1413 & 0.0086 & 16.48 & 0.0000 \\ \hline
+  Preta & 0.3310 & 0.0149 & 22.21 & 0.0000 \\ \hline
+  Fator de Risco & 0.5170 & 0.0082 & 62.96 & 0.0000 \\ \hline
+  Nordeste & 0.3165 & 0.0150 & 21.11 & 0.0000 \\ \hline
+  Norte & 0.3953 & 0.0173 & 22.86 & 0.0000 \\ \hline
+  Sudeste & 0.0910 & 0.0137 & 6.62 & 0.0000 \\ \hline
+  Sul & -0.1241 & 0.0162 & -7.67 & 0.0000 \\ \hline
 \end{tabular}
 \caption{Modelo de regressão logística otimizado}
 \label{tab:regTabLog2}

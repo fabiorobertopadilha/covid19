@@ -52,22 +52,22 @@ Inputs {.sidebar}
 regioes = unique(dadosDashBoard$REGIAO)
 regioes = as.vector(regioes, mode = "character")
 regioes = c("Brasil", regioes)
-fillCol(height = 200, flex = c(NA, 1), 
+fillCol(flex = c(NA, 1), 
   inputPanel(
     selectInput("regiao", label = "Regiões", choices = regioes  )
   ),
-  uiOutput("selectEstados", height = "100%")
+  uiOutput("selectEstados")
 )
 output$selectEstados <- renderUI({
   dadosDashBoard = dadosDashBoard %>% filter(dadosDashBoard$REGIAO == input$regiao)
   estados = unique(dadosDashBoard$SG_UF)
   estados = as.vector(estados, mode = "character")
   estados = c("Todos", estados)
-  fillCol(height = 200, flex = c(NA, 1), 
+  fillCol(flex = c(NA, 1), 
     inputPanel(
       selectInput("estado", label = "Estados", choices = estados ) 
     ),
-    uiOutput("selectMunicipios", height = "100%")
+    uiOutput("selectMunicipios")
   )
 })
 output$selectMunicipios <- renderUI({
@@ -76,11 +76,11 @@ output$selectMunicipios <- renderUI({
   municipios = unique(dadosDashBoard$MUNICIPIO)
   municipios = as.vector(municipios, mode = "character")
   municipios = c("Todos", municipios)
-  fillCol(height = 200, flex = c(NA, 1), 
+  fillCol(flex = c(NA, 1), 
     inputPanel(
       selectInput("municipio", label = "Municípios", municipios)
     ),
-    uiOutput("perfilPaciente", height = "100%")
+    uiOutput("perfilPaciente")
   )
 })
 ```
@@ -102,7 +102,7 @@ output$perfilPaciente <- renderUI({
   dadosDashBoard = dadosDashBoard %>% filter(regi=="Brasil" | REGIAO==regi) %>%
   filter(esta=="Todos" | SG_UF == esta) %>% filter(muni=="Todos" | MUNICIPIO == muni)
   racas = unique(dadosDashBoard[complete.cases(dadosDashBoard$CS_RACA), ]$CS_RACA)
-  fillCol(height = 300, flex = c(NA, 1),
+  fillCol( flex = c(NA, 1),
     inputPanel(
       tags$span("Predição"),
       tags$span("Risco de Morte"),
@@ -193,42 +193,49 @@ ggplot(qtdNotificacoesMes) +
 ```{r}
 #Taxa Letalidade
 output$plotTaxaLetalidade=renderPlot({
-esta <- input$estado
-if (is.null(esta)) {
-  esta <- "Todos"
-}
-muni <- input$municipio
-if (is.null(muni)) {
-  muni <- "Todos"
-}
-pacientesCovidTxLetalidade = dadosDashBoard[ complete.cases(dadosDashBoard$SEMANA_NOTIFICACAO),]
-sumariopacientesCovid = pacientesCovidTxLetalidade %>% filter(input$regiao=="Brasil" | input$regiao==REGIAO) %>% 
-  filter(esta=="Todos" | esta==SG_UF) %>%
-  filter(muni=="Todos" | muni==MUNICIPIO) %>%
-  group_by(SEMANA_NOTIFICACAO) %>%
-  summarise(.groups = "drop_last",
-    obito = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito"]),
-    total = n(),
-  ) %>%
-arrange(SEMANA_NOTIFICACAO)
-sumariopacientesCovid = sumariopacientesCovid[sumariopacientesCovid$SEMANA_NOTIFICACAO>=12,]
-sumariopacientesCovid["TAXA"]=sumariopacientesCovid$obito/sumariopacientesCovid$total
-mediaMovel <- rollmean(sumariopacientesCovid$TAXA, 7, align = "right")
-semanaMediaMovel <- cbind(sumariopacientesCovid$SEMANA_NOTIFICACAO, c(rep(NA, 6), mediaMovel))
-dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel), c("SEMANA", "TAXA"))
-dfMediaMovelTxLetalidade["TIPO"]= paste(input$regiao, paste(muni, esta, sep = " / " ), sep=" - ")
-ggplot(dfMediaMovelTxLetalidade) +
-geom_line(aes(x = SEMANA, y = TAXA), na.rm = T,)+
-labs(x="Semana do ano", y="Taxa letalidade",
-title = input$regiao,
-subtitle = paste(muni, esta, sep = " / " )) +
-scale_y_continuous(labels = scales::percent)+
-scale_x_continuous(labels = scales::ordinal_format(rules = ptBr))+
-scale_color_manual(values = coresIntensas) +
-theme_bw() +
-theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),
-axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
-plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+tryCatch(
+  expr = {
+      esta <- input$estado
+      if (is.null(esta)) {
+        esta <- "Todos"
+      }
+      muni <- input$municipio
+      if (is.null(muni)) {
+        muni <- "Todos"
+      }
+      pacientesCovidTxLetalidade = dadosDashBoard[ complete.cases(dadosDashBoard$SEMANA_NOTIFICACAO),]
+      sumariopacientesCovid = pacientesCovidTxLetalidade %>% filter(input$regiao=="Brasil" | input$regiao==REGIAO) %>% 
+        filter(esta=="Todos" | esta==SG_UF) %>%
+        filter(muni=="Todos" | muni==MUNICIPIO) %>%
+        group_by(SEMANA_NOTIFICACAO) %>%
+        summarise(.groups = "drop_last",
+          obito = length(SEMANA_NOTIFICACAO[CS_EVOLUCAO=="Óbito"]),
+          total = n(),
+        ) %>%
+      arrange(SEMANA_NOTIFICACAO)
+      sumariopacientesCovid = sumariopacientesCovid[sumariopacientesCovid$SEMANA_NOTIFICACAO>=12,]
+      sumariopacientesCovid["TAXA"]=sumariopacientesCovid$obito/sumariopacientesCovid$total
+      mediaMovel <- rollmean(sumariopacientesCovid$TAXA, 7, align = "right")
+      semanaMediaMovel <- cbind(sumariopacientesCovid$SEMANA_NOTIFICACAO, c(rep(NA, 6), mediaMovel))
+      dfMediaMovelTxLetalidade = setNames(data.frame(semanaMediaMovel), c("SEMANA", "TAXA"))
+      dfMediaMovelTxLetalidade["TIPO"]= paste(input$regiao, paste(muni, esta, sep = " / " ), sep=" - ")
+      ggplot(dfMediaMovelTxLetalidade) +
+      geom_line(aes(x = SEMANA, y = TAXA), na.rm = T,)+
+      labs(x="Semana do ano", y="Taxa letalidade",
+      title = input$regiao,
+      subtitle = paste(muni, esta, sep = " / " )) +
+      scale_y_continuous(labels = scales::percent)+
+      scale_x_continuous(labels = scales::ordinal_format(rules = ptBr))+
+      scale_color_manual(values = coresIntensas) +
+      theme_bw() +
+      theme(axis.text.x = element_text(size = 14), axis.title.x = element_text(size = 16),
+      axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
+      plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
+  },
+  warning = function(e){
+    
+  }
+)
 })
 ```
 
@@ -390,6 +397,9 @@ output$probabilidadeRiscoDeMorte=renderUI({
     esta <- "Todos"
   }
   fluidRow(   
+    column(width = 12,
+          tags$span(textOutput("localRiscoMorte"))
+      ),
       column(width = 12,
           tags$h1(textOutput("valorRiscoMorte"), class="center font8em fontRed")
       ),
@@ -402,76 +412,87 @@ output$probabilidadeRiscoDeMorte=renderUI({
 
 
 ```{r}
-
 calcularProbabilidade = function(modelo, isHomem, idade, temFatorRisco, raca){
-  idxRaca = paste("CS_RACA",raca, sep="")
-  config = 0
-  config = config + modelo$coefficients[["(Intercept)"]]
-  config=config + (modelo$coefficients[["NU_IDADE"]]*idade)
-  for (i in 1:length(names(modelo$coefficients))){
-    if (names(modelo$coefficients)[i]==idxRaca){
-      config=config + (modelo$coefficients[[idxRaca]])
-    }
-  }
-  if (isHomem){
-    config = config + modelo$coefficients[["IN_SEXO_MASC"]]
-  }
-  if (temFatorRisco){
-    config = config + modelo$coefficients[["IN_FATOR_RISC"]]
-  }
-  return  (exp(config) / (1+exp(config)))
+  tryCatch(
+    expr = {
+      idxRaca = paste("CS_RACA",raca, sep="")
+      config = 0
+      config = config + modelo$coefficients[["(Intercept)"]]
+      config=config + (modelo$coefficients[["NU_IDADE"]]*idade)
+      for (i in 1:length(names(modelo$coefficients))){
+        if (names(modelo$coefficients)[i]==idxRaca){
+          config=config + (modelo$coefficients[[idxRaca]])
+        }
+      }
+      if (isHomem){
+        config = config + modelo$coefficients[["IN_SEXO_MASC"]]
+      }
+      if (temFatorRisco){
+        config = config + modelo$coefficients[["IN_FATOR_RISC"]]
+      }
+      return  (exp(config) / (1+exp(config)))
+    },
+    warning = function(e){
+        return (0)
+    } , 
+    error = function(e){
+        return (0)
+    }  
+  )
 }
 observeEvent(input$btnCalcular, {
-  regi <- input$regiao
-  if (is.null(regi)) {
-    regi <- "Brasil"
-  }
-  esta <- input$estado
-  if (is.null(esta)) {
-   esta <- "Todos"
-  }
-  muni <- input$municipio
-  if (is.null(muni)) {
-    muni <- "Todos"
-  }
-  dadosRegressaoLogistica = dadosDashBoard %>% filter(regi=="Brasil" | regi==REGIAO) %>% 
-  filter(esta=="Todos" | esta==SG_UF) %>%
-  filter(muni=="Todos" | muni==MUNICIPIO)
-  dadosRegressaoLogistica$IN_FATOR_RISC=if_else(dadosRegressaoLogistica$IN_FATOR_RISC=="S", 1,0)
-  dadosRegressaoLogistica$IN_SEXO_MASC=if_else(dadosRegressaoLogistica$CS_SEXO=="M", 1, 0)
-  dadosRegressaoLogistica["IN_OBITO_COVID"]=if_else(dadosRegressaoLogistica$CS_EVOLUCAO=="Óbito", 1,0)
-  dadosRegressaoLogistica=dadosRegressaoLogistica[complete.cases(dadosRegressaoLogistica),]
-  modeloRegressaoLogistica = glm(formula = IN_OBITO_COVID ~ IN_SEXO_MASC +
-  NU_IDADE + CS_RACA + IN_FATOR_RISC,
-  data = dadosRegressaoLogistica, family = binomial(link = "logit"))
-  round(12.69555, digits = 2)
-  valor = round(calcularProbabilidade(modeloRegressaoLogistica, input$sexo==1, input$idade, input$comorbidade, input$raca) , digits=4)
-  valor = as.character(valor * 100)
-  calcularProbabilidade(modeloRegressaoLogistica, TRUE, 40, TRUE, "Brancssa")
-  output$valorRiscoMorte = renderText(paste(valor,"%", sep="" ))
+  tryCatch(
+    expr = {
+      regi <- input$regiao
+      if (is.null(regi)) {
+        regi <- "Brasil"
+      }
+      esta <- input$estado
+      if (is.null(esta)) {
+       esta <- "Todos"
+      }
+      dadosRegressaoLogistica = dadosDashBoard %>% filter(regi=="Brasil" | regi==REGIAO) %>% 
+      filter(esta=="Todos" | esta==SG_UF)
+      dadosRegressaoLogistica$IN_FATOR_RISC=if_else(dadosRegressaoLogistica$IN_FATOR_RISC=="S", 1,0)
+      dadosRegressaoLogistica$IN_SEXO_MASC=if_else(dadosRegressaoLogistica$CS_SEXO=="M", 1, 0)
+      dadosRegressaoLogistica["IN_OBITO_COVID"]=if_else(dadosRegressaoLogistica$CS_EVOLUCAO=="Óbito", 1,0)
+      dadosRegressaoLogistica=dadosRegressaoLogistica[complete.cases(dadosRegressaoLogistica),]
+      modeloRegressaoLogistica = glm(formula = IN_OBITO_COVID ~ IN_SEXO_MASC +
+      NU_IDADE + CS_RACA + IN_FATOR_RISC,
+      data = dadosRegressaoLogistica, family = binomial(link = "logit"))
+      valor = round(calcularProbabilidade(modeloRegressaoLogistica, input$sexo==1, input$idade, input$comorbidade, input$raca) , digits=4)
+      valor = as.character(valor * 100)
+      output$localRiscoMorte = renderText(paste(regi,esta, sep=" - " ))
+      output$valorRiscoMorte = renderText(paste(valor,"%", sep="" ))
+    },
+    warning = function(e){
+        output$valorRiscoMorte = renderText("?")
+    }  
+  )
+
 })
 ```
 
 
-Row {data-height=250}
+Row 
 -----------------------------------------------------------------------
 
 ### Taxa de Mortalidade
 ```{r}
-plotOutput("plotTaxaMortalidade", height = "100%")
+plotOutput("plotTaxaMortalidade")
 ```
 
 ### Média Móvel da Taxa Letalidade
 ```{r}
-plotOutput("plotTaxaLetalidade", height = "100%")
+plotOutput("plotTaxaLetalidade")
 ```
 
-Row {data-height=250}
+Row 
 -------------------------------------
 
 ### Número de Óbitos
 ```{r}
-plotOutput("plotNumeroObitos", height = "100%")
+plotOutput("plotNumeroObitos")
 ```
 
 ### Predição do Risco de Morte
@@ -483,7 +504,7 @@ htmlOutput("probabilidadeRiscoDeMorte")
 Sobre
 ===
 
-Row {data-height=300, left=100}
+Row
 -----------------------------------------------------------------------
 
 ### Sobre
