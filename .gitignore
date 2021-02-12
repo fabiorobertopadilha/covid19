@@ -5,4 +5,5 @@
 Covid19_files
 *.log
 *.tex
-dados
+dados/
+dashboard/

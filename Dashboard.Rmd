@@ -31,7 +31,7 @@ ptBr <- list(
 
 
 ```{r}
-dadosDashBoard = read.csv("dados/dashboard_pacientes.csv", header = T, sep=";",
+dadosDashBoard = read.csv("dashboard/dashboard_pacientes.csv", header = T, sep=";",
                           na.strings = "NA", stringsAsFactors = T)
 dadosDashBoard$DT_NOTIFICACAO = as.Date(dadosDashBoard$DT_NOTIFICACAO, format="%Y-%m-%d")
 dadosDashBoard["MES_NOTIFICACAO"]=format(dadosDashBoard$DT_NOTIFICACAO, "%Y/%m")    
@@ -271,10 +271,10 @@ regiao[26,] = c("MT", "Centro Oeste")
 regiao[27,] = c("MS", "Centro Oeste")
 regiao=data.frame(regiao)
 colnames(regiao)=c("SG_UF", "REGIAO")
-municipios <- readRDS(file = "dados/municipios_2019.rds")
-estados <- readRDS(file = "dados/estados_2019.rds")
-regioes <- readRDS(file = "dados/regioes_2019.rds")
-municipiosIBGE = read.csv("dados/dashboard_populacao.csv", header = T, sep=";",
+municipios <- readRDS(file = "dashboard/municipios_2019.rds")
+estados <- readRDS(file = "dashboard/estados_2019.rds")
+regioes <- readRDS(file = "dashboard/regioes_2019.rds")
+municipiosIBGE = read.csv("dashboard/dashboard_populacao.csv", header = T, sep=";",
                           na.strings = "", stringsAsFactors = T)
 estadoIBGE=municipiosIBGE %>% 
   group_by(SG_UF) %>%
@@ -462,7 +462,7 @@ observeEvent(input$btnCalcular, {
       data = dadosRegressaoLogistica, family = binomial(link = "logit"))
       valor = round(calcularProbabilidade(modeloRegressaoLogistica, input$sexo==1, input$idade, input$comorbidade, input$raca) , digits=4)
       valor = as.character(valor * 100)
-      output$localRiscoMorte = renderText(paste(regi,esta, sep=" - " ))
+      output$localRiscoMorte = renderText(paste(regi, esta, sep= " - " ))
       output$valorRiscoMorte = renderText(paste(valor,"%", sep="" ))
     },
     warning = function(e){

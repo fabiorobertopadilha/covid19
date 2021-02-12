@@ -358,9 +358,9 @@ regioes
 ```
 
 ```{r salvarDadosIBGE2, include=FALSE}
-saveRDS(municipios, "dados/municipios_2019.rds")
-saveRDS(estados, "dados/estados_2019.rds")
-saveRDS(regioes, "dados/regioes_2019.rds")
+saveRDS(municipios, "dashboard/municipios_2019.rds")
+saveRDS(estados, "dashboard/estados_2019.rds")
+saveRDS(regioes, "dashboard/regioes_2019.rds")
 ```
 
 
@@ -420,7 +420,7 @@ municipiosIBGE$NU_POPULACAO = as(municipiosIBGE$NU_POPULACAO, "integer")
 
 ```{r dashBoardPopulacao, include=FALSE}
 write.csv2(municipiosIBGE[, c("SG_UF", "COD_MUNICIPIO6", "COD_MUNICIPIO", "MUNICIPIO", "NU_POPULACAO")],
-file ="dados/dashboard_populacao.csv")
+file ="dashboard/dashboard_populacao.csv")
 ```
 
 
@@ -1211,7 +1211,7 @@ arrange(desc(QTD_MORTES))
 ```{r gerarDadosDashBoard, include=FALSE}
 write.csv2(pacientes[, c("DT_NOTIFICACAO", "REGIAO", "SG_UF", "MUNICIPIO",
 "COD_MUNICIPIO", "COD_HOSPITAL", "HOSPITAL", "DT_EVOLUCAO", "CS_EVOLUCAO", "IN_FATOR_RISC", "CS_RACA", "CS_SEXO", "NU_IDADE")],
-file ="dados/dashboard_pacientes.csv")
+file ="dashboard/dashboard_pacientes.csv")
 ```
 
 
