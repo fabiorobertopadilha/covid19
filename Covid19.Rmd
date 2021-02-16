@@ -357,13 +357,6 @@ regioes <- read_region(year=2019)
 regioes
 ```
 
-```{r salvarDadosIBGE2, include=FALSE}
-saveRDS(municipios, "dashboard/municipios_2019.rds")
-saveRDS(estados, "dashboard/estados_2019.rds")
-saveRDS(regioes, "dashboard/regioes_2019.rds")
-```
-
-
 \newpage
 
 \section{3. Processamento}
@@ -417,12 +410,6 @@ municipiosIBGE$NU_POPULACAO = str_replace_all(municipiosIBGE$NU_POPULACAO, c("\\
 ##Convertendo população para integer
 municipiosIBGE$NU_POPULACAO = as(municipiosIBGE$NU_POPULACAO, "integer")
 ```
-
-```{r dashBoardPopulacao, include=FALSE}
-write.csv2(municipiosIBGE[, c("SG_UF", "COD_MUNICIPIO6", "COD_MUNICIPIO", "MUNICIPIO", "NU_POPULACAO")],
-file ="dashboard/dashboard_populacao.csv")
-```
-
 
 É importante destacar que a informação das regiões do país (norte, nordeste, centro-oeste, sudeste e sul) não estavam presentes nos arquivos apresentados. Tornando-se necessária a criação de uma matriz com os estados e suas respectivas regiões. Essa matriz permitiu o enriquecimento dos dados e a produção dos gráficos sumarizados, conforme trecho de código abaixo:
 
@@ -1208,13 +1195,6 @@ summarise(.groups = "drop_last", QTD_MORTES=n()) %>%
 arrange(desc(QTD_MORTES))
 ```
 
-```{r gerarDadosDashBoard, include=FALSE}
-write.csv2(pacientes[, c("DT_NOTIFICACAO", "REGIAO", "SG_UF", "MUNICIPIO",
-"COD_MUNICIPIO", "COD_HOSPITAL", "HOSPITAL", "DT_EVOLUCAO", "CS_EVOLUCAO", "IN_FATOR_RISC", "CS_RACA", "CS_SEXO", "NU_IDADE")],
-file ="dashboard/dashboard_pacientes.csv")
-```
-
-
 ```{r grfMortePorRegiao, include=FALSE}
 #Exibir gráfico com quantidade de mortes por região
 grdMortesPorRegiao = ggplot(mortesPorRegiao) + 
@@ -1460,7 +1440,7 @@ prop.test(qtdObitos, totalPacientes, 0.35, conf.level = 0.95)
 
 \vspace{0.5cm}
 
-A Figura \ref{fig:Gallagher2020}} mostra a manchete da matéria da BBC NEWS, que faz referência ao estudo Britânico citado acima.
+A Figura \ref{fig:Gallagher2020} mostra a manchete da matéria da BBC NEWS, que faz referência ao estudo Britânico citado acima.
 
 \begin{figure}[htp]
 \center
@@ -1693,7 +1673,7 @@ Na primeira execução o modelo de regressão logística apresentou valores de b
 
 \vspace{0.5cm}
 
-O código utilizado na execução do modelo de regressão logistica pode ser verificado no trecho de código abaixo, bem como o resultado da execução na Tabela \ref{tab:regTabLog1}}.
+O código utilizado na execução do modelo de regressão logistica pode ser verificado no trecho de código abaixo, bem como o resultado da execução na Tabela \ref{tab:regTabLog1}.
 
 \vspace{0.5cm}
 
@@ -1711,7 +1691,7 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 \center
 \begin{tabular}{|c|c|c|c|c|} \hline
    & $\beta^1$ & Std. Error & z value & Pr($>$$|$z$|$) \\ \hline
-  $\beta^0$ & -3.1647 & 0.0743 & -42.61 & 0.0000 \\ \hline
+  $\beta^0$ & -3.3356 & 0.0731 & -45.61 & 0.0000 \\ \hline
   Homem & 0.2391 & 0.0071 & 33.49 & 0.0000 \\ \hline
   05 a 09 anos & -0.1248 & 0.1091 & -1.14 & 0.2526 \\ \hline
   10 a 14 anos & 0.1606 & 0.1144 & 1.40 & 0.1603 \\ \hline
@@ -1757,10 +1737,10 @@ B) Segunda execução:
 
 \vspace{0.5cm}
 
-Após o ajuste do modelo e a reexecução em uma amostra com 383.266 (trezentos e oitenta e três mil e duzentos e sessenta e seis) pacientes. Conclui-se que o perfil com maior risco de morte tem: idade de 80 (oitenta) anos ou mais ($\beta^1$ : 2.9888), já apresenta doenças preexistentes ($\beta^1$ : 0.5299), reside na região nordeste ($\beta^1$ : 0.4171), é de cor preta 
-($\beta^1$ : 0.3543) e homem ($\beta^1$ : 0.2465), com probabilidade de óbito de 80%.
+Após o ajuste do modelo e a reexecução em uma amostra com 436.361 (quatrocentos e trinta e seis mil e trezentos e sessenta e um) pacientes. Conclui-se que o perfil com maior risco de morte tem: idade de 80 (oitenta) anos ou mais ($\beta^1$ : 2.9126), já apresenta doenças preexistentes ($\beta^1$ : 0.5170), reside na região norte ($\beta^1$ : 0.3953), é de cor preta 
+($\beta^1$ : 0.3310) e homem ($\beta^1$ : 0.2390), com probabilidade de óbito de 75% (setenta e cinco por cento).
 
-Já o perfil com menor risco de morte no Brasil: reside na região sul ($\beta^1$ : -0.1689), tem idade de 0 (zero) a 14 (quatorze) anos, não tem doenças preexistentes, é de cor branca ou amarela e do sexo feminino, com probabilidade de óbito por covid-19 de 3,5%. Abaixo segue o trecho de código responsável pela segunda execução do modelo.
+Já o perfil com menor risco de morte no Brasil: reside na região sul ($\beta^1$ : -0.1241), tem idade de 0 (zero) a 14 (quatorze) anos, não tem doenças preexistentes, é de cor branca ou amarela e do sexo feminino, com probabilidade de óbito por covid-19 de 3% (três por cento). Abaixo segue o trecho de código responsável pela segunda execução do modelo.
 
 \vspace{0.5cm}
 
@@ -1774,11 +1754,11 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 
 ```{r logitRiscoDeVida, include=FALSE}
 #Maior risco de vida
- maiorRisco = -3.3180 + 2.9888 + 0.5299 + 0.4171 + 0.3543 + 0.2465
+ maiorRisco = -3.3180 + 2.9126 + 0.5170 + 0.3953 + 0.3310 + 0.2390
  maiorRisco =  (exp(maiorRisco) / (1+exp(maiorRisco)))
  maiorRisco
  #Maior risco de vida
- menorRisco = -3.3180 - 0.1689
+ menorRisco = -3.3180 - 0.1241
  menorRisco =  (exp(menorRisco) / (1+exp(menorRisco)))
  menorRisco
 ```
@@ -1793,7 +1773,7 @@ Os valores de $\beta^0$ e $\beta^1$ resultado da reexecução do modelo ajustado
 \center
 \begin{tabular}{|c|c|c|c|c|} \hline
    & $\beta^1$ & Std. Error & z value & Pr($>$$|$z$|$) \\ \hline
-  $\beta^0$ & -3.1459 & 0.0488 & -64.53 & 0.0000 \\ \hline
+  $\beta^0$  & -3.3180 & 0.0482 & -68.85 & 0.0000 \\ \hline
   Homem & 0.2390 & 0.0071 & 33.48 & 0.0000 \\ \hline
   15 a 19 anos & 0.4834 & 0.0809 & 5.98 & 0.0000 \\ \hline
   20 a 24 anos & 0.4472 & 0.0653 & 6.85 & 0.0000 \\ \hline
@@ -1873,7 +1853,7 @@ dadosTeste=dadosMachineLearningObito[amostra==2,]
 
 \subsection{6.1 Árvore de Desisão de Classificação}
 
-Na primeira execução, o algorítimo utilizado será o rpart e os atributos serão os mesmos utilizados nas seção de inferência estatística. Com essa configuração a taxa de acerto do modelo foi 69% (sessenta e nove por cento).
+Na primeira execução, o algorítimo utilizado será o rpart e os atributos serão os mesmos utilizados nas seção de inferência estatística. Com essa configuração a taxa de acerto do modelo foi 64% (sessenta e quatro por cento).
 
 ```{r arvore1}
 arvoreClassificacao = rpart(formula =  CS_EVOLUCAO ~ CS_SEXO +
@@ -1895,7 +1875,7 @@ taxaAcerto
 
 \subsection{6.2 Arvore de Decição e Seleção de Atributos}
 
-Com método randomForest e mantendo praticamente os mesmo atributos da execução anterior, com exceção do atributo REGIAO, substituído pelo atributo SG_UF a taxa de acerto referente ao risco de morte do paciente, apresenta uma pequena melhora. A após a mudança, a taxa de acertou passou para 70% (setenta por cento).
+Com método randomForest e mantendo praticamente os mesmo atributos da execução anterior, com exceção do atributo REGIAO, substituído pelo atributo SG_UF a taxa de acerto referente ao risco de morte do paciente, apresenta uma pequena melhora. Depois da mudança, a taxa de acertou passou para 66% (sessenta e seis por cento).
 
 ```{r randomForest}
 selecaoAtributos = randomForest(CS_EVOLUCAO ~ CS_SEXO +
@@ -1922,7 +1902,7 @@ varImpPlot(selecaoAtributos, main="Atributos mais significativos")
 
 \subsection{6.3 Árvore de Decisão de Classificação otimizado}
 
-Utilizando novamente a função rpart agora com atributo NU_IDADE e MUNICIPIO, a taxa de acerto passou a ser de 71% (setenta e um por cento)
+Utilizando novamente a função rpart agora com atributo NU_IDADE e MUNICIPIO, a taxa de acerto passou a ser de 67% (sessenta e sete por cento)
 
 ```{r arvore2}
 arvoreClassificacao = rpart(formula =  CS_EVOLUCAO ~  NU_IDADE + MUNICIPIO,
@@ -1940,7 +1920,7 @@ confusao=table(previsao$CS_EVOLUCAO, previsao$PREVISAO)
 taxaAcerto = (confusao[1]+confusao[4])/sum(confusao)
 taxaAcerto
 ```
-Quando adicionado o hospital de atendimento do paciente como atributo do modelo, a taxa de acerto passa a ser de 74% (setenta e quatro por cento).
+Quando adicionado o hospital de atendimento do paciente como atributo do modelo, a taxa de acerto passa a ser de 70% (setenta por cento).
 
 ```{r arvore3}
 arvoreClassificacao = rpart(formula =  CS_EVOLUCAO ~  NU_IDADE + MUNICIPIO + HOSPITAL,
@@ -1961,7 +1941,7 @@ taxaAcerto
 
 \subsection{6.4 Naive Bayse}
 
-Com os mesmo atributos da seção anterior e o método naiveBayes do pacote e1071 a taxa de acerto foi menor, 71% (setenta e um por cento)
+Com os mesmo atributos da seção anterior e o método naiveBayes do pacote e1071 a taxa de acerto foi menor, 68% (sessenta e oito por cento)
 
 ```{r modeloNaiveBayes, results='hide'}
 modeloNaiveBayes = naiveBayes(formula =  CS_EVOLUCAO ~  NU_IDADE + MUNICIPIO + HOSPITAL,
@@ -1979,6 +1959,82 @@ confusao=table(previsao$CS_EVOLUCAO, previsao$PREVISAO)
 taxaAcerto = (confusao[1]+confusao[4])/sum(confusao)
 taxaAcerto
 ```
+
+\newpage
+
+\section{7. Resultado}
+
+Nas seções acima fica evidenciado que no ano de 2020 as regiões mais pobres do país, Norte e Nordeste, foram as regiões que mais sofreram com a pandemia, com as maiores taxas de mortalidade e letalidade. A exceção do estado do Rio de Janeiro que apresentou a maior taxa de letalidade do país.
+
+No que se refere ao perfil do pacienete foi verificado que a idade é o atributo que mais contribui para o aumento do risco de morte, seguido pela existência de comorbidades e sofrendo influência até do sexo. Os dados analisados demonstram que homens apresentam mais risco de óbito. 
+
+A partir dos atributos selecionados e dos algoritmo de machine learning utilizados neste trabalho foi verificado uma taxa de acerto de até 70% (setenta por cento) dos casos graves de covid-19 que evoluiram no ano de 2020 para óbito.
+
+\subsection{7.1 Dashboard-Covid19}
+
+De maneira complementar, a este trabalho, foi elaborado no RStudio um dashboard na linguagem R, com auxílio das libs: flexdashboard, shiny, shinyWidgets e também das libs já descritas no primeiro capítulo. O deploy do dashboard foi realizado no shinyapps.io podendo ser acessado no link \url{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19/}.
+
+O dashboard amplia a possíbilidade de consulta, indo além das informações apresentadas neste relatório. Ele permite também uma abordagem em drilldown sendo possível uma analise nacional, passando pelas regiões, estados chegando até o nível de municípios. A Figura \ref{fig:dashboardhome} mostra a página principal do dashboard, a figura \ref{fig:dashboardsobre} exibe a página de sobre com os créditos. 
+
+\begin{figure}[htp]
+\center
+\includegraphics[width=0.75\linewidth]{anexos/home-dashboard.png}
+\caption{Dashboard}
+\label{fig:dashboardhome}
+\end{figure}
+
+\begin{figure}[htp]
+\center
+\includegraphics[width=0.75\linewidth]{anexos/sobre-dashboard.png}
+\caption{Sobre}
+\label{fig:dashboardsobre}
+\end{figure}
+
+
+O shinyapps.io é uma plataforma de serviço na núvem para o desenvolvimento de aplicações web usando R. A Figura \ref{fig:shinyappsio} exibe o deploy do dashboard no shinyapps.io.
+
+\begin{figure}[htp]
+\center
+\includegraphics[width=0.75\linewidth]{anexos/shinyappsio.png}
+\caption{Shinyapps.io}
+\label{fig:shinyappsio}
+\end{figure}
+
+
+```{r gerarDadosDashBoard, include=FALSE}
+write.csv2(pacientes[, c("DT_NOTIFICACAO", "REGIAO", "SG_UF", "MUNICIPIO",
+"COD_MUNICIPIO", "COD_HOSPITAL", "HOSPITAL", "DT_EVOLUCAO", "CS_EVOLUCAO", "IN_FATOR_RISC", "CS_RACA", "CS_SEXO", "NU_IDADE")],
+file ="dashboard/dashboard_pacientes.csv")
+```
+
+```{r dashBoardPopulacao, include=FALSE}
+write.csv2(municipiosIBGE[, c("SG_UF", "COD_MUNICIPIO6", "COD_MUNICIPIO", "MUNICIPIO", "NU_POPULACAO")],
+file ="dashboard/dashboard_populacao.csv")
+```
+
+```{r salvarDadosIBGE2, include=FALSE}
+saveRDS(municipios, "dashboard/municipios_2019.rds")
+saveRDS(estados, "dashboard/estados_2019.rds")
+saveRDS(regioes, "dashboard/regioes_2019.rds")
+```
+
+\newpage
+
+\section{8. Links}
+
+A Tabela \ref{tab:links} dispõe dos links com os código fontes implementados neste tabalho, do link do deploy da aplicação (dashboard implementado), bem como do link com o backup dos dados utlizados.
+
+\begin{table}[htp!]
+\center
+\begin{tabular}{|l|l|l|} \hline
+Git Hub & Repositório com o código fonte & \href{https://github.com/fabiorobertopadilha/covid19}{https://github.com/fabio...} \\ \hline
+Google Driver & Backup dos Dados e Relatório Final & \href{https://drive.google.com/drive/folders/1l52SO-RMHYfs2ci_2pBAZJNw2hA5i2me}{https://drive.google.com/drive...} \\ \hline
+Shinyapps.io & Dashboard Covid-19 & \href{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19}{https://fabiopadilhatccpucminas...} \\ \hline
+\end{tabular}
+\caption{Links TCC}
+\label{tab:links}
+\end{table}
+
 
 \newpage
 
