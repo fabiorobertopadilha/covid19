@@ -184,17 +184,23 @@ ptBr <- list(
 
 ```
 
-\subsection{1.2 Objetivos}
+\subsection{1.2 Problema de pesquisa }
 
 \vspace{0.5cm}
 
-A pandemia do SARS-CoV-2 está impondo ao Brasil e ao mundo o maior desafio sanitário dos últimos 100 anos, tendo sido a Gripe Espanhola, ocorrida no ano de 1918, a última pandemia registrada de grande impacto mundial. Neste contexto, há uma atuação ativa por parte das autoridades de saúde na implementação de políticas públicas para conter o avanço da doença e o crescente número de óbitos. 
+A pandemia do SARS-CoV-2 está impondo ao Brasil e ao mundo o maior desafio sanitário dos últimos 100 anos, tendo sido a Gripe Espanhola, ocorrida no ano de 1918, a última pandemia registrada de grande impacto mundial. Neste contexto, há uma atuação ativa por parte das autoridades de saúde na implementação de políticas públicas para conter o avanço da doença e o crescente número de óbitos.
 
-Embora o Brasil, tenha um dos melhores sistemas de saúde da América Latina, a capacidade de atendimento em todo país é bastante desigual. Nas regiões mais pobres, onde a capacidade de atendimento de saúde é menor, têm-se observado a existência de situações críticas, como a falta de médicos, de recursos e de leitos hospitalares.
+Embora o Brasil tenha um dos melhores sistemas de saúde da América Latina, a capacidade de atendimento em todo país é bastante desigual. Nas regiões mais pobres, onde a capacidade de atendimento de saúde é menor, têm-se observado a existência de situações críticas, como a falta de médicos, de recursos e de leitos hospitalares.
 
-Neste contexto, este trabalho tem como objetivo geral entender, de forma regionalizada, a evolução dos casos graves da doença, a fim de contribuir com as autoridades da área de saúde na construção de políticas públicas voltadas para redução do número de óbitos e para contenção do novo coronavírus.
+Neste contexto, propõe-se responder ao seguinte problema de pesquisa: Como ocorreu a evolução dos casos graves da covid-19 nas regiões do Brasil, em 2020?
 
-É importante destacar que, para este trabalho, são considerados casos graves de covid-19 aqueles existentes no arquivo CSV do OpenDataSUS. 
+\subsection{1.3 Objetivos}
+
+Este trabalho tem como objetivo geral entender, de forma regionalizada, a evolução dos casos graves da covid-19 no Brasil, no ano de 2020. 
+
+A partir da consecução deste objetivo, pretende-se gerar conhecimento útil que possa servir de fonte de informação para construção de políticas públicas voltadas para redução do número de óbitos e para contenção do novo coronavírus.
+
+É importante destacar que, considerou-se casos graves de covid-19 aqueles existentes no arquivo CSV do OpenDataSUS.
 
 Por fim, têm-se os seguintes objetivos específicos que irão ajudar na consecução do objetivo geral deste trabalho de conclusão de curso:
 
@@ -1811,9 +1817,15 @@ Os valores de $\beta^0$ e $\beta^1$ resultado da reexecução do modelo ajustado
 
 \section{6. Machine learning}
 
-Neste capítulo, utiliza-se técnicas de machine learning para identificar outros atributos com impacto no risco de óbito dos pacientes, além dos atributos já descritos nas seções anteriores novos atributos serão incorporados aos modelos e os tipos de algoritmos também serão diversificados. 
+Neste capítulo, utilizou-se técnicas de machine learning para verificar o nível de significância dos atributos selecionados para cada método abordado abaixo, identificando aqueles atributos que apresentam o maior impacto no risco de óbito dos pacientes com Síndrome Respiratória Aguda Grave por covid-19. 
 
-A eficiência dos atributos selecionados, bem como o algoritmo utilizado, será mensurada a partir da taxa de acerto do algoritmo.
+A eficiência dos atributos selecionados e do algoritmo utilizado será mensurada a partir da taxa de acerto do algoritmo. 
+
+Além dos atributos já descritos nas seções anteriores novos atributos foram incorporados aos modelos e os tipos de algoritmos também foram diversificados.
+
+Os dados utilizados nos treinamentos dos modelos, bem como os dados utilizados nos testes, serão extraídos a partir de uma amostra aleatória com 1.000 (um mil) registros. Sendo 70% (setenta por cento) da amostra destinada para o treinamento e 30% (trinta por cento) destinada para os testes. 
+
+\vspace{0.5cm}
 
 ```{r dataFrameDadosMachineLearning, include=FALSE}
 #Preparando o datafreme a ser testado.
@@ -1858,7 +1870,9 @@ dadosTeste=dadosMachineLearningObito[amostra==2,]
 
 \subsection{6.1 Árvore de Decisão de Classificação}
 
-Na primeira execução, o algoritmos utilizado será o rpart e os atributos serão os mesmos utilizados nas seção de inferência estatística. Com essa configuração a taxa de acerto do modelo foi de, aproximadamente, 64% (sessenta e quatro por cento). Abaixo segue trecho de código utilizado: 
+Na primeira execução, o algoritmo utilizado será o Rpart (Recursive Partitioning And Regression Trees) e os atributos serão os mesmos utilizados na seção de inferência estatística. 
+
+Com essa configuração a taxa de acerto do modelo foi de, aproximadamente, 64% (sessenta e quatro por cento). Abaixo segue trecho de código utilizado:
 
 \vspace{0.5cm}
 
