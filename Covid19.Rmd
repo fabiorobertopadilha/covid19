@@ -26,7 +26,7 @@ latex_engine: latex2
 \begin{center}
 {\normalsize \textbf{PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS \\ NÚCLEO DE EDUCAÇÃO À DISTÂNCIA \\ Pós-graduação Lato Sensu em Ciência de Dados e Big Data}} \\[5cm]
 {\large \textbf{Fábio Roberto Barros Padilha}}\\[4.5cm]
-{\normalsize ANÁLISE DE DADOS NACIONAIS SOBRE A EVOLUÇÃO \\ DAS SÍNDROMES RESPIRATÓRIAS AGUDAS GRAVES \\ POR SARS-CoV-2, NO ANO DE 2020}\\[9.8cm]
+{\normalsize ANÁLISE DE DADOS NACIONAIS SOBRE A EVOLUÇÃO \\ DAS SÍNDROMES RESPIRATÓRIAS AGUDAS GRAVES \\ POR COVID-19, NO ANO DE 2020}\\[9.8cm]
 \large \textbf{Belo Horizonte}\\
 \large \textbf{2021}
 \end{center}
@@ -39,7 +39,7 @@ latex_engine: latex2
 \vfill
 \begin{center}
 {\large \textbf{Fábio Roberto Barros Padilha}}\\[7cm]
-{\normalsize ANÁLISE DE DADOS NACIONAIS SOBRE A EVOLUÇÃO \\ DAS SÍNDROMES RESPIRATÓRIAS AGUDAS GRAVES \\ POR SARS-CoV-2, NO ANO DE 2020}\\[5cm]
+{\normalsize ANÁLISE DE DADOS NACIONAIS SOBRE A EVOLUÇÃO \\ DAS SÍNDROMES RESPIRATÓRIAS AGUDAS GRAVES \\ POR COVID-19, NO ANO DE 2020}\\[5cm]
 \hspace{.45\textwidth} %posiciona a minipage
 \begin{minipage}{.5\textwidth}
 \large Trabalho de Conclusão de Curso apresentado ao Curso de Especialização em Ciência de Dados e Big Data como requisito parcial à obtenção do título de especialista. 
@@ -95,9 +95,7 @@ Esses algoritmos de aprendizagem estão relacionados ao aprendizado de máquina 
 
 Dentre as técnicas de aprendizagem de máquina, pode-se citar o algoritmo de Naive Bayes, importante classificador probabilístico, que é, frequentemente, utilizado em processamento de diagnósticos médicos (cálculo de probabilidades em cima de diagnóstico de doenças), segundo Pedro César Tebaldi Gomes (2019) \cite{GOMES:2019}.
 
-Outros importantes algoritmos de aprendizagem são as máquinas de vetores suporte - SVMs (Support Vector Machines), que “[...] têm a capacidade de resolver problemas de classificação e regressão, adquirindo com o aprendizado na etapa de treinamento a capacidade de generalização” (JUNIOR, 2010, p.5). \cite{JUNIOR:2010}
-
-Por fim, pode-se destacar a técnica de mineração de dados de árvore de decisão na aprendizagem de máquina. De acordo com Hosokawa (2011) \cite{Hosokawa:2011}, a árvore de decisão é um modelo preditivo, representado por um gráfico em forma de árvore, contendo as decisões a serem tomadas e seus possíveis riscos, custo e prejuízos. 
+Pode-se destacar também a técnica de mineração de dados de árvore de decisão na aprendizagem de máquina. De acordo com Hosokawa (2011) \cite{HOSOKAWA:2011}, a árvore de decisão é um modelo preditivo, representado por um gráfico em forma de árvore, contendo as decisões a serem tomadas e seus possíveis riscos, custo e prejuízos. 
 
 Neste sentido, este trabalho utilizou as técnicas citadas acima, dentre outras, para análise de dados do Sistema Único de Saúde (SUS) relacionados às Síndromes Respiratórias Agudas Graves (SARS) relacionadas à convid-19, em 2020. De forma a identificar as regiões do Brasil mais impactadas pela covid-19, bem como os perfis com maior risco de morte, contribuindo com informações importantes para implementação de políticas de saúde pública, a exemplo da elaboração de um plano nacional de vacinação.
 
@@ -565,6 +563,8 @@ grfDtNotificacao=ggplot(qtdNotificacoesMes) +
 
 A partir deste processamento foi possível a criação do Gráfico 1 (Notificações de Covid-19 por Mês) e verificar que no Brasil, em 2020, os primeiros casos de covid-19 foram registrados em fevereiro e que, no mês de julho, ocorreu o maior número de casos.
 
+\vspace{0.5cm}
+
 ```{r gridDtNotificacao, echo=FALSE}
 grid.arrange(grfDtNotificacao, bottom="Gráfico 1: Notificações de Covid-19 por Mês")
 ```
@@ -617,6 +617,7 @@ Com base nesse processamento foi elaborado o Gráfico 2 (Boxplot de Idades dos c
 \item aproximadamente 75\% dos casos graves de covid-19 possuem idade acima dos 40 anos.
 \end{itemize}
 
+\vspace{0.5cm}
 
 ```{r gridIdade, echo=FALSE}
 grid.arrange(grfIdade, bottom="Gráfico 2: Boxplot de Idades dos casos graves de covid-19 por região")
@@ -670,6 +671,8 @@ Este processamento possibilitou a construção do Gráfico 3 (Quantitativo dos c
 \item a raça com maior representatividade de casos graves de covid-19 é a branca seguida pela parda;
 \item a raça indigina foi a que regsitrou menos casos.
 \end{itemize}
+
+\vspace{0.5cm}
 
 ```{r gridRaca, echo=FALSE, fig.height=5, fig.width=7}
 grid.arrange(grfRaca, bottom="Gráfico 3: Quantitativo dos casos graves de covid-19 por raça")
@@ -946,6 +949,8 @@ grfComorbidades = ggplot(comorbidades) +
 ```
 
 Com base no processamento acima foi possível gerar o Gráfico 5 (Comorbidades preexistentes nos casos graves de covid-19) no qual verifica-se a maior incidência de comobridades referente a cardiopatias e diabetes.
+
+\vspace{0.5cm}
 
 ```{r gridComorbidades, echo=FALSE, fig.height=5, fig.width=7}
 grid.arrange(grfComorbidades, bottom="Gráfico 5: Comorbidades preexistentes nos casos graves de covid-19")
@@ -1286,7 +1291,7 @@ grid.arrange(grdMortesPorRegiaoNordeste, bottom="Gráfico 10: Mortes por covid-1
 
 \vspace{0.5cm}
 
-Apesar do estado de São Paulo liderar o números de mortes absoluto por covid-19 no Brasil, em relação ao tamanho da população, a situação é diferente. Verifica-se que 5 (cinco) estados do país ultrapassam São Paulo em mortes por milhão de habitantes. O Rio de Janeiro é o estado com a mais alta taxa de mortalidade do país, seguido pelo Distrito Federal. Para desmostrar segue a Tabela \ref{tab:txMortalidade}}.
+Apesar do estado de São Paulo liderar o números de mortes absoluto por covid-19 no Brasil, em relação ao tamanho da população, a situação é diferente. Verifica-se que 5 (cinco) unidades federativas do país ultrapassam São Paulo em mortes por milhão de habitantes. O Rio de Janeiro é o estado com a mais alta taxa de mortalidade do país, seguido pelo Distrito Federal. Para desmostrar segue a Tabela \ref{tab:txMortalidade}.
 
 \begin{table}[htp!]
 \center
@@ -1298,7 +1303,7 @@ RJ & DF & AM & CE & SE & SP \\ \hline
 \label{tab:txMortalidade}
 \end{table}
 
-Apesar da Tabela \ref{tab:txMortalidade}} apresentar apenas os 6 (seis) estados com as maiores taxas de mortalidade, pode-se visualizar no Gráfico 11 o mapa de calor das taxas de mortalidade por estado. De forma complementar, tem-se, ainda, a tabela completa com as taxas de mortalidade por covid-19 de todos os estados disponível no Apêndice A.
+Apesar da Tabela \ref{tab:txMortalidade} apresentar apenas os 6 (seis) estados com as maiores taxas de mortalidade, pode-se visualizar no Gráfico 11 o mapa de calor das taxas de mortalidade por estado. De forma complementar, tem-se, ainda, a tabela completa com as taxas de mortalidade por covid-19 de todos os estados disponível no Apêndice A.
 
 ```{r mortalidadePorUF, include=FALSE}
 mortalidadePorUF=pacientes[complete.cases(
@@ -1350,7 +1355,7 @@ No que se refere as capitais brasileiras, as taxas de mortalidade são ainda mai
 
 Recife é a capital com maior número de mortes por milhão de habitantes, com 3.313 (três mil trezentos de treze) óbitos por covid-19, o que representa uma taxa 96% (noventa e seis por cento) superior à média nacional das capitais. 
 
-Das 7 (sete) maiores taxas de mortalidade por covid-19 nas capitais as regiões norte e nordeste ocupam 6 posições no ranking, com exceção da cidade do Rio de Janeiro. Já o município de São Paulo tem taxa de mortalidade inferior a média nacional e ocupa a 19ª (décima nona) posição do ranking, com 1.436 mortes por milhão de habitantes, esse raking consta na Tabela \ref{tab:txMortalidadeCapitais}} abaixo. 
+Das 7 (sete) maiores taxas de mortalidade por covid-19 nas capitais as regiões norte e nordeste ocupam 6 posições no ranking, com exceção da cidade do Rio de Janeiro. Já o município de São Paulo tem taxa de mortalidade inferior a média nacional e ocupa a 19ª (décima nona) posição do ranking, com 1.436 mortes por milhão de habitantes, esse raking consta na Tabela \ref{tab:txMortalidadeCapitais} abaixo. 
 
 \begin{table}[htp!]
 \center
@@ -1449,7 +1454,7 @@ A Figura \ref{fig:Gallagher2020} mostra a manchete da matéria da BBC NEWS, que 
 \label{fig:Gallagher2020}
 \end{figure}
 
-De acordo com James Gallagher (2020), repórter de ciência e saúde\cite{Gallagher:2020}:
+De acordo com James Gallagher (2020), repórter de ciência e saúde\cite{GALLAGHER:2020}:
 
 \vspace{0.5cm}
 
@@ -1602,7 +1607,7 @@ Dos atributos disponíveis no data frame, foram selecionadas as seguintes coluna
 
 Na tentativa de reduzir os número de perfis e torná-los mais representativos para este modelo, foram adotados alguns tratamentos que serão detalhados nos próximos parágrafos.
 
-No que se refere à idade, os valores foram agrupados em intervalos, adotando-se os mesmos intervalos utilizados na piramide etária adotada pelo Instituto Brasileiro de Geografia e Estatística (IBGE), conforme Tabela \ref{tab:faixaEtaria}} abaixo:
+No que se refere à idade, os valores foram agrupados em intervalos, adotando-se os mesmos intervalos utilizados na piramide etária adotada pelo Instituto Brasileiro de Geografia e Estatística (IBGE), conforme Tabela \ref{tab:faixaEtaria} abaixo:
 
 \vspace{0.5cm}
 
@@ -1659,7 +1664,7 @@ dadosRegressaoLogistica$IN_FATOR_RISC=if_else(dadosRegressaoLogistica$IN_FATOR_R
 dadosRegressaoLogistica["IN_OBITO_COVID"]=if_else(dadosRegressaoLogistica$CS_EVOLUCAO=="Óbito", 1,0)
 ```
 
-A) Primeira execução:
+a) Primeira execução:
 \vspace{0.5cm}
 
 Na primeira execução o modelo de regressão logística apresentou valores de baixa significância para:
@@ -1673,7 +1678,7 @@ Na primeira execução o modelo de regressão logística apresentou valores de b
 
 \vspace{0.5cm}
 
-O código utilizado na execução do modelo de regressão logistica pode ser verificado no trecho de código abaixo, bem como o resultado da execução na Tabela \ref{tab:regTabLog1}.
+O código utilizado na execução do modelo de regressão logística pode ser verificado no trecho de código abaixo, bem como o resultado da execução na Tabela \ref{tab:regTabLog1}.
 
 \vspace{0.5cm}
 
@@ -1733,12 +1738,12 @@ dadosRegressaoLogistica[dadosRegressaoLogistica$CS_RACA=="Amarela", ]$CS_RACA = 
 dadosRegressaoLogistica$CS_RACA=as.factor(dadosRegressaoLogistica$CS_RACA)
 ```
 
-B) Segunda execução:
+b) Segunda execução:
 
 \vspace{0.5cm}
 
-Após o ajuste do modelo e a reexecução em uma amostra com 436.361 (quatrocentos e trinta e seis mil e trezentos e sessenta e um) pacientes. Conclui-se que o perfil com maior risco de morte tem: idade de 80 (oitenta) anos ou mais ($\beta^1$ : 2.9126), já apresenta doenças preexistentes ($\beta^1$ : 0.5170), reside na região norte ($\beta^1$ : 0.3953), é de cor preta 
-($\beta^1$ : 0.3310) e homem ($\beta^1$ : 0.2390), com probabilidade de óbito de 75% (setenta e cinco por cento).
+Após o ajuste do modelo e a reexecução em uma amostra com 436.361 (quatrocentos e trinta e seis mil e trezentos e sessenta e um) pacientes. Conclui-se que o perfil com maior risco de morte tem: idade de 80 (oitenta) anos ou mais ($\beta^1$ : 2.9126), apresenta doenças preexistentes ($\beta^1$ : 0.5170), reside na região norte ($\beta^1$ : 0.3953), é de cor preta 
+($\beta^1$ : 0.3310) e do sexo masculino ($\beta^1$ : 0.2390), com probabilidade de óbito de 75% (setenta e cinco por cento).
 
 Já o perfil com menor risco de morte no Brasil: reside na região sul ($\beta^1$ : -0.1241), tem idade de 0 (zero) a 14 (quatorze) anos, não tem doenças preexistentes, é de cor branca ou amarela e do sexo feminino, com probabilidade de óbito por covid-19 de 3% (três por cento). Abaixo segue o trecho de código responsável pela segunda execução do modelo.
 
@@ -1765,7 +1770,7 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 
 \vspace{0.5cm}
 
-Os valores de $\beta^0$ e $\beta^1$ resultado da reexecução do modelo ajustado podem ser verificados na Tabela: \ref{tab:regTabLog2}}.
+Os valores de $\beta^0$ e $\beta^1$ resultado da reexecução do modelo ajustado podem ser verificados na Tabela: \ref{tab:regTabLog2}.
 
 \vspace{0.5cm}
 
@@ -1806,7 +1811,7 @@ Os valores de $\beta^0$ e $\beta^1$ resultado da reexecução do modelo ajustado
 
 \section{6. Machine learning}
 
-Neste capítulo, utiliza-se técnicas de machine learning para identificar outros atributos com impacto no risco de óbito dos pacientes, além dos atributos já descritos nas seções anteriores novos atributos serão incorporados aos modelos. Os algoritmos, também serão diversificados. 
+Neste capítulo, utiliza-se técnicas de machine learning para identificar outros atributos com impacto no risco de óbito dos pacientes, além dos atributos já descritos nas seções anteriores novos atributos serão incorporados aos modelos e os tipos de algoritmos também serão diversificados. 
 
 A eficiência dos atributos selecionados, bem como o algoritmo utilizado, será mensurada a partir da taxa de acerto do algoritmo.
 
@@ -1843,7 +1848,7 @@ dadosMachineLearningObito$IN_RECEBEU_VACINA_GRIPE=as.factor(dadosMachineLearning
 dadosMachineLearningObito=dadosMachineLearningObito[complete.cases(dadosMachineLearningObito),];
 ```
 
-Os dados utilizados nos treinamentos dos modelos, bem como os dados utilizados nos testes, serão extraídos a partir de uma amostra aleatória com 1000 (um mil) registros. Sendo 70% (setenta por cento) da amostra destinada para o treinamento e 30%(trinta por cento) destinada para os testes.
+Os dados utilizados nos treinamentos dos modelos, bem como os dados utilizados nos testes, serão extraídos a partir de uma amostra aleatória com 1.000 (um mil) registros. Sendo 70% (setenta por cento) da amostra destinada para o treinamento e 30%(trinta por cento) destinada para os testes.
 
 ```{r amostraMachine, echo=FALSE}
 amostra = sample(2,1000, replace = T, prob=c(0.7,0.3))
@@ -1851,14 +1856,16 @@ dadosTreino=dadosMachineLearningObito[amostra==1,]
 dadosTeste=dadosMachineLearningObito[amostra==2,]
 ```
 
-\subsection{6.1 Árvore de Desisão de Classificação}
+\subsection{6.1 Árvore de Decisão de Classificação}
 
-Na primeira execução, o algorítimo utilizado será o rpart e os atributos serão os mesmos utilizados nas seção de inferência estatística. Com essa configuração a taxa de acerto do modelo foi 64% (sessenta e quatro por cento).
+Na primeira execução, o algoritmos utilizado será o rpart e os atributos serão os mesmos utilizados nas seção de inferência estatística. Com essa configuração a taxa de acerto do modelo foi de, aproximadamente, 64% (sessenta e quatro por cento). Abaixo segue trecho de código utilizado: 
+
+\vspace{0.5cm}
 
 ```{r arvore1}
 arvoreClassificacao = rpart(formula =  CS_EVOLUCAO ~ CS_SEXO +
 FAIXA_ETARIA + CS_RACA + IN_FATOR_RISC + REGIAO,
-data = dadosMachineLearningObito, method = "class")
+data = dadosTreino, method = "class")
 ```
 
 ```{r arvorePredict1}
@@ -1873,9 +1880,11 @@ taxaAcerto = (confusao[1]+confusao[4])/sum(confusao)
 taxaAcerto
 ```
 
-\subsection{6.2 Arvore de Decição e Seleção de Atributos}
+\subsection{6.2 Árvore de Decisão e Seleção de Atributos}
 
-Com método randomForest e mantendo praticamente os mesmo atributos da execução anterior, com exceção do atributo REGIAO, substituído pelo atributo SG_UF a taxa de acerto referente ao risco de morte do paciente, apresenta uma pequena melhora. Depois da mudança, a taxa de acertou passou para 66% (sessenta e seis por cento).
+Com método Random Forest, mantendo-se quase todos os atributos da execução anterior, com exceção do atributo REGIAO, que foi substituído pelo atributo SG_UF, a taxa de acerto referente ao risco de morte do paciente apresenta uma pequena melhora, passando para, aproximadamente, 66% (sessenta e seis por cento). Abaixo segue trecho de código utilizado: 
+
+\vspace{0.5cm}
 
 ```{r randomForest}
 selecaoAtributos = randomForest(CS_EVOLUCAO ~ CS_SEXO +
@@ -1894,15 +1903,29 @@ taxaAcerto = (confusao[1]+confusao[4])/sum(confusao)
 taxaAcerto
 ```
 
+\vspace{0.5cm}
+
 O gráfico abaixo apresenta os atributos mais significativos na classificação de risco de morte do paciente. A FAIXA_ETARIA do paciente é o atributo com maior peso na classificação do registro em relação ao risco de morte. Nas próximas execuções detalharemos mais os atributos FAIXA_ETARIA e SG_UF.
+
+\vspace{0.5cm}
 
 ```{r varImpPlot}
 varImpPlot(selecaoAtributos, main="Atributos mais significativos")
 ```
 
-\subsection{6.3 Árvore de Decisão de Classificação otimizado}
+\vspace{0.5cm}
 
-Utilizando novamente a função rpart agora com atributo NU_IDADE e MUNICIPIO, a taxa de acerto passou a ser de 67% (sessenta e sete por cento)
+\subsection{6.3 Árvore de Decisão de Classificação Otimizado}
+
+Ao verificar-se uma maior relevância de alguns atributos (FAIXA_ETARIA e SG_UF) a partir de execuções anteriores, como pode ser visto no gráfico da seção 6.2, optou-se por realizar uma nova execução do método rpart com um maior nível de especificidade dos atributos. 
+
+Desta forma, substituiu-se a faixa etária pela idade do paciente, bem como a substituição da unidade federativa pelo município, o que aumentou muito o número de categorias utilizadas no modelo.
+
+Apesar do método Random Forest ter apresentado uma taxa de acerto maior na execução anterior, não foi possível utilizá-lo neste novo contexto devido a uma limitação do algoritmo, que suporta apenas 53 (cinquenta e três) categorias.
+
+Como essa nova configuração a taxa de acerto passou a ser de, aproximadamente, 68% (sessenta e sete por cento). Abaixo segue trecho de código utilizado: 
+
+\vspace{0.5cm}
 
 ```{r arvore2}
 arvoreClassificacao = rpart(formula =  CS_EVOLUCAO ~  NU_IDADE + MUNICIPIO,
@@ -1920,7 +1943,11 @@ confusao=table(previsao$CS_EVOLUCAO, previsao$PREVISAO)
 taxaAcerto = (confusao[1]+confusao[4])/sum(confusao)
 taxaAcerto
 ```
-Quando adicionado o hospital de atendimento do paciente como atributo do modelo, a taxa de acerto passa a ser de 70% (setenta por cento).
+\vspace{0.5cm}
+
+Em uma segunda execução, adicionado o atributo hospital de atendimento do paciente, a taxa de acerto passa a ser de, aproximadamente, 70% (setenta por cento). Abaixo segue trecho de código utilizado: 
+
+\vspace{0.5cm}
 
 ```{r arvore3}
 arvoreClassificacao = rpart(formula =  CS_EVOLUCAO ~  NU_IDADE + MUNICIPIO + HOSPITAL,
@@ -1941,7 +1968,9 @@ taxaAcerto
 
 \subsection{6.4 Naive Bayse}
 
-Com os mesmo atributos da seção anterior e o método naiveBayes do pacote e1071 a taxa de acerto foi menor, 68% (sessenta e oito por cento)
+Por último, foi relalizada uma execução com os mesmo atributos da seção 6.3 e o método Naive Bayse do pacote e1071. Com esta configuração, o resultado da taxa de acerto foi um pouco menor, chegando a, aproximadamente, 68% (sessenta e oito por cento). Abaixo segue trecho de código utilizado: 
+
+\vspace{0.5cm}
 
 ```{r modeloNaiveBayes, results='hide'}
 modeloNaiveBayes = naiveBayes(formula =  CS_EVOLUCAO ~  NU_IDADE + MUNICIPIO + HOSPITAL,
@@ -1962,65 +1991,116 @@ taxaAcerto
 
 \newpage
 
-\section{7. Resultado}
+\section{7. Dashboard Covid19}
 
-Nas seções acima fica evidenciado que no ano de 2020 as regiões mais pobres do país, Norte e Nordeste, foram as regiões que mais sofreram com a pandemia, com as maiores taxas de mortalidade e letalidade. A exceção do estado do Rio de Janeiro que apresentou a maior taxa de letalidade do país.
+Para este trabalho, também foi elaborado no RStudio um dashboard na linguagem R, com auxílio das libs: flexdashboard, shiny, shinyWidgets, bem como das libs já descritas no primeiro capítulo. O deploy do dashboard foi realizado no shinyapps.io, podendo ser acessado no link \url{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19/}.
 
-No que se refere ao perfil do pacienete foi verificado que a idade é o atributo que mais contribui para o aumento do risco de morte, seguido pela existência de comorbidades e sofrendo influência até do sexo. Os dados analisados demonstram que homens apresentam mais risco de óbito. 
+O dashboard amplia a possíbilidade de consulta, indo além das informações apresentadas neste trabalho. Ele permite também uma abordagem em drill down, sendo possível uma analise em nível de: Brasil, regiões, estados e municípios.
 
-A partir dos atributos selecionados e dos algoritmo de machine learning utilizados neste trabalho foi verificado uma taxa de acerto de até 70% (setenta por cento) dos casos graves de covid-19 que evoluiram no ano de 2020 para óbito.
+A Figura \ref{fig:dashboardhome}, apresentada abaixo, exibe a página principal do dashboard.
 
-\subsection{7.1 Dashboard-Covid19}
+\vspace{0.5cm}
 
-De maneira complementar, a este trabalho, foi elaborado no RStudio um dashboard na linguagem R, com auxílio das libs: flexdashboard, shiny, shinyWidgets e também das libs já descritas no primeiro capítulo. O deploy do dashboard foi realizado no shinyapps.io podendo ser acessado no link \url{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19/}.
-
-O dashboard amplia a possíbilidade de consulta, indo além das informações apresentadas neste relatório. Ele permite também uma abordagem em drilldown sendo possível uma analise nacional, passando pelas regiões, estados chegando até o nível de municípios. A Figura \ref{fig:dashboardhome} mostra a página principal do dashboard, a figura \ref{fig:dashboardsobre} exibe a página de sobre com os créditos. 
-
-\begin{figure}[htp]
+\begin{figure}[ht]
 \center
 \includegraphics[width=0.75\linewidth]{anexos/home-dashboard.png}
-\caption{Dashboard}
+\caption{Menu Dashboard}
 \label{fig:dashboardhome}
 \end{figure}
 
-\begin{figure}[htp]
+\vspace{0.5cm}
+
+No menu "Sobre", constam os créditos do trabalho, conforme figura \ref{fig:dashboardsobre} a seguir:
+
+\vspace{0.5cm}
+
+\begin{figure}[ht]
 \center
 \includegraphics[width=0.75\linewidth]{anexos/sobre-dashboard.png}
-\caption{Sobre}
+\caption{Menu Sobre}
 \label{fig:dashboardsobre}
 \end{figure}
 
+\vspace{0.5cm}
 
-O shinyapps.io é uma plataforma de serviço na núvem para o desenvolvimento de aplicações web usando R. A Figura \ref{fig:shinyappsio} exibe o deploy do dashboard no shinyapps.io.
+O shinyapps.io é uma plataforma de serviço na nuvem para o desenvolvimento de aplicações web usando R. A Figura \ref{fig:shinyappsio} exibe o deploy do dashboard no shinyapps.io.
 
-\begin{figure}[htp]
+\vspace{0.5cm}
+
+\begin{figure}[ht]
 \center
 \includegraphics[width=0.75\linewidth]{anexos/shinyappsio.png}
 \caption{Shinyapps.io}
 \label{fig:shinyappsio}
 \end{figure}
 
+\vspace{0.5cm}
 
-```{r gerarDadosDashBoard, include=FALSE}
+Tendo em vista a necessidade de disponibilizar os dados na nuvem (shinyapps.io), foram gerados outros arquivos apenas com as colunas utilizadas no dashboard. Este processo teve como finalidade diminuir o volume de dados e facilitar o deploy, conforme trecho de código a seguir:
+
+\vspace{0.5cm}
+
+```{r gerarDadosDashBoard, results='hide'}
 write.csv2(pacientes[, c("DT_NOTIFICACAO", "REGIAO", "SG_UF", "MUNICIPIO",
-"COD_MUNICIPIO", "COD_HOSPITAL", "HOSPITAL", "DT_EVOLUCAO", "CS_EVOLUCAO", "IN_FATOR_RISC", "CS_RACA", "CS_SEXO", "NU_IDADE")],
+"COD_MUNICIPIO", "COD_HOSPITAL", "HOSPITAL", "DT_EVOLUCAO", "CS_EVOLUCAO",
+"IN_FATOR_RISC", "CS_RACA", "CS_SEXO", "NU_IDADE")],
 file ="dashboard/dashboard_pacientes.csv")
 ```
 
-```{r dashBoardPopulacao, include=FALSE}
-write.csv2(municipiosIBGE[, c("SG_UF", "COD_MUNICIPIO6", "COD_MUNICIPIO", "MUNICIPIO", "NU_POPULACAO")],
-file ="dashboard/dashboard_populacao.csv")
+```{r dashBoardPopulacao, results='hide'}
+write.csv2(municipiosIBGE[, c("SG_UF", "COD_MUNICIPIO6", "COD_MUNICIPIO",
+"MUNICIPIO", "NU_POPULACAO")], file ="dashboard/dashboard_populacao.csv")
 ```
 
-```{r salvarDadosIBGE2, include=FALSE}
+```{r salvarDadosIBGE2, results='hide'}
 saveRDS(municipios, "dashboard/municipios_2019.rds")
 saveRDS(estados, "dashboard/estados_2019.rds")
 saveRDS(regioes, "dashboard/regioes_2019.rds")
 ```
 
+
 \newpage
 
-\section{8. Links}
+\section{8. Resultados}
+
+A covid-19 afeta pessoas e regiões de diferentes maneiras. O número elevado de óbitos e taxa de mortalidade fazem com que haja uma preocupação crescente entre as autoridades de saúde e população geral.
+
+Neste contexto, este trabalho teve como objetivo geral entender, de forma regionalizada, a evolução dos casos graves da doença no ano de 2020. 
+
+A partir da análise dos dados disponibilizados pelo SUS e IBGE, das inferências estatísticas e das execuções dos algoritmos de machine learning, conseguiu-se resultados capazes de satisfazer ao objetivo apresentado.
+
+De forma geral, constatou-se que, em 2020, a Região Sudeste foi a região do país mais impactada, considerando-se o número absoluto de mortes, atingindo 88.362 (oitenta e oito mil e trezentos e sessenta e duas) mortes, que representa 47,07% (quarenta e sete vírgula zero sete por cento) de todas as mortes do país. Após a Região Sudeste, o Nordeste aparece como a segunda região com maior número de mortes do Brasil, totalizando 44.965 (quarenta e quatro mil e novecentos e sessenta e cinco) mortes, ou seja, 23,95% (vinte e três vírgula noventa e cinco por cento) do total de mortes. Juntas, estas duas regiões são responsáveis por, aproximadamente, 71% (setenta e um por cento) das mortes por covid-19 do país. 
+
+É importante observar, ainda, que só o Estado de São Paulo apresenta mais mortes do que toda região Nordeste, com 47.226 (quarenta e sete mil duzentos e vinte e seis) óbitos. Tais descobertas, encontra-se detalhada no item 4.1.
+
+No que se refere à taxa de mortalidade da covid-19 no Brasil, verifica-se que, apesar do Estado de São Paulo liderar em números absolutos de morte, cinco unidades federativas o ultrapassam em mortes por milhão de habitantes, são eles: Rio de Janeiro, Distrito Federal, Amazonas, Ceará e Sergipe.
+
+Descobriu-se, também, que a taxa de mortalidade nas capitais é maior que nos estados, sendo as cinco capitais com maiores taxas de mortalidade de covid-19 do país: Recife, Rio de Janeiro, Aracajú, Belém e Fortaleza. Os valores dessas taxas de mortalidade podem ser encontrados no item 4.2.
+
+Quanto à taxa de letalidade da covid-19, a qual foi calculada com verificação a partir de teste de hipótese, constatou-se que a mesma é de 30% no Brasil, com nível de significância de 95% (noventa e cinco por cento). Este valor é inferior à taxa identificada no Reino Unidade, cujo valor foi de 35% (trinta e cinco por cento).
+
+Identificou-se, ainda, que a Região Nordeste se manteve com média móvel acima das apresentadas no Brasil e demais regiões durante a maior parte do ano de 2020. Este assunto foi abordado no item 4.3 deste trabalho.
+
+No capítulo 5, utilizou-se a técnica de Regressão Logística para a identificação dos perfis com maior e menor risco de morte por covid-19 do país, tendo-se os seguintes resultados:
+
+\vspace{0.5cm}
+
+\begin{itemize}
+\item perfil com maior risco de morte: tem idade de 80 (oitenta) anos ou mais, apresenta doenças preexistentes, reside na região norte, é de cor preta e do sexo masculino, com probabilidade de óbito de 75\% (setenta e cinco por cento);
+\item perfil com menor risco de morte: tem idade de 0 (zero) a 14 (quatorze) anos, não tem doenças preexistentes, reside na região sul, é de cor branca ou amarela e do sexo feminino, com probabilidade de óbito de 3\% (três por cento).
+\end{itemize}
+
+\vspace{0.5cm}
+
+Quanto ao perfil do paciente de covid-19, constatou-se que a idade é o atributo que mais contribui para o aumento do risco de morte, seguida pela existência de comorbidades e sexo. Os dados analisados demonstram que homens apresentam maior risco de óbito.
+
+Já no capítulo 6, empregou-se técnicas machine learning para identificar os atributos com maior impacto no risco de morte, bem como o modelo mais eficiente. Assim, verificou-se que o modelo criado a partir da técnica Árvore de Decisão de Classificação (Rpart), com utilização dos atributos de idade, município e hospital, obteve taxa de acerto de, aproximadamente, 70% (setenta por cento).
+
+Por fim, é importante destacar que a análise geral dos resultados alcançados demonstra que o modelo construído apresenta uma boa capacidade preditiva. 
+
+\newpage
+
+\section{9. Links}
 
 A Tabela \ref{tab:links} dispõe dos links com os código fontes implementados neste tabalho, do link do deploy da aplicação (dashboard implementado), bem como do link com o backup dos dados utlizados.
 
@@ -2041,8 +2121,8 @@ Shinyapps.io & Dashboard Covid-19 & \href{https://fabiopadilhatccpucminas.shinya
 \section{Referências Bibliográficas}
 
 \begin{thebibliography}{OPHS15}
-\bibitem[1]{Gallagher:2020}
-Gallagher, James. \emph{Coronavírus é 'tão mortal quanto ebola' em casos de internação, diz estudo britânico.\emph{DATA GEEKS, 29 abr. 2020.}}
+\bibitem[1]{GALLAGHER:2020}
+GALLAGHER, James. \emph{Coronavírus é 'tão mortal quanto ebola' em casos de internação, diz estudo britânico.\emph{DATA GEEKS, 29 abr. 2020.}}
 Disponível em: \url{https://www.bbc.com/portuguese/geral-52481818}
 - ( Acessado em: 14 jan. 2021 )
 \bibitem[2]{GOMES:2019}
@@ -2050,8 +2130,8 @@ GOMES, Pedro César Tebaldi.
 \emph{Classificação com Naive Bayes. \emph{DATA GEEKS, 22 fev. 2019.}}
 Disponível em: \url{https://www.datageeks.com.br/naive-bayes/}
 - ( Acessado em: 14 jan. 2021 )
-\bibitem[3]{Hosokawa:2011}
-Hosokawa, Eric Ossamu. \emph{Técnica de Árvore de Decisão em Mineração de Dados. 2011. Trabalho de Conclusão de Curso (Tecnólogo em Processamento de Dados) - \emph{Faculdade de Tecnologia de São Paulo, São Paulo, 2011.}}
+\bibitem[3]{HOSOKAWA:2011}
+HOSOKAWA, Eric Ossamu. \emph{Técnica de Árvore de Decisão em Mineração de Dados. 2011. Trabalho de Conclusão de Curso (Tecnólogo em Processamento de Dados) - \emph{Faculdade de Tecnologia de São Paulo, São Paulo, 2011.}}
 \bibitem[4]{JUNIOR:2010}
 JUNIOR, Gilson Medeiros de Oliveira. \emph{Máquina de Vetores Suporte: estudo e análise de parâmetros para otimização de resultado. 2010. Trabalho de Conclusão de Curso (Bacharelado em Ciência da Computação) - \emph{Universidade Federal de Pernambuco, Recife, 2010.}}
 \bibitem[5]{MEHTA:2017}
