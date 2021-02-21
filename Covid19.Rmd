@@ -358,7 +358,6 @@ startRow = 3, colNames =FALSE, rowNames = FALSE)
 municipios <- read_municipality(year=2019)
 estados <- read_state(year=2019)
 regioes <- read_region(year=2019)
-regioes
 ```
 
 \newpage
@@ -1169,7 +1168,7 @@ A partir desse processamento foi elaborado o Gráfico 7 (Evolução dos casos gr
 
 \vspace{0.5cm}
 
-```{r gridEvolucao, echo=FALSE, fig.height=4, fig.width=7}
+```{r gridEvolucao, echo=FALSE, fig.height=3, fig.width=7}
 grid.arrange(grfEvolucao, bottom="Gráfico 7: Evolução dos casos graves de covid-19")
 ```
 
@@ -2136,25 +2135,23 @@ Shinyapps.io & Dashboard Covid-19 & \href{https://fabiopadilhatccpucminas.shinya
 
 \begin{thebibliography}{OPHS15}
 \bibitem[1]{GALLAGHER:2020}
-GALLAGHER, James. \emph{Coronavírus é 'tão mortal quanto ebola' em casos de internação, diz estudo britânico.\emph{DATA GEEKS, 29 abr. 2020.}}
-Disponível em: \url{https://www.bbc.com/portuguese/geral-52481818}
-- ( Acessado em: 14 jan. 2021 )
+GALLAGHER, James. Coronavírus é 'tão mortal quanto ebola' em casos de internação, diz estudo britânico. \textbf{BBC, 2020.}
+Disponível em: < \url{https://www.bbc.com/portuguese/geral-52481818} > - Acessado em: 14 jan. 2021
 \bibitem[2]{GOMES:2019}
 GOMES, Pedro César Tebaldi.
-\emph{Classificação com Naive Bayes. \emph{DATA GEEKS, 22 fev. 2019.}}
-Disponível em: \url{https://www.datageeks.com.br/naive-bayes/}
-- ( Acessado em: 14 jan. 2021 )
+Classificação com Naive Bayes. \textbf{DATA GEEKS, 2019.}
+Disponível em: < \url{https://www.datageeks.com.br/naive-bayes/} > - Acessado em: 14 jan. 2021 
 \bibitem[3]{HOSOKAWA:2011}
-HOSOKAWA, Eric Ossamu. \emph{Técnica de Árvore de Decisão em Mineração de Dados. 2011. Trabalho de Conclusão de Curso (Tecnólogo em Processamento de Dados) - \emph{Faculdade de Tecnologia de São Paulo, São Paulo, 2011.}}
+HOSOKAWA, Eric Ossamu. \textbf{Técnica de Árvore de Decisão em Mineração de Dados.} 2011. Trabalho de Conclusão de Curso (Tecnólogo em Processamento de Dados) - Faculdade de Tecnologia de São Paulo, São Paulo, 2011.
 \bibitem[4]{JUNIOR:2010}
-JUNIOR, Gilson Medeiros de Oliveira. \emph{Máquina de Vetores Suporte: estudo e análise de parâmetros para otimização de resultado. 2010. Trabalho de Conclusão de Curso (Bacharelado em Ciência da Computação) - \emph{Universidade Federal de Pernambuco, Recife, 2010.}}
+JUNIOR, Gilson Medeiros de Oliveira. \textbf{Máquina de Vetores Suporte:} estudo e análise de parâmetros para otimização de resultado. 2010. Trabalho de Conclusão de Curso (Bacharelado em Ciência da Computação) - Universidade Federal de Pernambuco, Recife, 2010.
 \bibitem[5]{MEHTA:2017}
-MEHTA, \emph{R. Big Data Analytics with Java. \emph{Birmingham: Packt Publishing Ltd, 2017.}}
+MEHTA, \textbf{R. Big Data Analytics with Java.} Birmingham: Packt Publishing Ltd, 2017.
 \bibitem[6]{OPENDATASUS:2021}
-Portal OpenDataSUS,  \emph{SRAG 2021 - Banco de Dados de Síndrome Respiratória.\emph{OpenDataSUS, 10 jan. 2021.}}
-Disponível em: \url{https://opendatasus.saude.gov.br/dataset/bd-srag-2021}
+Portal OpenDataSUS, SRAG 2021 - Banco de Dados de Síndrome Respiratória. \textbf{SUS, 2021.}
+Disponível em: < \url{https://opendatasus.saude.gov.br/dataset/bd-srag-2021} >  - Acessado em: 14 jan. 2021
 \bibitem[7]{SANTOS:2017}
-SANTOS, Roberto Moreira. \emph{A importância do uso de ferramentas de analítica preditiva gratuitas para as empresas. 2017. Trabalho de Conclusão de Curso (Bacharelado em Sistemas de Informação) - \emph{Universidade Federal de Pernambuco, Recife, 2017.}}
+SANTOS, Roberto Moreira. \textbf{A importância do uso de ferramentas de analítica preditiva gratuitas para as empresas.} 2017. Trabalho de Conclusão de Curso (Bacharelado em Sistemas de Informação) - Universidade Federal de Pernambuco, Recife, 2017.
 \end{thebibliography}
 
 \newpage
