@@ -2006,7 +2006,7 @@ taxaAcerto
 
 \section{7. Dashboard Covid19}
 
-Para este trabalho, também foi elaborado no RStudio um dashboard na linguagem R, com auxílio das libs: flexdashboard, shiny, shinyWidgets, bem como das libs já descritas no primeiro capítulo. O deploy do dashboard foi realizado no shinyapps.io, podendo ser acessado no link \url{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19/}.
+Para este trabalho, também foi elaborado no RStudio um dashboard na linguagem R, com auxílio das libs: flexdashboard, shiny, shinyWidgets, bem como das libs já descritas no primeiro capítulo. O deploy do dashboard foi realizado no shinyapps.io, podendo ser acessado no link \href{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19/}{\underline{\color{blue} https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19/}}.
 
 O dashboard amplia a possíbilidade de consulta, indo além das informações apresentadas neste trabalho. Ele permite também uma abordagem em drill down, sendo possível uma analise em nível de: Brasil, regiões, estados e municípios.
 
@@ -2120,9 +2120,9 @@ A Tabela \ref{tab:links} dispõe dos links com os código fontes implementados n
 \begin{table}[htp!]
 \center
 \begin{tabular}{|l|l|l|} \hline
-Git Hub & Repositório com o código fonte & \href{https://github.com/fabiorobertopadilha/covid19}{https://github.com/fabio...} \\ \hline
-Google Driver & Backup dos Dados e Relatório Final & \href{https://drive.google.com/drive/folders/1l52SO-RMHYfs2ci_2pBAZJNw2hA5i2me}{https://drive.google.com/drive...} \\ \hline
-Shinyapps.io & Dashboard Covid-19 & \href{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19}{https://fabiopadilhatccpucminas...} \\ \hline
+Git Hub & Repositório com o código fonte & \href{https://github.com/fabiorobertopadilha/covid19}{\underline{\color{blue} https://github.com/fabio...}} \\ \hline
+Google Driver & Backup dos Dados e Relatório Final & \href{https://drive.google.com/drive/folders/1l52SO-RMHYfs2ci_2pBAZJNw2hA5i2me}{\underline{\color{blue} https://drive.google.com/drive...}} \\ \hline
+Shinyapps.io & Dashboard Covid-19 & \href{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19}{\underline{\color{blue} https://fabiopadilhatccpucminas...}} \\ \hline
 \end{tabular}
 \caption{Links TCC}
 \label{tab:links}
@@ -2136,11 +2136,11 @@ Shinyapps.io & Dashboard Covid-19 & \href{https://fabiopadilhatccpucminas.shinya
 \begin{thebibliography}{OPHS15}
 \bibitem[1]{GALLAGHER:2020}
 GALLAGHER, James. Coronavírus é 'tão mortal quanto ebola' em casos de internação, diz estudo britânico. \textbf{BBC, 2020.}
-Disponível em: < \url{https://www.bbc.com/portuguese/geral-52481818} > - Acessado em: 14 jan. 2021
+Disponível em: < \href{https://www.bbc.com/portuguese/geral-52481818}{\underline{\color{blue} https://www.bbc.com/portuguese/geral-52481818}} > - Acessado em: 14 jan. 2021
 \bibitem[2]{GOMES:2019}
 GOMES, Pedro César Tebaldi.
 Classificação com Naive Bayes. \textbf{DATA GEEKS, 2019.}
-Disponível em: < \url{https://www.datageeks.com.br/naive-bayes/} > - Acessado em: 14 jan. 2021 
+Disponível em: < \href{https://www.datageeks.com.br/naive-bayes/}{\underline{\color{blue} https://www.datageeks.com.br/naive-bayes/}} > - Acessado em: 14 jan. 2021 
 \bibitem[3]{HOSOKAWA:2011}
 HOSOKAWA, Eric Ossamu. \textbf{Técnica de Árvore de Decisão em Mineração de Dados.} 2011. Trabalho de Conclusão de Curso (Tecnólogo em Processamento de Dados) - Faculdade de Tecnologia de São Paulo, São Paulo, 2011.
 \bibitem[4]{JUNIOR:2010}
@@ -2149,7 +2149,7 @@ JUNIOR, Gilson Medeiros de Oliveira. \textbf{Máquina de Vetores Suporte:} estud
 MEHTA, \textbf{R. Big Data Analytics with Java.} Birmingham: Packt Publishing Ltd, 2017.
 \bibitem[6]{OPENDATASUS:2021}
 Portal OpenDataSUS, SRAG 2021 - Banco de Dados de Síndrome Respiratória. \textbf{SUS, 2021.}
-Disponível em: < \url{https://opendatasus.saude.gov.br/dataset/bd-srag-2021} >  - Acessado em: 14 jan. 2021
+Disponível em: < \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021}{\underline{\color{blue} https://opendatasus.saude.gov.br/dataset/bd-srag-2021}} >  - Acessado em: 14 jan. 2021
 \bibitem[7]{SANTOS:2017}
 SANTOS, Roberto Moreira. \textbf{A importância do uso de ferramentas de analítica preditiva gratuitas para as empresas.} 2017. Trabalho de Conclusão de Curso (Bacharelado em Sistemas de Informação) - Universidade Federal de Pernambuco, Recife, 2017.
 \end{thebibliography}
