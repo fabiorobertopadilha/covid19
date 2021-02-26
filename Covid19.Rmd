@@ -91,7 +91,7 @@ O uso de técnicas de inteligência artificial, mais especificamente algoritmos 
 
 \vspace{0.5cm}
 
-Esses algoritmos de aprendizagem estão relacionados ao aprendizado de máquina (machine learning), que é uma parte de Inteligência Artificial (IA) onde um algoritmo computacional cria, a partir dos dados disponíveis, modelos de aprendizado para a resolução de problemas (MEHTA, 2017).\cite{MEHTA:2017}
+Esses algoritmos de aprendizagem estão relacionados ao aprendizado de máquina (machine learning), que “[...] é uma forma de IA onde um algoritmo computacional constrói, a partir de dados, modelos de aprendizado para a resolução de problemas” (MEHTA, 2017 apud Schüssler, P.J.; Bastiani, E.; Bussler, N.R.C., 2018).\cite{SCHÜSSLER:2018}
 
 Dentre as técnicas de aprendizagem de máquina, pode-se citar o algoritmo de Naive Bayes, importante classificador probabilístico, que é, frequentemente, utilizado em processamento de diagnósticos médicos (cálculo de probabilidades em cima de diagnóstico de doenças), segundo Pedro César Tebaldi Gomes (2019) \cite{GOMES:2019}.
 
@@ -212,7 +212,7 @@ Por fim, têm-se os seguintes objetivos específicos que irão ajudar na consecu
 \item realizar teste de hipótese da taxa de letalidade do Brasil;
 \item apresentar a média móvel da taxa de letalidade de covid-19 do Brasil e regiões, ao logo do ano de 2020;
 \item encontrar os perfis dos pacientes com maiores e menores riscos de morte por covid-19;
-\item utilizar técnicas de machine learnig para identificar o percentual de acerto do risco de morte por covid-19, a partir dos atributos selecionados na pesquisa.
+\item utilizar técnicas de machine learning para identificar o percentual de acerto do risco de morte por covid-19, a partir dos atributos selecionados na pesquisa.
 \end{itemize}
 
 \newpage
@@ -247,7 +247,7 @@ O arquivo utilizado neste trabalho foi disponibilizado para \href{https://openda
 
 Como a Secretaria de Vigilância em Saúde atualiza os dados semanalmente, para garantir o acesso ao arquivo analisado neste trabalho, fez-se necessário manter uma cópia no \href{https://drive.google.com/drive/folders/1l52SO-RMHYfs2ci_2pBAZJNw2hA5i2me?usp=sharing}{\underline{\color{blue}Google drive}}.
 
-O arquivo contém 1.103.183 (um milhão cento e três mil e cento e oitenta e três) linhas e 154 colunas. Cada linha do arquivo corresponde ao registro de um paciente com a síndrome respiratória aguda grave. As 154 colunas são campos coletados a partir da  \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/bd725e4c-c869-400f-a479-9b544c2812b4}{\underline{\color{blue} ficha de notificação do paciente}}, além de informações geradas pelo sistema. A ficha de notificação e o dicionário de dados estão disponíveis, respectivamente, nos anexos A e B. O trecho de código para importação do arquivo segue descrito abaixo:
+O arquivo contém 1.103.183 (um milhão cento e três mil e cento e oitenta e três) linhas e 154 colunas. Cada linha do arquivo corresponde ao registro de um paciente com a síndrome respiratória aguda grave. As 154 colunas são campos coletados a partir da  \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021/resource/bd725e4c-c869-400f-a479-9b544c2812b4}{\underline{\color{blue} ficha de notificação do paciente}}, além de informações geradas pelo sistema. A ficha de notificação e o dicionário de dados estão disponíveis, respectivamente, nos anexos A e B. Segue trecho de código para importação do arquivo:
 
 \vspace{0.5cm}
 
@@ -592,7 +592,7 @@ pacientes[pacientes$NU_IDADE>110,]$NU_IDADE=as.integer(mean(pacientes$NU_IDADE, 
 
 \vspace{0.5cm}
 
-Igualmente ao ocorrido no item anterior indentificou-se que não há valores omissos na coluna NU_IDADE.
+Igualmente ao ocorrido no item anterior identificou-se que não há valores omissos na coluna NU_IDADE.
 
 ```{r idadeOmisso, include=FALSE}
 #Percentual valores omissos
@@ -614,11 +614,11 @@ grfIdade=ggplot(pacientes) +
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-Com base nesse processamento foi elaborado o Gráfico 2 (Boxplot de Idades dos casos graves de covid-19 por região), no qual fica evidênciado que:
+Com base nesse processamento foi elaborado o Gráfico 2 (Boxplot de Idades dos casos graves de covid-19 por região), no qual fica evidenciado que:
 
 \begin{itemize}
 \item a região centro-oeste e a região nordeste apresentam respectivamente a menor e a maior média nacional de idade dos casos graves de covid-19;
-\item existem outlier abaixo de 15 anos nas regiões nordeste, suldeste e sul;
+\item existem outliers abaixo de 15 anos nas regiões nordeste, sudeste e sul;
 \item aproximadamente 75\% dos casos graves de covid-19 possuem idade acima dos 40 anos.
 \end{itemize}
 
@@ -643,7 +643,7 @@ pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==1,]$CS_RACA = 
 pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==2,]$CS_RACA = "Preta"
 pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==3,]$CS_RACA = "Amarela"
 pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==4,]$CS_RACA = "Parda"
-pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==5,]$CS_RACA = "Indígina"
+pacientes[ complete.cases(pacientes$CS_RACA) & pacientes$CS_RACA==5,]$CS_RACA = "Indígena"
 pacientes$CS_RACA = factor(pacientes$CS_RACA)
 ```
 
@@ -674,7 +674,7 @@ Este processamento possibilitou a construção do Gráfico 3 (Quantitativo dos c
 
 \begin{itemize}
 \item a raça com maior representatividade de casos graves de covid-19 é a branca seguida pela parda;
-\item a raça indigina foi a que regsitrou menos casos.
+\item a raça indígena foi a que registrou menos casos.
 \end{itemize}
 
 \vspace{0.5cm}
@@ -689,7 +689,7 @@ grid.arrange(grfRaca, bottom="Gráfico 3: Quantitativo dos casos graves de covid
 
 \vspace{0.5cm}
 
-O percentual de valores omissões na coluna CS_SEXO é de 0.01% (zero vírgula zero um por cento). Esses valores foram tratados a partir da coluna CS_GESTANTE, atribuiu-se sexo feminino, quando esta coluna informa existência de gestação. Em contrapartida, pra os valores omissões de sexo que não apresetam indicação de gestação, atribuiu-se sexo masculino, dado que a presença do sexo masculino é maior (vide Gráfico 4 abaixo) e a incidência de valores omissos é muito pequena.
+O percentual de valores omissões na coluna CS_SEXO é de 0.01% (zero vírgula zero um por cento). Esses valores foram tratados a partir da coluna CS_GESTANTE, atribuiu-se sexo feminino, quando esta coluna informa existência de gestação. Em contrapartida, pra os valores omissões de sexo que não apresentam indicação de gestação, atribuiu-se sexo masculino, dado que a presença do sexo masculino é maior (vide Gráfico 4 abaixo) e a incidência de valores omissos é muito pequena.
 
 Abaixo segue o trecho de código responsável por este processamento:
 
@@ -747,7 +747,7 @@ grid.arrange(grSexo,  bottom="Gráfico 4: Percentual dos casos graves de covid-1
 
 \vspace{0.5cm}
 
-Nas colunas referente às comorbidades do paciente, foram convertidos os valores numéricos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B, deste trabalho. 
+Nas colunas referentes às comorbidades do paciente, foram convertidos os valores numéricos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B, deste trabalho. 
 
 A coluna IN_FATOR_RISC, informa a existência de comorbidade no paciente. Nela não foram identificados valores omissos.
 
@@ -953,7 +953,7 @@ grfComorbidades = ggplot(comorbidades) +
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-Com base no processamento acima foi possível gerar o Gráfico 5 (Comorbidades preexistentes nos casos graves de covid-19) no qual verifica-se a maior incidência de comobridades referente a cardiopatias e diabetes.
+Com base no processamento acima foi possível gerar o Gráfico 5 (Comorbidades preexistentes nos casos graves de covid-19) no qual verifica-se a maior incidência de comorbidades referente a cardiopatias e diabetes.
 
 \vspace{0.5cm}
 
@@ -967,7 +967,7 @@ grid.arrange(grfComorbidades, bottom="Gráfico 5: Comorbidades preexistentes nos
 
 \vspace{0.5cm}
 
-Nesta seção constam os recursos que foram utilizados pelo paciente durante o tratamento. Os recurso são: se o paciente precisou de oxigênio, se precisou de suporte de ventilação pulmonar, se foi pra UTI, se tomou algum antiviral ou se foi hospitalizado.
+Nesta seção constam os recursos que foram utilizados pelo paciente durante o tratamento. Os recursos são: se o paciente precisou de oxigênio, se precisou de suporte de ventilação pulmonar, se foi pra UTI, se tomou algum antiviral ou se foi hospitalizado.
 
 Ressalta-se que a coluna mais utilizada deste grupo foi a IN_HOSPITALIZADO, cujo percentual de valores omissos é de 2.61% (dois virgula sessenta e um por cento), estes valores foram removidos na geração dos gráficos e modelos de machine learning.
 
@@ -989,7 +989,7 @@ pacientes[complete.cases(pacientes$IN_UTI) & pacientes$IN_UTI==9,]$IN_UTI=NA
 (sum(is.na(pacientes$IN_UTI))*100) / length(pacientes$IN_UTI)
 ```
 
-Nas colunas referente a recursos do tratamento do paciente, foram convertidos os valores numéricos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B. O trecho de código abaixo reflete este processamento:
+Nas colunas referentes a recursos do tratamento do paciente, foram convertidos os valores numéricos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B. O trecho de código abaixo reflete este processamento:
 
 \vspace{0.5cm}
 
@@ -1078,7 +1078,7 @@ grfRecursos=ggplot(recursos) +
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-Esse processamento permitiu a elaboração do Gráfico 6 (Recursos utilizados nos casos graves de covid-19), do qual concluí-se que aproximadamente metade dos pacientes hospitalizados precisaram de oxigêncio não invasivo.
+Esse processamento permitiu a elaboração do Gráfico 6 (Recursos utilizados nos casos graves de covid-19), do qual se conclui, que aproximadamente, metade dos pacientes hospitalizados precisaram de oxigênio não invasivo.
 
 \vspace{0.5cm}
 
@@ -1094,7 +1094,7 @@ grid.arrange(grfRecursos, bottom="Gráfico 6: Recursos utilizados nos casos grav
 
 Na coluna CS_EVOLUCAO, os valores numéricos foram convertidos para as strings correspondentes, conforme descrito no dicionário de dados, disponível no Anexo B, deste trabalho. 
 
-O percentual de valores omissos nesta coluna é de 12,31% (doze virgula trinta e um por cento), para esses valores foram atribuído a valor "Em tratamento".
+O percentual de valores omissos nesta coluna é de 12,31% (doze virgula trinta e um por cento), para os dados omissos deste campo foi atribuído o valor "Em tratamento".
 
 ```{r evolucaoOmissos, include=FALSE}
 (sum(is.na(pacientes$CS_EVOLUCAO))*100) / length(pacientes$CS_EVOLUCAO)
@@ -1164,7 +1164,7 @@ grfEvolucao = ggplot(evolucao) +
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-A partir desse processamento foi elaborado o Gráfico 7 (Evolução dos casos graves de covid-19), do qual concluí-se que, aproximadamente, 1/3 (um terço) dos pacientes graves de covid-19 evoluem para óbito.
+A partir desse processamento foi elaborado o Gráfico 7 (Evolução dos casos graves de covid-19), do qual se conclui que, aproximadamente, 1/3 (um terço) dos pacientes graves de covid-19 evoluem para óbito.
 
 \vspace{0.5cm}
 
@@ -1178,9 +1178,9 @@ grid.arrange(grfEvolucao, bottom="Gráfico 7: Evolução dos casos graves de cov
 
 \vspace{0.5cm}
 
-Neste capítulo, serão detalhadas as taxas de mortalidade e letalidada, bem como o número de mortes absolutos decorrentes de covid-19 no Brasil, em 2020. É importante observar que essa analise utilizou a tecnica de drill down, detalhando as informações até o nível de capitais.
+Neste capítulo, serão detalhadas as taxas de mortalidade e letalidade, bem como o número absoluto de mortes decorrentes de covid-19 no Brasil, em 2020. É importante observar que essa analise utilizou a técnica de drill down, detalhando as informações até o nível de capitais.
 
-Com intuido de facilitar as analises presente neste capitulo, torna-se necessário nivelar alguns conceitos, tais como: taxas de mortalidade e letalidade.
+Com intuito de facilitar as analises presente neste capitulo, torna-se necessário nivelar alguns conceitos, tais como: taxas de mortalidade e letalidade.
 
 A taxa de mortalidade é a razão entre o número total de óbitos e o total da população vezes uma constante utilizada como unidade de medida, neste trabalho será adotado 1.000.000 (um milhão) de habitantes.
 
@@ -1225,7 +1225,7 @@ grid.arrange(grdMortesPorRegiao, bottom="Gráfico 8: Mortes de covid-19 por regi
 
 \vspace{0.5cm}
 
-Após a região sudeste, o Nordeste aparece como a segunda região com maior número de mortes do Brasil, totalizando 44.965 (quarenta e quatro mil e novecentos e sessenta e cinco) mortes, ou seja, 23,95% (vinte e três vírgula noventa e cinco por cento) do total de mortes por covid-19 do país.
+Após a região Sudeste, o Nordeste aparece como a segunda região com maior número de mortes do Brasil, totalizando 44.965 (quarenta e quatro mil e novecentos e sessenta e cinco) mortes, ou seja, 23,95% (vinte e três vírgula noventa e cinco por cento) do total de mortes por covid-19 do país.
 
 ```{r mortesPorRegiaoSudeste, include=FALSE}
 mortesPorRegiaoSudeste=pacientes[complete.cases(pacientes[,c("CS_EVOLUCAO")]) & pacientes$CS_EVOLUCAO=="Óbito" &
@@ -1280,7 +1280,7 @@ axis.text.y = element_text(size = 14), axis.title.y = element_text(size = 16),
 plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-É importante observarmos que o Estado de São Paulo apresenta mais mortes do que a região nordeste inteira, que é a segunda maior região com casos de morte por covid-19 no país.
+É importante observar que o Estado de São Paulo apresenta mais mortes do que a região nordeste inteira, que é a segunda maior região com casos de morte por covid-19 no país.
 
 No que se refere ao Nordeste, o Estado do Ceará apresenta, aproximadamente, 1/4 (um quarto) do número de óbitos, no total de 10.281 (dez mil duzentos e oitenta e um) óbitos, seguido por Pernambuco e Bahia, com 9.597 (nove mil quinhentos e noventa e sete) e 8.321 (oito mil trezentos e vinte e um) óbitos, respectivamente. Esses três estados, juntos, têm quase 60% (sessenta por cento) das mortes por covid-19 no Nordeste. Sobre este assunto, o Gráfico 10 (Mortes por covid-19 na região Nordeste),  exibido abaixo, apresenta a distribuição de mortes por covid-19 na região.
 
@@ -1296,7 +1296,7 @@ grid.arrange(grdMortesPorRegiaoNordeste, bottom="Gráfico 10: Mortes por covid-1
 
 \vspace{0.5cm}
 
-Apesar do estado de São Paulo liderar o números de mortes absoluto por covid-19 no Brasil, em relação ao tamanho da população, a situação é diferente. Verifica-se que 5 (cinco) unidades federativas do país ultrapassam São Paulo em mortes por milhão de habitantes. O Rio de Janeiro é o estado com a mais alta taxa de mortalidade do país, seguido pelo Distrito Federal. Para desmostrar segue a Tabela \ref{tab:txMortalidade}.
+Apesar do estado de São Paulo liderar o números de mortes absoluto por covid-19 no Brasil, em relação ao tamanho da população, a situação é diferente. Verifica-se que 5 (cinco) unidades federativas do país ultrapassam São Paulo em mortes por milhão de habitantes. O Rio de Janeiro é o estado com a mais alta taxa de mortalidade do país, seguido pelo Distrito Federal. Para demonstrar segue a Tabela \ref{tab:txMortalidade}.
 
 \begin{table}[htp!]
 \center
@@ -1360,7 +1360,7 @@ No que se refere as capitais brasileiras, as taxas de mortalidade são ainda mai
 
 Recife é a capital com maior número de mortes por milhão de habitantes, com 3.313 (três mil trezentos de treze) óbitos por covid-19, o que representa uma taxa 96% (noventa e seis por cento) superior à média nacional das capitais. 
 
-Das 7 (sete) maiores taxas de mortalidade por covid-19 nas capitais as regiões norte e nordeste ocupam 6 posições no ranking, com exceção da cidade do Rio de Janeiro. Já o município de São Paulo tem taxa de mortalidade inferior a média nacional e ocupa a 19ª (décima nona) posição do ranking, com 1.436 mortes por milhão de habitantes, esse raking consta na Tabela \ref{tab:txMortalidadeCapitais} abaixo. 
+Das 7 (sete) maiores taxas de mortalidade por covid-19 nas capitais as regiões norte e nordeste ocupam 6 posições no ranking, com exceção da cidade do Rio de Janeiro. Já o município de São Paulo tem taxa de mortalidade inferior a média nacional e ocupa a 19ª (décima nona) posição do ranking, com 1.436 mortes por milhão de habitantes, esse ranking consta na Tabela \ref{tab:txMortalidadeCapitais} abaixo. 
 
 \begin{table}[htp!]
 \center
@@ -1419,7 +1419,7 @@ proporcRecifeVsMediaNacional=taxaMortalidadeRecife/mediaCapitais
   plot.title = element_text(size = 14, face = "bold", color = "darkgreen"))
 ```
 
-As taxas de mortlidade das capitais por covid-19 estão representadas em forma geométrica de triangulo invertido no Grafico 12 (Taxa de mortalidade por covid-19 nas capitais), sendo o maior trinangulo, a maior taxa de mortalidade, pondendo-se, ainda, visualizar mais detalhes das taxas de mortalidade por covid-19 nas capitais no Apêndice A, deste trabalho.
+As taxas de mortalidade das capitais por covid-19 estão representadas em forma geométrica de triângulo invertido no Gráfico 12 (Taxa de mortalidade por covid-19 nas capitais). Quanto maior o tamanho do trinangulo, maior a taxa de mortalidade. Pode-se visualizar, no Apêndice A deste trabalho, mais detalhes das taxas de mortalidade por covid-19 nas capitais.
 
 ```{r gridTxMortalidadeCap, echo=FALSE}
 grid.arrange(grfTxMortalidadeCap, bottom="Gráfico 12: Taxa de mortalidade por covid-19 nas capitais")
@@ -1431,7 +1431,7 @@ grid.arrange(grfTxMortalidadeCap, bottom="Gráfico 12: Taxa de mortalidade por c
 
 \vspace{0.5cm}
 
-A taxa de letalide de covid-19 no Brasil, com verificação a partir de teste de hipótese, é de 30% (trinca por cento), com nível de significancia de 95% (noventa e cinco por cento). Para este teste, utilizou-se uma amostra com 564,093 (quinhentos e sessenta e quatro mil e noventa e três) pacientes hospitalizados. Esta taxa é menor do que a taxa identificada no estudo realizado no Reino Unido, no qual comparou-se a taxa de letalidade da covid-19 com a do vírus ebola. A seguir, verifica-se o trecho de código para realização do teste de hipotese:
+A taxa de letalidade de covid-19 no Brasil, com verificação a partir de teste de hipótese, é de 30% (trinca por cento), com nível de significância de 95% (noventa e cinco por cento). Para este teste, utilizou-se uma amostra com 564,093 (quinhentos e sessenta e quatro mil e noventa e três) pacientes hospitalizados. Esta taxa é menor do que a taxa identificada no estudo realizado no Reino Unido, no qual comparou-se a taxa de letalidade da covid-19 com a do vírus ebola. A seguir, verifica-se o trecho de código para realização do teste de hipótese:
 
 \vspace{0.5cm}
 
@@ -1586,7 +1586,7 @@ Quanto ao Nordeste, este se manteve com média acima das apresentadas no Brasil 
 
 É importante destacar que a Região Sul apresentou, durante quase todo ano de 2020, as menores médias do país. No entanto, no fim do ano, obteve média móvel superior a média nacional.
 
-Estes resultado podem ser observados no Gráfico 13 (Média móvel semanal da taxa de letalidade), que está apresentado abaixo:
+Estes resultados podem ser observados no Gráfico 13 (Média móvel semanal da taxa de letalidade), que está apresentado abaixo:
 
 \vspace{0.5cm}
 
@@ -1600,7 +1600,7 @@ grid.arrange(grfTxLetalidadeRegiao, bottom="Gráfico 13: Média móvel semanal d
 
 \vspace{0.5cm}
 
-No capítulo anterior, foram analisados os número absolutos de óbitos por covid-19, a média móvel da taxa de letalida nacional por região, bem como as taxas de mortalidade de covid-19 nas regiões, estados e capitais brasileiras.
+No capítulo anterior, foram analisados os números absolutos de óbitos por covid-19, a média móvel da taxa de letalidade nacional por região, bem como as taxas de mortalidade de covid-19 nas regiões, estados e capitais brasileiras.
 
 Neste capítulo, o foco será identificar o perfil do paciente hospitalizado com maior e menor risco de morte por covid-19, no Brasil.
 
@@ -1610,9 +1610,9 @@ Neste capítulo, o foco será identificar o perfil do paciente hospitalizado com
 
 Dos atributos disponíveis no data frame, foram selecionadas as seguintes colunas para construção dos perfis de pacientes hospitalizados com maior risco de morte: sexo, idade, existência de comorbidades, raça e região.
 
-Na tentativa de reduzir os número de perfis e torná-los mais representativos para este modelo, foram adotados alguns tratamentos que serão detalhados nos próximos parágrafos.
+Na tentativa de reduzir o número de perfis e torná-los mais representativos para este modelo, foram adotados alguns tratamentos que serão detalhados nos próximos parágrafos.
 
-No que se refere à idade, os valores foram agrupados em intervalos, adotando-se os mesmos intervalos utilizados na piramide etária adotada pelo Instituto Brasileiro de Geografia e Estatística (IBGE), conforme Tabela \ref{tab:faixaEtaria} abaixo:
+No que se refere à idade, os valores foram agrupados em intervalos, adotando-se os mesmos intervalos utilizados na pirâmide etária adotada pelo Instituto Brasileiro de Geografia e Estatística (IBGE), conforme Tabela \ref{tab:faixaEtaria} abaixo:
 
 \vspace{0.5cm}
 
@@ -1677,8 +1677,8 @@ Na primeira execução o modelo de regressão logística apresentou valores de b
 \vspace{0.5cm} 
 
 \begin{itemize}
-\item faixa etária: nos intervalos de 5 a 9 anos, 10 a 14 anos, bem como não exibiu a faixa de 0 a 4 anos;
-\item raça do paciente: na cor branca, bem como não exibiu a cor amarela. 
+\item faixa etária: os intervalos de 5 a 9 anos e de 10 a 14 anos, bem como não exibiu a faixa de 0 a 4 anos;
+\item raça do paciente: a cor branca, bem como não exibiu a cor amarela. 
 \end{itemize}
 
 \vspace{0.5cm}
@@ -1775,7 +1775,7 @@ print(modeloRegressaoLogistica.table, type = "LaTeX" )
 
 \vspace{0.5cm}
 
-Os valores de $\beta^0$ e $\beta^1$ resultado da reexecução do modelo ajustado podem ser verificados na Tabela: \ref{tab:regTabLog2}.
+Os valores de $\beta^0$ e $\beta^1$, resultado da reexecução do modelo ajustado, podem ser verificados na Tabela \ref{tab:regTabLog2}:
 
 \vspace{0.5cm}
 
@@ -1981,7 +1981,7 @@ taxaAcerto
 
 \subsection{6.4 Naive Bayse}
 
-Por último, foi relalizada uma execução com os mesmo atributos da seção 6.3 e o método Naive Bayse do pacote e1071. Com esta configuração, o resultado da taxa de acerto foi um pouco menor, chegando a, aproximadamente, 68% (sessenta e oito por cento). Abaixo segue trecho de código utilizado: 
+Por último, foi realizada uma execução com os mesmos atributos da seção 6.3 e o método Naive Bayse do pacote e1071. Com esta configuração, o resultado da taxa de acerto foi um pouco menor, chegando a, aproximadamente, 68% (sessenta e oito por cento). Abaixo segue trecho de código utilizado: 
 
 \vspace{0.5cm}
 
@@ -2008,7 +2008,7 @@ taxaAcerto
 
 Para este trabalho, também foi elaborado no RStudio um dashboard na linguagem R, com auxílio das libs: flexdashboard, shiny, shinyWidgets, bem como das libs já descritas no primeiro capítulo. O deploy do dashboard foi realizado no shinyapps.io, podendo ser acessado no link \href{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19/}{\underline{\color{blue} https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19/}}.
 
-O dashboard amplia a possíbilidade de consulta, indo além das informações apresentadas neste trabalho. Ele permite também uma abordagem em drill down, sendo possível uma analise em nível de: Brasil, regiões, estados e municípios.
+O dashboard amplia a possibilidade de consulta, indo além das informações apresentadas neste trabalho. Ele permite também uma abordagem em drill down, sendo possível uma análise em nível de: Brasil, regiões, estados e municípios.
 
 A Figura \ref{fig:dashboardhome}, apresentada abaixo, exibe a página principal do dashboard.
 
@@ -2115,7 +2115,7 @@ Por fim, é importante destacar que a análise geral dos resultados alcançados 
 
 \section{9. Links}
 
-A Tabela \ref{tab:links} dispõe dos links com os código fontes implementados neste tabalho, do link do deploy da aplicação (dashboard implementado), bem como do link com o backup dos dados utlizados.
+A Tabela \ref{tab:links} dispõe dos links com os código fontes implementados neste trabalho, do link do deploy da aplicação (dashboard implementado), bem como do link com o backup dos dados utilizados.
 
 \begin{table}[htp!]
 \center
@@ -2136,22 +2136,23 @@ Shinyapps.io & Dashboard Covid-19 & \href{https://fabiopadilhatccpucminas.shinya
 \begin{thebibliography}{OPHS15}
 \bibitem[1]{GALLAGHER:2020}
 GALLAGHER, James. Coronavírus é 'tão mortal quanto ebola' em casos de internação, diz estudo britânico. \textbf{BBC, 2020.}
-Disponível em: < \href{https://www.bbc.com/portuguese/geral-52481818}{\underline{\color{blue} https://www.bbc.com/portuguese/geral-52481818}} > - Acessado em: 14 jan. 2021
+Disponível em: < \href{https://www.bbc.com/portuguese/geral-52481818}{\underline{\color{blue} https://www.bbc.com/portuguese/geral-52481818}} >. Acesso em: 14 jan. 2021
 \bibitem[2]{GOMES:2019}
 GOMES, Pedro César Tebaldi.
 Classificação com Naive Bayes. \textbf{DATA GEEKS, 2019.}
-Disponível em: < \href{https://www.datageeks.com.br/naive-bayes/}{\underline{\color{blue} https://www.datageeks.com.br/naive-bayes/}} > - Acessado em: 14 jan. 2021 
+Disponível em: < \href{https://www.datageeks.com.br/naive-bayes/}{\underline{\color{blue} https://www.datageeks.com.br/naive-bayes/}} >. Acesso em: 14 jan. 2021 
 \bibitem[3]{HOSOKAWA:2011}
 HOSOKAWA, Eric Ossamu. \textbf{Técnica de Árvore de Decisão em Mineração de Dados.} 2011. Trabalho de Conclusão de Curso (Tecnólogo em Processamento de Dados) - Faculdade de Tecnologia de São Paulo, São Paulo, 2011.
 \bibitem[4]{JUNIOR:2010}
 JUNIOR, Gilson Medeiros de Oliveira. \textbf{Máquina de Vetores Suporte:} estudo e análise de parâmetros para otimização de resultado. 2010. Trabalho de Conclusão de Curso (Bacharelado em Ciência da Computação) - Universidade Federal de Pernambuco, Recife, 2010.
-\bibitem[5]{MEHTA:2017}
-MEHTA, \textbf{R. Big Data Analytics with Java.} Birmingham: Packt Publishing Ltd, 2017.
 \bibitem[6]{OPENDATASUS:2021}
 Portal OpenDataSUS, SRAG 2021 - Banco de Dados de Síndrome Respiratória. \textbf{SUS, 2021.}
-Disponível em: < \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021}{\underline{\color{blue} https://opendatasus.saude.gov.br/dataset/bd-srag-2021}} >  - Acessado em: 14 jan. 2021
+Disponível em: < \href{https://opendatasus.saude.gov.br/dataset/bd-srag-2021}{\underline{\color{blue} https://opendatasus.saude.gov.br/dataset/bd-srag-2021}} >. Acesso em: 14 jan. 2021
 \bibitem[7]{SANTOS:2017}
 SANTOS, Roberto Moreira. \textbf{A importância do uso de ferramentas de analítica preditiva gratuitas para as empresas.} 2017. Trabalho de Conclusão de Curso (Bacharelado em Sistemas de Informação) - Universidade Federal de Pernambuco, Recife, 2017.
+\bibitem[5]{SCHÜSSLER:2018}
+SCHÜSSLER, P.J.; Bastiani, E.; Bussler, N.R.C. Inteligência Artificial e aprendizado de máquina: utilizando o entendimento da inteligência humana para reprodução na computação. In: SALÃO DO CONHECIMENTO UNIJUÍ, 2018, Ijuí-RS. \textbf{Anais Eletrônicos.} Ijuí: Unijuí, 2018. Disponível em: < https://publicacoeseventos.unijui.edu.br/index.php/salaoconhecimento/issue/view/200 >. Acesso em: 14 jan. 2021.
+
 \end{thebibliography}
 
 \newpage
