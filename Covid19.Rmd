@@ -2123,6 +2123,8 @@ A Tabela \ref{tab:links} dispõe dos links com os código fontes implementados n
 Git Hub & Repositório com o código fonte & \href{https://github.com/fabiorobertopadilha/covid19}{\underline{\color{blue} https://github.com/fabio...}} \\ \hline
 Google Driver & Backup dos Dados e Relatório Final & \href{https://drive.google.com/drive/folders/1l52SO-RMHYfs2ci_2pBAZJNw2hA5i2me}{\underline{\color{blue} https://drive.google.com/drive...}} \\ \hline
 Shinyapps.io & Dashboard Covid-19 & \href{https://fabiopadilhatccpucminas.shinyapps.io/Dashboard-Covid19}{\underline{\color{blue} https://fabiopadilhatccpucminas...}} \\ \hline
+Youtube & Vídeo Apresentação & \href{https://www.youtube.com/watch?v=JYUgBPrYkDA}{\underline{\color{blue} https://www.youtube.com...}} \\ \hline
+
 \end{tabular}
 \caption{Links TCC}
 \label{tab:links}
